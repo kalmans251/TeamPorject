@@ -1,4 +1,4 @@
-package com.himedia.entity;
+package com.himedia;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
