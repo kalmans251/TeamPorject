@@ -1,18 +1,10 @@
-<!DOCTYPE html>
-<html>
+<html layout:decorate="~{layout}">
+
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-<title>Insert title here</title>
-
-<link href="/css/bootstrap.min.css" rel="stylesheet">
-<link href="/css/sign-in.css" rel="stylesheet">
-<script src="/js/bootstrap.min.js"></script>
+ <link href="/css/sign-in.css" rel="stylesheet">
 </head>
-<body>
 
-<main class="form-signin w-100 m-auto">
+<main layout:fragment="content" class="form-signin w-100 m-auto">
 	<center>
   <form th:action="@{/member/login}" method="post">
   <div th:if="${param.error}">
@@ -35,7 +27,7 @@
         <input type="checkbox" value="remember-me"> Remember me
       </label>
     </div>
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+    <button class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>
     
   </form>
   <div style="margin-top:10px;"><button onclick="location.href='/member/create'" type="button" class="btn btn-primary">회원가입</button>&nbsp&nbsp<button type="button" class="btn btn-primary">아이디/비밀번호 찾기</button></div>
@@ -44,12 +36,4 @@
   	
 </main>
 
-
-</body>
-<script>
-
-navigator.geolocation.getCurrentPosition(function (position) {
-	  console.log(position);
-})
-</script>
 </html>
