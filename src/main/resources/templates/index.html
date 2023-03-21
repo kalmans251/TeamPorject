@@ -1,12 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<html layout:decorate="~{layout}">
+
+<head>	
+	<script>
+		navigator.geolocation.getCurrentPosition(function(pos) {
+	    	console.log(pos);
+	    	var latitude = pos.coords.latitude;
+	    	var longitude = pos.coords.longitude;
+	    	alert("현재 위치는 : " + latitude + ", "+ longitude);
+		});
+	</script>	
 </head>
-<body>
+
+<div layout:fragment="content">
 <a sec:authorize="isAuthenticated()" th:href="@{/member/logout}">로그아웃</a>
 <a sec:authorize="isAnonymous()" th:href="@{/member/login}">로그인</a>
 <a sec:authorize="isAnonymous()" th:href="@{/member/create}">회원가입</a>
-</body>
+</div>
+
 </html>

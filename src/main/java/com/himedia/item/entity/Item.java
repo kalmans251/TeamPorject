@@ -29,7 +29,7 @@ public class Item {
 	@OneToMany(cascade = CascadeType.REMOVE,mappedBy ="item")
 	private List<Favor> favorList;
 	
-	private Integer temperature;
+	private Long temperature;
 	private Integer views;
 	private LocalDateTime regDate;
 	private LocalDateTime modifiedDate;
