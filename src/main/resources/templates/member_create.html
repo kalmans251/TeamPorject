@@ -1,34 +1,90 @@
-<!DOCTYPE html>
-<html>
+
+<html layout:decorate="~{layout}">
 <head>
 <meta name="_csrf" th:content="${_csrf.token}"/>
 <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 <script src="/jquery-3.6.3.min.js"></script>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
-<body>
+
+<div layout:fragment="content">
+<center>
 <h1>회원가입</h1>
 <form th:action="@{/member/create}" th:object="${memberCreateForm}" method="post">
 <div role="alert" th:if="${#fields.hasAnyErrors()}">
 	<div th:each="err:${#fields.allErrors()}" th:text="${err}"></div>
 </div>
 <table>
-	<tr><td>이메일</td><td><input type="email" name="username" id="username"></td><td><a onclick="idCheck()">이메일 중복확인</a></td></tr>
-	<tr><td>비밀번호</td><td><input type="password" name="password1"></td><td id="result"></td></tr>
-	<tr><td>비밀번호 확인</td><td><input type="password" name="password2"></td></tr>
-	<tr><td>닉네임</td><td><input type="text" name="nickName"></td></tr>
-	<tr><td>주소</td><td><input type="text" id="sample6_postcode" placeholder="우편번호" name="addr1">
-		<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+	
+	<tr>
+		<td>
+			<div class="input-group input-group-sm mb-3">
+	  			<span style="width:110px;text-align:center" class="input-group-text" id="inputGroup-sizing-sm">이메일</span>
+	  			<input type="email" id="username" name="username" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+			</div>
+		</td>
+		<td>
+			<a style="height:30px;margin-bottom:14px;line-height:17px;" class="btn btn-primary" href="javascript:void(0)" onclick="idCheck()" role="button">중복확인</a>
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<div class="input-group input-group-sm mb-3">
+	  			<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">비밀번호</span>
+	  			<input type="password" name="password1" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+			</div>
+		</td>
+		
+		<td id="result"></td>
+		
+	</tr>
+	
+	<tr>
+		<td>
+			<div class="input-group input-group-sm mb-3">
+		  		<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">비밀번호 확인</span>
+		  		<input type="password" name="password2" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+			</div>
+		</td>
+		
+		
+	</tr>
+	
+	<tr>
+		<td>
+			<div class="input-group input-group-sm mb-3">
+	  			<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">닉네임</span>
+	  			<input type="text" name="nickName" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+			</div>
+		</td>
+		<td></td>
+	</tr>
+	
+	<tr>
+		<td>주소</td>
+		<td><input type="text" id="sample6_postcode" placeholder="우편번호" name="addr1"><input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
 		<input type="text" id="sample6_address" placeholder="주소" name="addr2"><br>
 		<input type="text" id="sample6_detailAddress" placeholder="상세주소" name="addr3">
-		<input type="text" id="sample6_extraAddress" placeholder="참고항목" name="reference"></td></tr>
-	<tr><td>휴대폰 번호</td><td><input type="number" name="phoneNum"></td></tr>
-	<tr><td><input type="submit" value="제출하기"></td></tr>
+		<input type="text" id="sample6_extraAddress" placeholder="참고항목" name="reference">
+		</td>
+	</tr>
+	
+	<tr>
+		<td>휴대폰 번호</td>
+		<td><input type="number" name="phoneNum"></td>
+	</tr>
+	
+	<tr>
+		<td><input type="submit" value="제출하기"></td>
+	</tr>
+	
 </table>
 </form>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script>
+</center>
+</div>
+
+<script layout:fragment="javascriptContent">
     function sample6_execDaumPostcode() {
         new daum.Postcode({
             oncomplete: function(data) {
@@ -65,9 +121,7 @@
             }
         }).open();
     }
-</script>
 
-<script>
 	const idCheck = () => {
 	var username = $('#username').val();
 	 var token = $("meta[name='_csrf']").attr("content");
@@ -98,5 +152,4 @@
 </script>
 
 
-</body>
 </html>
