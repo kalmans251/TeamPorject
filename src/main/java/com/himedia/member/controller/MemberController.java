@@ -49,7 +49,7 @@ public class MemberController {
 		}
 		String addr = memberCreateForm.getAddr1()+memberCreateForm.getAddr2()+memberCreateForm.getAddr3();
 		try {
-			this.memberService.memberInsert(memberCreateForm.getUsername(), memberCreateForm.getPassword1(), memberCreateForm.getNickName() ,memberCreateForm.getPhoneNum(), MemberRole.USER, addr);
+			this.memberService.memberInsert(memberCreateForm.getUsername(), memberCreateForm.getPassword1(), memberCreateForm.getNickName() ,memberCreateForm.getPhoneNum(), MemberRole.USER);
 		}catch(DataIntegrityViolationException e) {
 			e.printStackTrace();
 			bindingResult.reject("singupFail","이미 등록된 사용자 입니다.");
@@ -59,7 +59,16 @@ public class MemberController {
 			bindingResult.reject("singupFailed",e.getMessage());
 			return "member_create";
 		}
-		
+		Member member = this.memberService.getMember(memberCreateForm.getUsername());
+		try {
+			this.memberService.addrInsert(member, addr,memberCreateForm.getReference());
+		}catch(DataIntegrityViolationException e) {
+			e.printStackTrace();
+			return "member_create";
+		}catch(Exception e) {
+			e.printStackTrace();
+			return "member_create";
+		}
 		return "redirect:/member/login";
 	}
 	@PostMapping("/ajaxtest")

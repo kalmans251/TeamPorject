@@ -1,0 +1,9 @@
+package com.himedia.member.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.himedia.member.entity.MemberAddress;
+
+public interface MemberAddrRepository extends JpaRepository<MemberAddress, Long> {
+
+}

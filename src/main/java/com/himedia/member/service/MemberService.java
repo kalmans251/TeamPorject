@@ -1,11 +1,14 @@
 package com.himedia.member.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.himedia.member.entity.Member;
+import com.himedia.member.entity.MemberAddress;
+import com.himedia.member.repository.MemberAddrRepository;
 import com.himedia.member.repository.MemberRepository;
 import com.himedia.member.role.MemberRole;
 
@@ -19,7 +22,9 @@ public class MemberService {
 	
 	private final PasswordEncoder passwordEncoder;
 	
-	public void memberInsert(String username,String password,String nickName, Long phoneNum, MemberRole memberRole ,String addr) {
+	private final MemberAddrRepository memberAddrRepository;
+	
+	public void memberInsert(String username,String password,String nickName, Long phoneNum, MemberRole memberRole) {
 		
 		Member member = new Member();
 		
@@ -28,7 +33,6 @@ public class MemberService {
 		member.setPhoneNum(phoneNum);
 		member.setMemberRole(memberRole.USER);
 		member.setNickName(nickName);
-		member.setAddr(addr);
 		this.memberRepository.save(member);
 	}
 	
@@ -37,6 +41,14 @@ public class MemberService {
 			return member.get();
 	}
 	
-	
+	public void addrInsert(Member member, String addr,String reference) {
+		MemberAddress memberAddr = new MemberAddress();
+		memberAddr.setAddr(addr);
+		memberAddr.setMember(member);
+		memberAddr.setCreateDate(LocalDateTime.now());
+		memberAddr.setReference(reference);
+		this.memberAddrRepository.save(memberAddr);
+		
+	}
 	
 }
