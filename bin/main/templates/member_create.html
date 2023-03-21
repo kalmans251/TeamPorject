@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<script src="/jquery-3.6.3.min.js"></script>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>회원가입</h1>
+<form th:action="@{/member/create}" th:object="${memberCreateForm}" method="post">
+<div role="alert" th:if="${#fields.hasAnyErrors()}">
+	<div th:each="err:${#fields.allErrors()}" th:text="${err}"></div>
+</div>
+<table>
+	<tr><td>이메일</td><td><input type="email" name="username" id="username"></td><td><a onclick="idCheck()">이메일 중복확인</a></td></tr>
+	<tr><td>비밀번호</td><td><input type="password" name="password1"></td><td id="result"></td></tr>
+	<tr><td>비밀번호 확인</td><td><input type="password" name="password2"></td></tr>
+	<tr><td>닉네임</td><td><input type="text" name="nickName"></td></tr>
+	<tr><td>주소</td><td><input type="text" name="addr"></td></tr>
+	<tr><td>휴대폰 번호</td><td><input type="number" name="phoneNum"></td></tr>
+	<tr><td><input type="submit" value="제출하기"></td></tr>
+</table>
+</form>
+
+<script>
+	const idCheck = () => {
+	var username = $('#username').val();
+	 var token = $("meta[name='_csrf']").attr("content");
+     var header = $("meta[name='_csrf_header']").attr("content");
+	$.ajax({
+		url:'/member/ajaxtest',
+		type:'post',
+		data:{"username":username}, 
+		beforeSend : function(xhr){
+            xhr.setRequestHeader(header, token);
+        },
+		success:function(res){
+			if(res==0){
+				$('#result').text("사용가능한 이메일 입니다.");
+			}else if(res==1){
+				$('#result').text("이미사용중인 이메일 입니다.");
+			}else if(res==2){
+				$('#result').text("이메일을 입력해 주세요.");	
+				$('#username').focus();
+			}
+		},error:function(){
+			alert("에러입니다.")
+		}
+		
+	})
+	}
+	
+</script>
+
+
+</body>
+</html>

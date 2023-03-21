@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>로그인</h1>
+<form th:action="@{/member/login}" method="post">
+<div th:if="${param.error}">
+	<div>회원정보가 일치 하지 않습니다.</div>
+</div>
+<div>
+<div>이메일</div>
+<input type="email" name="username">
+</div>
+<div>
+<div>비밀번호</div>
+<input type="password" name="password">
+</div>
+<div>
+<button>로그인</button>
+</div>
+</form>
+<div><a href="/member/create">회원가입</a> 아이디/비밀번호찾기 </div>
+
+
+</body>
+</html>
