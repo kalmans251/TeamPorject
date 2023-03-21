@@ -9,4 +9,12 @@
 <a sec:authorize="isAnonymous()" th:href="@{/member/login}">로그인</a>
 <a sec:authorize="isAnonymous()" th:href="@{/member/create}">회원가입</a>
 </body>
+<script>
+navigator.geolocation.getCurrentPosition(function(pos) {
+    console.log(pos);
+    var latitude = pos.coords.latitude;
+    var longitude = pos.coords.longitude;
+    alert("현재 위치는 : " + latitude + ", "+ longitude);
+});
+</script>
 </html>

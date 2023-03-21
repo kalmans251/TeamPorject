@@ -20,14 +20,9 @@ public class ItemImg {
 	private Item item;
 	
 	private String oriName;
-	
 	private String name;
-	
 	private String url;
-	
 	private String repImgYn;
-	
 	private LocalDateTime regDate;
-	
 	private LocalDateTime modifiedDate;
 }
