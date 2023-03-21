@@ -48,7 +48,7 @@ public class MemberController {
 			return "member_create";
 		}
 		try {
-			this.memberService.memberInsert(memberCreateForm.getUsername(), memberCreateForm.getUsername(), memberCreateForm.getPassword1() ,memberCreateForm.getPhoneNum(), MemberRole.USER, memberCreateForm.getAddr());
+			this.memberService.memberInsert(memberCreateForm.getUsername(), memberCreateForm.getPassword1(), memberCreateForm.getNickName() ,memberCreateForm.getPhoneNum(), MemberRole.USER, memberCreateForm.getAddr());
 		}catch(DataIntegrityViolationException e) {
 			e.printStackTrace();
 			bindingResult.reject("singupFail","이미 등록된 사용자 입니다.");
