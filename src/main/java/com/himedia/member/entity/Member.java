@@ -33,5 +33,6 @@ public class Member {
 	@Enumerated(EnumType.STRING)
 	public MemberRole memberRole;
 	
+	public String type;
 	
 }
