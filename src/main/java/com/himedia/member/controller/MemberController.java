@@ -47,8 +47,9 @@ public class MemberController {
 			bindingResult.rejectValue("password2", "passwordInCorrect","두개의 패스워드가 일치하지 않습니다");
 			return "member_create";
 		}
+		String addr = memberCreateForm.getAddr1()+memberCreateForm.getAddr2()+memberCreateForm.getAddr3();
 		try {
-			this.memberService.memberInsert(memberCreateForm.getUsername(), memberCreateForm.getPassword1(), memberCreateForm.getNickName() ,memberCreateForm.getPhoneNum(), MemberRole.USER, memberCreateForm.getAddr());
+			this.memberService.memberInsert(memberCreateForm.getUsername(), memberCreateForm.getPassword1(), memberCreateForm.getNickName() ,memberCreateForm.getPhoneNum(), MemberRole.USER, addr);
 		}catch(DataIntegrityViolationException e) {
 			e.printStackTrace();
 			bindingResult.reject("singupFail","이미 등록된 사용자 입니다.");

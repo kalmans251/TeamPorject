@@ -26,6 +26,13 @@ public class MemberCreateForm {
 	public Long phoneNum;
 	
 	@NotBlank(message="주소는 필수 입력입니다.")
-	public String addr;
+	public String addr1;
+	@NotBlank(message="주소는 필수 입력입니다.")
+	public String addr2;
+	@NotBlank(message="주소는 필수 입력입니다.")
+	public String addr3;
+	
+	public String reference;
+	
 	
 }
