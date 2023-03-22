@@ -24,7 +24,7 @@ public class MemberService {
 	
 	private final MemberAddrRepository memberAddrRepository;
 	
-	public void memberInsert(String username,String password,String nickName, Long phoneNum, MemberRole memberRole) {
+	public void memberInsert(String username,String password,String nickName, String phoneNum, MemberRole memberRole) {
 		
 		Member member = new Member();
 		

@@ -23,7 +23,7 @@ public class MemberCreateForm {
 	public String nickName;
 	
 	@NotNull(message="사용하실 전화번호는 필수 입력입니다.")
-	public Long phoneNum;
+	public String phoneNum;
 	
 	@NotBlank(message="주소는 필수 입력입니다.")
 	public String addr1;

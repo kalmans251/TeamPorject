@@ -28,7 +28,7 @@ public class Member {
 	
 	public String nickName;
 	
-	public Long phoneNum;
+	public String phoneNum;
 	
 	@Enumerated(EnumType.STRING)
 	public MemberRole memberRole;
