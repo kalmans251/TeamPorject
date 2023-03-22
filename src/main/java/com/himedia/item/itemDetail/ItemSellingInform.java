@@ -1,4 +1,4 @@
-package com.himedia.order.entity;
+package com.himedia.item.itemDetail;
 
 public class ItemSellingInform {
 
