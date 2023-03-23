@@ -1,6 +1,6 @@
 <html layout:decorate="~{layout}">
 
-<head>	
+<!-- <head>	
 	<script>
 		navigator.geolocation.getCurrentPosition(function(pos) {
 	    	console.log(pos);
@@ -9,12 +9,12 @@
 	    	alert("현재 위치는 : " + latitude + ", "+ longitude);
 		});
 	</script>	
-</head>
+</head> -->
 
 <div layout:fragment="content">
-<a sec:authorize="isAuthenticated()" th:href="@{/member/logout}">로그아웃</a>
-<a sec:authorize="isAnonymous()" th:href="@{/member/login}">로그인</a>
-<a sec:authorize="isAnonymous()" th:href="@{/member/create}">회원가입</a>
+	
+	
+	
 </div>
 
 </html>
