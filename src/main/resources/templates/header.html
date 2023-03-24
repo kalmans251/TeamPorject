@@ -7,117 +7,12 @@
       </a>
 
       <ul class="nav nav-pills">
-        
-        <li class="nav-item">
-            <button sec:authorize="isAnonymous()" class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbarLight" aria-controls="offcanvasNavbarLight">
-	        <a href="javascript:void(0)" class="nav-link">
-	        <span>LOGIN</span>
-	        </a>
-	        </button>
-	        <button sec:authorize="isAuthenticated()" class="navbar-toggler" type="button">
-	        <a th:href="@{/member/logout}" class="nav-link"><span>LOGOUT</span></a>
-	        </button>
-	    </li>
-        <li class="nav-item">
-             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbarLight" aria-controls="offcanvasNavbarLight">
-        	 <a href="javascript:void(0)" class="nav-link">
-	         <span>ACCOUNT</span>
-	         </a>
-	         </button>
-        </li>
-        <li class="nav-item">
-        	 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbarLight" aria-controls="offcanvasNavbarLight">
-        	 <a href="javascript:void(0)" class="nav-link">
-	         <span>CART</span>
-	         </a>
-	         </button>
-        </li>
-        <li class="nav-item">
-        	 <button class="navbar-toggler" type="button">
-        	 <a href="javascript:void(0)" class="nav-link">
-	         <span>INFO</span>
-	         </a>
-	         </button>
-        </li>
+        <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">Features</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">Pricing</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">About</a></li>
       </ul>
-      
-      
-     
-      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbarLight" aria-labelledby="offcanvasNavbarLightLabel">
-        
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasNavbarLightLabel">Offcanvas</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        
-        
-        
-        <main class="form-signin w-100 m-auto">
-	<center>
-  <form th:action="@{/member/login}" method="post">
-  <div th:if="${param.error}">
-	<div>회원정보가 일치 하지 않습니다.</div>
-  </div>
-    <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
-    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-
-    <div class="form-floating">
-      <input name="username" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-      <label for="floatingInput">Email address</label>
-    </div>
-    <div class="form-floating">
-      <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
-      <label for="floatingPassword">Password</label>
-    </div>
-
-    <div class="checkbox mb-3">
-      <label>
-        <input type="checkbox" value="remember-me"> Remember me
-      </label>
-    </div>
-    <button class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>
-    
-  </form>
-  <div style="margin-top:10px;"><button onclick="location.href='/member/create'" type="button" class="btn btn-primary">회원가입</button>&nbsp&nbsp<button type="button" class="btn btn-primary">아이디/비밀번호 찾기</button></div>
-  	<p class="mt-5 mb-3 text-muted">&copy; 2017–2022</p>
-  	</center>
-  	
-</main>
-        
-        
-        
-        
-        
-        <!-- <div class="offcanvas-body">
-          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Homeㅇ</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Dropdown
-              </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-              </ul>
-            </li>
-          </ul>
-          <form class="d-flex mt-3" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
-        </div> -->
-      
-      </div>
     </header>
-    
     </div>
 
