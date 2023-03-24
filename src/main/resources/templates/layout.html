@@ -5,9 +5,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<script src="/js/bootstrap.min.js"></script>
+
 <link href="/css/bootstrap.min.css" rel="stylesheet">
 <link href="/css/headers.css" rel="stylesheet">
+
+<link href="/css/navbars-offcanvas.css" rel="stylesheet">
+<script src="/js/bootstrap.bundle.min.js"></script>
+<link href="/css/sign-in.css" rel="stylesheet">
 
 <title>Insert title here</title>
 </head>
@@ -25,4 +29,32 @@
 </body>
 	
 	<th:block layout:fragment="javascriptContent"></th:block>
+
+	<script>
+		const login = document.getElementById('logindiv');
+		const account = document.getElementById('accountdiv');
+		const cart = document.getElementById('cartdiv');
+		
+		function cartFunction(){
+			login.style.visibility ='hidden';
+
+			account.style.visibility ='hidden';
+			
+			cart.style.visibility ='visible';
+		}
+		function accountFunction(){
+			login.style.visibility ='hidden';
+			
+			account.style.visibility ='visible';
+			
+			cart.style.visibility ='hidden';
+		}
+		function loginFunction(){
+			login.style.visibility ='visible';
+			
+			account.style.visibility ='hidden';
+			
+			cart.style.visibility ='hidden';
+		}
+	</script>
 </html>
