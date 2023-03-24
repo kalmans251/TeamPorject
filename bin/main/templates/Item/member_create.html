@@ -1,0 +1,200 @@
+<html layout:decorate="~{layout}">
+<head>
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<script src="/jquery-3.6.3.min.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<style>
+input::placeholder {
+  color: red;
+  font-style: italic;
+}
+textarea::placeholder {
+  color: blue;
+  font-weight: bold;
+  }
+</style>
+</head>
+
+<div layout:fragment="content">
+<center>
+<h1>회원가입</h1>
+<form th:action="@{/member/create}" th:object="${memberCreateForm}" method="post">
+<div style="width:500px;margin:0 auto;">
+
+	<div class="input-group input-group-sm mb-3">
+				<span style="width:110px;text-align:center" class="input-group-text" id="inputGroup-sizing-sm">이메일</span>
+				<input type="email" id="username" name="username" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+		<button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="idCheck()">중복확인</button>
+	</div>
+	<div id="result" role="alert">
+  	
+	</div>
+	<div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="alert alert-danger" role="alert">
+  	
+	</div>
+	
+	<div class="input-group input-group-sm mb-3">
+				<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">비밀번호</span>
+				<input type="password" name="password1" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+	</div>
+	<div th:if="${#fields.hasErrors('password1')}" th:errors="*{password1}" class="alert alert-danger" role="alert">
+  	
+	</div>
+	
+	
+	
+	
+	<div class="input-group input-group-sm mb-3">
+	 		<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">비밀번호 확인</span>
+	 		<input type="password" name="password2" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+	</div>
+	
+	
+	
+	<div class="input-group input-group-sm mb-3">
+				<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">닉네임</span>
+				<input type="text" name="nickName" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+	</div>
+	<div th:if="${#fields.hasErrors('nickName')}" th:errors="*{nickName}" class="alert alert-danger" role="alert">
+  	
+	</div>
+	
+	
+	<div class="input-group input-group-sm mb-3">
+				<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">주소</span>
+				<input placeholder="우편번호" id="sample6_postcode" type="text" name="addr1" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+		<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기">
+	</div>
+	
+	
+	
+	<div class="input-group input-group-sm mb-3">
+				<input placeholder="주소" type="text" id="sample6_address" name="addr2" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+				<input placeholder="참고항목" type="text" id="sample6_extraAddress" name="reference" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+	</div>
+	<div class="input-group input-group-sm mb-3">
+				<input placeholder="상세주소" type="text" id="sample6_detailAddress" name="addr3" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+	</div>
+	<div th:if="${#fields.hasErrors('addr2')}" th:errors="*{addr2}" class="alert alert-danger" role="alert">
+  	
+	</div>
+	
+	<div class="input-group input-group-sm mb-3">
+				<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">전화번호</span>
+				<input placeholder="000-0000-000" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');" type="text" name="phoneNum" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+	</div>
+	<div th:if="${#fields.hasErrors('phoneNum')}" th:errors="*{phoneNum}" class="alert alert-danger" role="alert">
+  	
+	</div>
+	
+	
+		<td><button type="submit" class="btn btn-outline-success">제출하기</button></td>
+	
+</div>
+
+</form>
+</center>
+</div>
+
+<script layout:fragment="javascriptContent">
+	function email_check(email) {
+	
+		var reg = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+	
+		return reg.test(email);
+	
+	}
+	
+    function sample6_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+
+                var addr = ''; 
+                var extraAddr = ''; 
+                if (data.userSelectedType === 'R') {
+                    addr = data.roadAddress;
+                } else {
+                    addr = data.jibunAddress;
+                }
+                if(data.userSelectedType === 'R'){
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if(extraAddr !== ''){
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                    // 조합된 참고항목을 해당 필드에 넣는다.
+                    document.getElementById("sample6_extraAddress").value = extraAddr;
+                
+                } else {
+                    document.getElementById("sample6_extraAddress").value = '';
+                }
+
+                document.getElementById('sample6_postcode').value = data.zonecode;
+                document.getElementById("sample6_address").value = addr;
+                document.getElementById("sample6_detailAddress").focus();
+            }
+        }).open();
+    }
+
+	const idCheck = () => {
+	var username = $('#username').val();
+	 var token = $("meta[name='_csrf']").attr("content");
+     var header = $("meta[name='_csrf_header']").attr("content");
+	
+     var email = $('#username').val();
+
+     if(email==""){
+    	$('#result').text("이메일을 입력해 주세요.");	
+		$('#result').addClass("alert alert-danger");
+     	return false;
+     }else{
+     	if(!email_check(email)){
+     		$('#result').text("이메일 형식이 아닙니다.");	
+			$('#result').addClass("alert alert-danger");
+     		return false;
+     	}else{
+     		$.ajax({
+     			url:'/member/ajaxtest',
+     			type:'post',
+     			data:{"username":username}, 
+     			beforeSend : function(xhr){
+     	            xhr.setRequestHeader(header, token);
+     	        },
+     			success:function(res){
+     				
+     				if(res==0){
+     					$('#result').text("사용가능한 이메일 입니다.");
+     					$('#result').removeClass("alert alert-danger");
+     					$('#result').addClass("alert alert-success");
+     				}else if(res==1){
+     					$('#result').text("이미사용중인 이메일 입니다.");
+     					$('#result').addClass("alert alert-danger");
+     				}else if(res==2){
+     					$('#result').text("이메일을 입력해 주세요.");	
+     					$('#result').addClass("alert alert-danger");
+     					$('#username').focus();
+     				}
+     			},error:function(){
+     				alert("에러입니다.")
+     			}
+     			
+     		})
+     		}
+     	}
+     }
+     
+     const inrollSubmit = () => {
+    	 
+     }
+	
+</script>
+
+
+</html>
