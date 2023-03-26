@@ -3,6 +3,8 @@ package com.himedia.item.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.himedia.item.entity.enums.CategoryEnum;
+import com.himedia.item.entity.enums.CategoryEnum2;
 import com.himedia.member.entity.Member;
 
 import jakarta.persistence.CascadeType;
@@ -23,8 +25,10 @@ public class Item {
 	
 	@ManyToOne
 	private Member member;
-	@ManyToOne
-	private Category category;
+
+	private CategoryEnum categoryEnum;
+
+	private CategoryEnum2 categoryEnum2;
 	
 	@OneToMany(cascade = CascadeType.REMOVE,mappedBy ="item")
 	private List<Favor> favorList;
@@ -34,4 +38,5 @@ public class Item {
 	private LocalDateTime regDate;
 	private LocalDateTime modifiedDate;
 	
+	private long price;
 }
