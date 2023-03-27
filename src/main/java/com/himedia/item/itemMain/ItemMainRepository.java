@@ -14,7 +14,7 @@ import com.himedia.item.entity.enums.CategoryEnum2;
 public interface ItemMainRepository extends JpaRepository<Item, Integer> {
  
 	//카테고리별 분류
-	Page<Item> findByCategoryEnumOrCategoryEnum2(CategoryEnum1 categoryEnum1,CategoryEnum2 categoryEnum2,Pageable pageable);
+	//Page<Item> findByCategoryEnum1OrCategoryEnum2(String categoryEnum1,String categoryEnum2,Pageable pageable);
 	
 	//등록일 순 
 	List<Item> findAllByOrderByRegDateDesc();

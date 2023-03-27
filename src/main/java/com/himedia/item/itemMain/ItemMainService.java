@@ -25,7 +25,7 @@ public class ItemMainService {
 		int size = 9;
 		Pageable pageable= PageRequest.of(page-1, size);
 		
-		return itemMainRepository.findByCategoryEnumOrCategoryEnum2(categoryEnum1, categoryEnum2, pageable);
+		return itemMainRepository.findByCategoryEnum1OrCategoryEnum2(categoryEnum1.toString(), categoryEnum2.toString(), pageable);
 	}
 
 	//등록일 순
