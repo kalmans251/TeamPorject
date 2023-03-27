@@ -12,9 +12,9 @@
 	
     <div class="container">
 	<div style="width:90%;height:40px;margin:0 auto;background-color:black;margin-bottom:40px;border-radius:15px;">
-		<div style="width:200px;margin:0 auto;"class="input-group">
+		<div style="position:relative;left:30px;width:200px;margin:0 auto;"class="input-group">
 		  <input style="margin-top:7px;height:25px;" type="text" class="form-control" aria-label="Text input with segmented dropdown button">
-		  <button style="margin-top:7px;height:25px;line-height:10px;width:40px;font-size:10px;" type="button" class="btn btn-outline-secondary">Search</button>
+		  <button style="margin-top:7px;height:25px;line-height:10px;width:40px;font-size:10px;" type="button" class="btn btn-outline-secondary"><span style="position:absolute;left:3px;top:6px;">Search</span></button>
 		  <button style="margin-top:7px;height:25px;line-height:10px;" type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
 		    <span class="visually-hidden">Toggle Dropdown</span>
 		  </button>
@@ -27,6 +27,32 @@
 		  </ul>
 		</div>
 	</div>
+	
+	<div style="margin-bottom:100px;background-color:black;padding-bottom:15px;padding-left:10px;padding-right:10px;border-radius:10px;" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+		
+		<div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em"><span style="position:relative;top:-130px;height:0px;color:white;"><span id="city"></span><span id="weather"></span><span id="country"></span></span></text></svg>
+            
+          </div>
+        </div>
+		
+		<div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em" ><div style="position:relative;top:-130px;height:0px;color:white;" id="_3day" ></div></text></svg>
+            
+          </div>
+        </div>
+        
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em"><div style="position:relative;top:-130px;height:0px;color:white;" id="_7day"></div></text></svg>
+            
+          </div>
+        </div>
+		
+	</div>
+	
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         <div class="col">
           <div class="card shadow-sm">
@@ -169,8 +195,56 @@
     </div>
   </div>
 
-</main>
+
 
 </div>
+
+<script layout:fragment="javascriptContent">
+const API_KEY='87c22ad5e4c6c0512158561c2c8ba845';
+
+function onGeoOk(position){
+	
+	
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+    console.log(position);
+    const url1 = `https://api.openweathermap.org/data/2.5/weather?unit=metric&lat=${lat}&lon=${lon}&lang=kr&appid=${API_KEY}`;
+    const url2 = `https://api.openweathermap.org/data/3.0/onecall?unit=metric&lat=${lat}&lon=${lon}&lang=kr&appid=${API_KEY}`;
+    
+    fetch(url1).then((response) => response.json())
+        .then((data) =>{
+        	
+        	console.log(data)
+            const weater = document.getElementById('city');
+            const city = document.getElementById('weather');
+            const _3day = document.getElementById('_3day');
+            const _7day = document.getElementById('_7day');
+            
+            city.innerText = data.name;
+            
+            weater.innerText =`오늘/${data.weather[0].description} /최저온도:${(data.main.temp_min-273.15).toFixed(2)}/최고온도:${(data.main.temp_max-273.15).toFixed(2)}/현재온도 ${(data.main.temp-273.15).toFixed(2)}도`;
+    	
+        });
+    fetch(url2).then((response) => response.json())
+    .then((data) =>{
+    	
+    	console.log(data)
+        const country = document.getElementById('country');
+        
+        country.innerText = data.timezone;
+        _3day.innerText='3일뒤/'+data.daily[2].weather[0].description+"/최저온도:"+((data.daily[2].temp.min-273.15).toFixed(2))+"/최고온도:"+((data.daily[2].temp.max-273.15).toFixed(2));
+        _7day.innerText='7일뒤/'+data.daily[6].weather[0].description+"/최저온도:"+((data.daily[6].temp.min-273.15).toFixed(2))+"/최고온도:"+((data.daily[6].temp.max-273.15).toFixed(2));
+        
+    });
+    
+}
+
+function onGeoError(){
+    alert("Can't find you. No weather for you.")
+}
+
+navigator.geolocation.getCurrentPosition(onGeoOk,onGeoError);
+
+</script>
 
 </html>
