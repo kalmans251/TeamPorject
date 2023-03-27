@@ -14,15 +14,20 @@ import lombok.Setter;
 public class ItemImg {
 	
 	@Id
-	private Long id;
+	private Long id;		//이미지 아이디
 	
 	@ManyToOne
-	private Item item;
+	private Item item;		//상품 아이디
 	
-	private String oriName;
-	private String name;
-	private String url;
-	private String repImgYn;
-	private LocalDateTime regDate;
-	private LocalDateTime modifiedDate;
+	private String oriName;			//원본이미지이름
+	
+	private String name;			//변형된 이름 (랜덤)
+	
+	private String url;				//이미지주소
+	
+	private String repImgYn;		//대표이미지
+	
+	private LocalDateTime regDate;		//등록일
+	
+	private LocalDateTime modifiedDate;		//수정일
 }

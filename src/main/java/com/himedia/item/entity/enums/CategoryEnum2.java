@@ -1,5 +1,10 @@
 package com.himedia.item.entity.enums;
 
-public enum CategoryEnum {
-
+public enum CategoryEnum2 {
+	
+	
+	
+	
+	
+	
 }
