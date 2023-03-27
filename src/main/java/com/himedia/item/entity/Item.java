@@ -3,10 +3,14 @@ package com.himedia.item.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.himedia.item.entity.enums.CategoryEnum1;
+import com.himedia.item.entity.enums.CategoryEnum2;
 import com.himedia.member.entity.Member;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -19,19 +23,26 @@ import lombok.Setter;
 public class Item {
 	
 	@Id
-	private Long id;
+	private Long id;	//아이템 아이디
 	
 	@ManyToOne
-	private Member member;
-	@ManyToOne
-	private Category category;
+	private Member member;		//고객
+	
+	@Enumerated(EnumType.STRING)
+	private CategoryEnum1 category1;		//큰분류
+	
+	@Enumerated(EnumType.STRING)
+	private CategoryEnum2 category2;		//작은분류
 	
 	@OneToMany(cascade = CascadeType.REMOVE,mappedBy ="item")
-	private List<Favor> favorList;
+	private List<Favor> favorList;		//찜목록
 	
-	private Long temperature;
-	private Integer views;
-	private LocalDateTime regDate;
-	private LocalDateTime modifiedDate;
+	private Long temperature;	//온도
+	
+	private LocalDateTime regDate;	//등록일
+	
+	private LocalDateTime modifiedDate;		//수정일
+	
+	private Long price;		//가격
 	
 }
