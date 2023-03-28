@@ -10,6 +10,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.himedia.item.entity.Item;
+import com.himedia.item.entity.enums.CategoryEnum1;
+import com.himedia.item.entity.enums.CategoryEnum2;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -25,8 +27,7 @@ public class ItemMainService {
 		this.itemMainRepository = itemMainRepository;
 	}
 	
-<<<<<<< HEAD
-=======
+
 	//카테고리 정렬
 	public Page<Item> findItemsByCategory(CategoryEnum1 categoryEnum1, CategoryEnum2 categoryEnum2, int page) {
 		
@@ -35,7 +36,7 @@ public class ItemMainService {
 		
 		return itemMainRepository.findByCategoryEnum1OrCategoryEnum2(categoryEnum1.toString(), categoryEnum2.toString(), pageable);
 	}
->>>>>>> 69d2474901bd298f3ed2df2bd129fad3eebdd726
+
 
 	public Page<Item> findItemsByCategory(String category,String sort,int page) {
 		int size = 9;
