@@ -29,16 +29,16 @@ public class ItemMainService {
 	
 
 	//카테고리 정렬
-	public Page<Item> findItemsByCategory(CategoryEnum1 categoryEnum1, CategoryEnum2 categoryEnum2, int page) {
-		
-		int size = 9;
-		Pageable pageable= PageRequest.of(page-1, size);
-		
-		return itemMainRepository.findByCategoryEnum1OrCategoryEnum2(categoryEnum1.toString(), categoryEnum2.toString(), pageable);
-	}
+//	public Page<Item> findItemsByCategory(CategoryEnum1 categoryEnum1, CategoryEnum2 categoryEnum2, int page) {
+//		
+//		int size = 9;
+//		Pageable pageable= PageRequest.of(page-1, size);
+//		
+//		return itemMainRepository.findByCategoryEnum1OrCategoryEnum2(categoryEnum1.toString(), categoryEnum2.toString(), pageable);
+//	}
 
 
-	public Page<Item> findItemsByCategory(String category,String sort,int page) {
+	public Page<Item> findItemsByCategory(String category,String sort,Integer page) {
 		int size = 9;
 		
 		List<Sort.Order> sorts = new ArrayList(); 
