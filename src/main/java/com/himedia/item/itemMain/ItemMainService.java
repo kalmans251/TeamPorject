@@ -19,7 +19,7 @@ public class ItemMainService {
 		this.itemMainRepository = itemMainRepository;
 	}
 	
-	//카테고리 정렬 
+	//카테고리 정렬
 	public Page<Item> findItemsByCategory(CategoryEnum1 categoryEnum1, CategoryEnum2 categoryEnum2, int page) {
 		
 		int size = 9;
