@@ -25,6 +25,17 @@ public class ItemMainService {
 		this.itemMainRepository = itemMainRepository;
 	}
 	
+<<<<<<< HEAD
+=======
+	//카테고리 정렬
+	public Page<Item> findItemsByCategory(CategoryEnum1 categoryEnum1, CategoryEnum2 categoryEnum2, int page) {
+		
+		int size = 9;
+		Pageable pageable= PageRequest.of(page-1, size);
+		
+		return itemMainRepository.findByCategoryEnum1OrCategoryEnum2(categoryEnum1.toString(), categoryEnum2.toString(), pageable);
+	}
+>>>>>>> 69d2474901bd298f3ed2df2bd129fad3eebdd726
 
 	public Page<Item> findItemsByCategory(String category,String sort,int page) {
 		int size = 9;
