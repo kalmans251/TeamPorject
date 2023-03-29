@@ -1,7 +1,9 @@
 package com.himedia.cartitem;
 
-import com.himedia.cart.Cart;
-import com.himedia.item.entity.Item;
+import java.time.LocalDateTime;
+
+import com.himedia.item.entity.ItemSellingInform;
+import com.himedia.member.entity.Member;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,19 +27,20 @@ public class CartItem {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name ="cart_id")
-	private Cart cart;
+	@JoinColumn(name ="member_idx")
+	private Member member;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="item_id")
-	private Item item;
+	@JoinColumn(name="itemSellingInform_id")
+	private ItemSellingInform itemSellingInform;
 	
-	private int count; //각 상품의 갯수
+	private Integer count; //각 상품의 갯수
 	
-	public static CartItem createCartItem(Cart cart, Item item, int amount) {
+	private LocalDateTime regDate;
+	public static CartItem createCartItem(Member member, ItemSellingInform itemSellingInform, Integer amount) {
 		CartItem cartItem = new CartItem();
-		cartItem.setCart(cart);
-		cartItem.setItem(item);
+		cartItem.setMember(member);
+		cartItem.setItemSellingInform(itemSellingInform);
 		cartItem.setCount(amount);
 		return cartItem;
 	}
