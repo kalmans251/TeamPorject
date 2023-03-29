@@ -1,30 +1,21 @@
 package com.himedia.item.entity;
 
-import com.himedia.member.entity.Member;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
-public class Favor {
+@Entity
+public class Color {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+	private int id;
 	
-	@ManyToOne
-	private Member member;
-	
-	@ManyToOne
-	private Item item;
-	
-	
+	private String name;
 	
 }

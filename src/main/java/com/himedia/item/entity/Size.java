@@ -1,30 +1,27 @@
 package com.himedia.item.entity;
 
-import com.himedia.member.entity.Member;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
 @Getter
+@Entity
 @Setter
-public class Favor {
-	
+public class Size {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+	private long id;
 	
-	@ManyToOne
-	private Member member;
+	private String name;
 	
-	@ManyToOne
-	private Item item;
-	
-	
-	
+
 }
