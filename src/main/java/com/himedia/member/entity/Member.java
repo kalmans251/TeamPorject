@@ -1,6 +1,7 @@
 package com.himedia.member.entity;
 
 import com.himedia.member.role.MemberRole;
+import com.himedia.member.role.Social;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,5 +35,7 @@ public class Member {
 	public MemberRole memberRole;
 	
 	public String type;
+
+	public Social social;
 	
 }

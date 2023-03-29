@@ -25,10 +25,16 @@ textarea::placeholder {
 	<div class="input-group input-group-sm mb-3">
 				<span style="width:110px;text-align:center" class="input-group-text" id="inputGroup-sizing-sm">이메일</span>
 				<input type="email" id="username" name="username" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-		<button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="idCheck()">중복확인</button>
+		<button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="idcheck()">중복확인및 인증번호 발송</button>
 	</div>
 	<div id="result" role="alert">
-  	
+  		<a id="dupli"></a><a id="checkresult"></a>
+	</div>
+	<div>
+		<a>이메일 체크</a><input type="text" id="check"><a onclick="check2()">인증번호 확인</a><a id="checkresult2"></a>
+	</div>
+	<div>
+	<input type="submit" value="제출" onclick="submit">
 	</div>
 	<div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="alert alert-danger" role="alert">
   	
@@ -89,7 +95,7 @@ textarea::placeholder {
 	</div>
 	
 	
-		<td><button type="submit" class="btn btn-outline-success">제출하기</button></td>
+		<td><input type = "hidden" id="submit" value="제출하기"></td>
 	
 </div>
 
@@ -143,7 +149,20 @@ textarea::placeholder {
         }).open();
     }
 
-	const idCheck = () => {
+    const submit = () =>{
+		var res = "인증성공"
+	if($('#checkresult2')===res){
+		
+	}else{
+		alert("이메일 인증을 다시해주세요.")
+		return false;
+	}
+	}
+
+	var result= "";
+
+
+	const idcheck = () => {
 	var username = $('#username').val();
 	 var token = $("meta[name='_csrf']").attr("content");
      var header = $("meta[name='_csrf_header']").attr("content");
@@ -151,15 +170,9 @@ textarea::placeholder {
      var email = $('#username').val();
 
      if(email==""){
-    	$('#result').text("이메일을 입력해 주세요.");	
-		$('#result').addClass("alert alert-danger");
+    	$('#dupli').text("이메일을 입력해 주세요.");
      	return false;
      }else{
-     	if(!email_check(email)){
-     		$('#result').text("이메일 형식이 아닙니다.");	
-			$('#result').addClass("alert alert-danger");
-     		return false;
-     	}else{
      		$.ajax({
      			url:'/member/ajaxtest',
      			type:'post',
@@ -170,15 +183,30 @@ textarea::placeholder {
      			success:function(res){
      				
      				if(res==0){
-     					$('#result').text("사용가능한 이메일 입니다.");
-     					$('#result').removeClass("alert alert-danger");
-     					$('#result').addClass("alert alert-success");
+     					$('#dupli').text("사용가능한 이메일 입니다.");
+     					$('#dupli').removeClass("alert alert-danger");
+     					$('#dupli').addClass("alert alert-success");
+     					$.ajax({
+     						url:'/emailConfirm',
+     						type:'post',
+     						data:{"email": email},
+     						beforeSend : function(xhr){
+     					            xhr.setRequestHeader(header, token);
+     					    },
+     					    success:function(res){
+     					    	$('#checkresult').text("인증번호가 발송되었습니다.");
+     					     	result = res;
+     					    		
+     					    },error:function(){
+     					    	alert("에러입니다.")
+     					    }
+     					})
+     					
+     					
      				}else if(res==1){
-     					$('#result').text("이미사용중인 이메일 입니다.");
-     					$('#result').addClass("alert alert-danger");
+     					$('#dupli').text("이미사용중인 이메일 입니다.");
      				}else if(res==2){
-     					$('#result').text("이메일을 입력해 주세요.");	
-     					$('#result').addClass("alert alert-danger");
+     					$('#dupli').text("이메일을 입력해 주세요.");
      					$('#username').focus();
      				}
      			},error:function(){
@@ -188,11 +216,24 @@ textarea::placeholder {
      		})
      		}
      	}
-     }
+     
      
      const inrollSubmit = () => {
     	 
      }
+	
+	const check2 = () =>{
+		var check = $('#check').val();
+		if(result===check){
+			$('#checkresult2').text("인증성공");
+			$('#username').attr("disabled",true);
+			$('#submit').attr("type","submit")
+		}else{
+			alert("인증번호가 다릅니다.")
+			$('#checkresult2').text("인증실패");
+		}
+		
+	}
 	
 </script>
 

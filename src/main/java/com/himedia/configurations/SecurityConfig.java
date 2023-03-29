@@ -14,10 +14,15 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import lombok.RequiredArgsConstructor;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig {
+	
+	private final CustomOAuth2MemberService oAuth2MemberService;
 	
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -40,7 +45,14 @@ public class SecurityConfig {
 		.logout()
 		.logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
 		.logoutSuccessUrl("/")
-		.invalidateHttpSession(true);
+		.invalidateHttpSession(true)
+		.and()
+		.oauth2Login()
+		.loginPage("/login")
+		.defaultSuccessUrl("/")
+		.userInfoEndpoint()
+		.userService(oAuth2MemberService)
+		;
 		
 		return http.build();
 	}

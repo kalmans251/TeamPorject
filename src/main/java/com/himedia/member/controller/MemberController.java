@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.himedia.member.dto.MemberCreateForm;
+import com.himedia.member.dto.MemberLoginForm;
 import com.himedia.member.entity.Member;
 import com.himedia.member.role.MemberRole;
 import com.himedia.member.service.MemberService;
@@ -91,6 +92,4 @@ public class MemberController {
 			}
 		}
 	}
-	
-	
 }
