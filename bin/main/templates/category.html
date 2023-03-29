@@ -165,7 +165,23 @@
       </div>
     </div>
   </div>
-
+	<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li class="page-item"><a class="page-link" href="javascript:void(0)" >1</a></li>
+    <li class="page-item"><a class="page-link" href="javascript:void(0)" >2</a></li>
+    <li class="page-item"><a class="page-link" href="javascript:void(0)" >3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
 
 
 </div>
@@ -173,6 +189,15 @@
 <script layout:fragment="javascriptContent">
 	
 	const sort = document.getElementById('sort');
+	var page ="1";
+	for(let i = 1 ; i < document.getElementsByClassName('page-link').length-1 ; i++){
+		
+		document.getElementsByClassName('page-link')[i].addEventListener('click', function(){   // 이벤트 리스너 부분
+			console.log(this.text);
+			page=this.text;
+			selectSort();
+	    })
+	}
 	
 	function selectSort() {
         var token = $("meta[name='_csrf']").attr("content");
@@ -182,7 +207,8 @@
         var url = "/test";
         var paramData = {
             sort : sort.value,
-            category : categorys
+            category : categorys,
+            page : page
         };
 
         var param = JSON.stringify(paramData);
@@ -206,7 +232,7 @@
         });
     }
 	
-	
+	window.onload=selectSort;
 	
 	
 </script>

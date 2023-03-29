@@ -17,7 +17,7 @@ import com.himedia.item.itemMain.ItemMainService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-
+@RequiredArgsConstructor
 public class MainController {
 
 	private final ItemMainService itemMainService;
