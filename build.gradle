@@ -35,6 +35,8 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
  	implementation 'org.springframework.boot:spring-boot-starter-mail'
  	implementation 'org.springframework.security:spring-security-oauth2-jose'
+ 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.4.2'
+	
 }
 tasks.withType(JavaCompile) {
     options.compilerArgs += ["-parameters"]
