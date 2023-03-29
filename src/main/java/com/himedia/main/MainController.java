@@ -26,7 +26,7 @@ public class MainController {
 		return "index";
 	}
 	
-	@GetMapping("test")
+	@GetMapping("/test")
 	public String test() {
 		return "itemdetail";
 	}
@@ -36,12 +36,14 @@ public class MainController {
 		model.addAttribute("category", category);
 		return "category";
 	}
+	
+	
 	@PostMapping("/test")
 	@ResponseBody
 	public Page<Item> ajaxTest(@RequestBody ItemListingAjaxDto itemListingAjaxDto) {
 		Page<Item> items = null;
 		try {
-			items = this.itemMainService.findItemsByCategory(itemListingAjaxDto.getCategory(),itemListingAjaxDto.getSort(),1);
+			items = this.itemMainService.findItemsByCategory(itemListingAjaxDto.getCategory(),itemListingAjaxDto.getSort(),itemListingAjaxDto.getPage());
 			System.out.println(items);
 			System.out.println(itemListingAjaxDto.getCategory());
 			System.out.println(itemListingAjaxDto.getSort());
