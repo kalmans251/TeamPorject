@@ -11,4 +11,5 @@ public class ItemListingAjaxDto {
 	
 	private String category;
 	
+	private Integer page;
 }
