@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,6 +35,7 @@ public class MemberController {
 
 	private final MemberService memberService;
 	private final EmailService emailService;
+	private final PasswordEncoder passwordEncoder;
 	
 	//member login 관련 controller 메소드 이후 MemberConfigService 에서 해결
 	@GetMapping("/login")
@@ -162,22 +164,28 @@ public class MemberController {
 		
 		return null;
 	}
+	
 	@GetMapping("/modify/password")
-	public String modifyPassword(MemberModifyPasswordForm memberModifyPsasswordForm) {
-		
+	public String modifyPassword(MemberModifyPasswordForm memberModifyPasswordForm) {
 		return "modify_password";
 	}
 	@PostMapping("/modify/password")
-	public String modifyPasswordPost(Principal principal,@Valid MemberModifyPasswordForm memberModifyPsasswordForm,BindingResult bindingResult) {
+	public String modifyPasswordPost(@Valid MemberModifyPasswordForm memberModifyPasswordForm,BindingResult bindingResult,Principal principal) {
 		Member member = this.memberService.getMember(principal.getName());
-		if(!member.getPassword().equals(memberModifyPsasswordForm.getPassword1())) {
-			bindingResult.rejectValue("password2", "passwordInCorrect","두개의 패스워드가 일치하지 않습니다");
-			return "modify_password";
-		}else if(memberModifyPsasswordForm.getPassword2().equals(memberModifyPsasswordForm.getPassword3())) {
-			bindingResult.rejectValue("password2", "passwordInCorrect","두개의 패스워드가 일치하지 않습니다");
+		if(bindingResult.hasErrors()) {
 			return "modify_password";
 		}
-		return "";
+		boolean match = this.passwordEncoder.matches(memberModifyPasswordForm.getPassword1(), member.getPassword());
+		if(match == false) {
+			bindingResult.rejectValue("password1","passwordInCorrect" ,"passwordInCorrect 패스워드가 일치하지 않습니다");
+			return "modify_password";
+		}else if(!memberModifyPasswordForm.getPassword2().equals(memberModifyPasswordForm.getPassword3())) {
+			bindingResult.rejectValue("password2","passwordInCorrect", "passwordInCorrect 두개의 패스워드가 일치하지 않습니다");
+			return "modify_password";
+		}else{
+			this.memberService.modifypass(principal.getName(), memberModifyPasswordForm.getPassword2());
+			return "redirect:/";
+		}
 	}
 	
 	@PostMapping("/compulsion/password")
