@@ -29,11 +29,13 @@ public class Member {
 	
 	public String nickName;
 	
+	public String type;
+	
 	public String phoneNum;
 	
 	@Enumerated(EnumType.STRING)
 	public MemberRole memberRole;
-	
+
 	@Enumerated(EnumType.STRING)
 	public Social social;
 	

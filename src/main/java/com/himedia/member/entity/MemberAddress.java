@@ -20,7 +20,11 @@ public class MemberAddress {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idx;
 	
+	private Integer addrnum;
+	
 	private String addr;
+	
+	private Integer main;
 	
 	@ManyToOne
 	public Member member;
