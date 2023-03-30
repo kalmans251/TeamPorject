@@ -1,6 +1,7 @@
 package com.himedia.member.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +12,7 @@ import com.himedia.member.entity.MemberAddress;
 import com.himedia.member.repository.MemberAddrRepository;
 import com.himedia.member.repository.MemberRepository;
 import com.himedia.member.role.MemberRole;
+import com.himedia.member.role.Social;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +34,7 @@ public class MemberService {
 		member.setPassword(this.passwordEncoder.encode(password));
 		member.setPhoneNum(phoneNum);
 		member.setMemberRole(memberRole.USER);
+		member.setSocial(Social.LOCAL);
 		member.setNickName(nickName);
 		this.memberRepository.save(member);
 	}
@@ -41,14 +44,59 @@ public class MemberService {
 			return member.get();
 	}
 	
-	public void addrInsert(Member member, String addr,String reference) {
+	public void addrInsert(Member member,Integer addr1, String addr,String reference) {
 		MemberAddress memberAddr = new MemberAddress();
+		memberAddr.setAddrnum(addr1);
 		memberAddr.setAddr(addr);
 		memberAddr.setMember(member);
 		memberAddr.setCreateDate(LocalDateTime.now());
 		memberAddr.setReference(reference);
+		if((this.memberAddrRepository.findByMemberAndMain(member,1)).isEmpty()) {
+			memberAddr.setMain(1);
+		}else {
+			memberAddr.setMain(0);
+		}
 		this.memberAddrRepository.save(memberAddr);
-		
 	}
-	
+	public void modifypass(String username, String password) {
+		Optional<Member> bmember = this.memberRepository.findByUsername(username);
+		Member member = bmember.get();
+		member.setPassword(password);
+		this.memberRepository.save(member);
+	}
+	public void modifyMemberInfo(String username, String phonenum, String nickname) {
+		Optional<Member> bmember = this.memberRepository.findByUsername(username);
+		Member member = bmember.get();
+		member.setNickName(nickname);
+		member.setPhoneNum(phonenum);
+		this.memberRepository.save(member);
+	}
+	public void memberDelete(String username) {
+		Optional<Member> bmember = this.memberRepository.findByUsername(username);
+		Member member = bmember.get();
+		this.memberRepository.deleteById(member.getIdx());
+	}
+	public void memberAddrDel(Long idx) {
+		this.memberAddrRepository.deleteById(idx);
+	}
+	public List<MemberAddress> findMemberAddr(Member member) {
+		
+		return this.memberAddrRepository.findByMainAndMember(0,member);
+	}
+	public Optional<MemberAddress> findMemberMainAddr(Member member){
+		
+		return this.memberAddrRepository.findByMemberAndMain(member, 1);
+	}
+	public void AddrChange(Member member) {
+		Optional<MemberAddress> memberaddrb1 = this.memberAddrRepository.findByMemberAndMain(member, 1);
+		MemberAddress memberAddr1 = memberaddrb1.get();
+		memberAddr1.setMain(0);
+		this.memberAddrRepository.save(memberAddr1);
+	}
+	public void AddrChangeMain(Long idx) {
+		Optional<MemberAddress> memberAddrb2 = this.memberAddrRepository.findById(idx);
+		MemberAddress memberaddr2 = memberAddrb2.get();
+		memberaddr2.setMain(1);
+		this.memberAddrRepository.save(memberaddr2);
+	}
 }
