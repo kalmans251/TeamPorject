@@ -33,9 +33,6 @@ textarea::placeholder {
 	<div>
 		<a>이메일 체크</a><input type="text" id="check"><a onclick="check2()">인증번호 확인</a><a id="checkresult2"></a>
 	</div>
-	<div>
-	<input type="submit" value="제출" onclick="submit">
-	</div>
 	<div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="alert alert-danger" role="alert">
   	
 	</div>
@@ -65,8 +62,6 @@ textarea::placeholder {
 	<div th:if="${#fields.hasErrors('nickName')}" th:errors="*{nickName}" class="alert alert-danger" role="alert">
   	
 	</div>
-	
-	
 	<div class="input-group input-group-sm mb-3">
 				<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">주소</span>
 				<input placeholder="우편번호" id="sample6_postcode" type="text" name="addr1" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
@@ -226,7 +221,6 @@ textarea::placeholder {
 		var check = $('#check').val();
 		if(result===check){
 			$('#checkresult2').text("인증성공");
-			$('#username').attr("disabled",true);
 			$('#submit').attr("type","submit")
 		}else{
 			alert("인증번호가 다릅니다.")
