@@ -33,21 +33,19 @@ public class ItemAndImgDto {
     
     private Long price;    // 가격
     
-    private List<ItemImg> itemImgList; //ItemImg 리스트
-    
     private List<String> sizeList;    // 사이즈 리스트
     
     private List<String> colorList;    // 컬러 리스트
     
     private List<String> sellCountList; // 판매량 리스트
-    
+  
     
     
     static ModelMapper modelMapper = new ModelMapper();
     public ItemAndImgDto itemToItemDto(Item item) {
     	return modelMapper.map(item, ItemAndImgDto.class);
     }
-    public Item toItem() {
+    public Item toItem(ItemAndImgDto itemAndImgDto) {
     	return modelMapper.map(this, Item.class);
     }
     

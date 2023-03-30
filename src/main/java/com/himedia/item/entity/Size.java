@@ -22,5 +22,9 @@ public class Size {
 	private long id;
 	
 	private String name;
+	
+	
+	
+	
 }
 	

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.himedia.item.dto.ItemAndImgDto;
+import com.himedia.item.entity.ItemSellingInform;
 import com.himedia.item.service.ItemService;
 
 import jakarta.validation.Valid;
@@ -26,7 +27,7 @@ public class ItemController {
 	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/good")
-	public String itemForm(Model model) {
+	public String itemForm(Model model,ItemAndImgDto itemAndImgDto) {
 		model.addAttribute("itemAndImgDto", new ItemAndImgDto());
 		return "upload";
 		
@@ -35,9 +36,8 @@ public class ItemController {
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/shop/create")
 	public String itemNew(@Valid ItemAndImgDto itemAndImgDto, BindingResult bindingResult,
-			Model model, @RequestParam("imgfile") List<MultipartFile> imgfile, Principal principal,  @RequestParam("sizeList") List<String> sizeList,
-            @RequestParam("colorList") List<String> colorList,
-            @RequestParam("sellCountList") List<String> sellCountList ) {
+			Model model, @RequestParam("imgfile") List<MultipartFile> imgfile, Principal principal 
+             ) {
 		
 		if(bindingResult.hasErrors()) {
 			return "upload";
@@ -49,6 +49,8 @@ public class ItemController {
 		
 		try {
 			itemService.saveItem(itemAndImgDto, imgfile , principal);
+			
+			
 			
 		}catch (Exception e) {
 			model.addAttribute("errorMessage", "상품 등록 중 에러가 발생하였습니다.");
