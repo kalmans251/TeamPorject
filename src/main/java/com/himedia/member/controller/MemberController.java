@@ -107,6 +107,8 @@ public class MemberController {
 		Member member = this.memberService.getMember(principal.getName());
 		List<MemberAddress> memberaddr = this.memberService.findMemberAddr(member);
 		model.addAttribute("memberAddr", memberaddr);
+		Optional <MemberAddress> memberAddress = this.memberService.findMemberMainAddr(member);
+		model.addAttribute("memberMainAddr",memberAddress.get());
 		return "addr_create";	
 	}
 	@PostMapping("/create/addr")

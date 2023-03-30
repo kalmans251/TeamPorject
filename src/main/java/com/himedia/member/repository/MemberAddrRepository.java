@@ -9,6 +9,6 @@ import com.himedia.member.entity.Member;
 import com.himedia.member.entity.MemberAddress;
 
 public interface MemberAddrRepository extends JpaRepository<MemberAddress, Long> {
-	List<MemberAddress> findByMember(Member member);
+	List<MemberAddress> findByMainAndMember(Integer main, Member member);
 	Optional<MemberAddress> findByMemberAndMain(Member member, Integer main);
 }
