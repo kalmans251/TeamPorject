@@ -61,7 +61,7 @@ public class MemberService {
 	public void modifypass(String username, String password) {
 		Optional<Member> bmember = this.memberRepository.findByUsername(username);
 		Member member = bmember.get();
-		member.setPassword(password);
+		member.setPassword(this.passwordEncoder.encode(password));
 		this.memberRepository.save(member);
 	}
 	public void modifyMemberInfo(String username, String phonenum, String nickname) {
