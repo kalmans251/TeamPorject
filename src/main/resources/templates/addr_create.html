@@ -5,15 +5,17 @@
 </head>
 <div layout:fragment="content">
 	<center>
-	<div>
+	<div th:if="${not #lists.isEmpty(memberMainAddr)}">
 	<a th:text="${memberMainAddr.addrnum}"></a>
 		<a th:text="${memberMainAddr.addr}"></a><br><a th:text="${memberMainAddr.reference}"></a>
 		<a th:if="${memberMainAddr.main}==1">대표주소 입니다.</a>
 	</div>
+	<div th:if="${not #lists.isEmpty(memberAddr)}">
 	<div th:each="memberAddr, loop:${memberAddr}">
 		<a th:text="${memberAddr.addrnum}"></a>
 		<a th:text="${memberAddr.addr}"></a><br><a th:text="${memberAddr.reference}"></a>
 		<a th:if="${memberAddr.main}==1">대표주소 입니다.</a><a th:if="${memberAddr.main}==0" th:href="@{|/member/addr/delete/${memberAddr.idx}|}">삭제</a><a th:if="${memberAddr.main}==0" th:href="@{|/member/addr/main/change/${memberAddr.idx}|}">대표주소로 변경하기</a>
+	</div>
 	</div>
 	<form th:action="@{/member/create/addr}" th:object="${memberAddrForm}" method="post">
 	
