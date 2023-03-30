@@ -1,7 +1,6 @@
 package com.himedia.member.repository;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,5 +9,5 @@ import com.himedia.member.entity.MemberAddress;
 
 public interface MemberAddrRepository extends JpaRepository<MemberAddress, Long> {
 	List<MemberAddress> findByMainAndMember(Integer main, Member member);
-	Optional<MemberAddress> findByMemberAndMain(Member member, Integer main);
+	MemberAddress findByMemberAndMain(Member member, Integer main);
 }
