@@ -51,7 +51,7 @@ public class MemberService {
 		memberAddr.setMember(member);
 		memberAddr.setCreateDate(LocalDateTime.now());
 		memberAddr.setReference(reference);
-		if((this.memberAddrRepository.findByMember(member)).isEmpty()) {
+		if((this.memberAddrRepository.findByMemberAndMain(member,1)).isEmpty()) {
 			memberAddr.setMain(1);
 		}else {
 			memberAddr.setMain(0);
@@ -81,7 +81,11 @@ public class MemberService {
 	}
 	public List<MemberAddress> findMemberAddr(Member member) {
 		
-		return this.memberAddrRepository.findByMember(member);
+		return this.memberAddrRepository.findByMainAndMember(0,member);
+	}
+	public Optional<MemberAddress> findMemberMainAddr(Member member){
+		
+		return this.memberAddrRepository.findByMemberAndMain(member, 1);
 	}
 	public void AddrChange(Member member) {
 		Optional<MemberAddress> memberaddrb1 = this.memberAddrRepository.findByMemberAndMain(member, 1);
