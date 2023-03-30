@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>test</title>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function() {
+  // 행 추가 버튼에 대한 클릭 이벤트 핸들러 등록
+  $("#myTable").on("click", ".addRow", function() {
+    // 새로운 행을 생성합니다.
+    var newRow = $("<tr>");
+    // 각 셀에 입력한 값을 가져와서 추가합니다.
+    var size = $("<td>").html('<select class="size"><option value=""></option><option value="S">S</option><option value="M">M</option><option value="L">L</option><option value="XL">XL</option></select>');
+    newRow.append(size);
+
+    var color = $("<td>").html('<select class="color"><option value=""></option><option value="Red">Red</option><option value="Blue">Blue</option><option value="Green">Green</option><option value="Yellow">Yellow</option><option value="Black">Black</option><option value="Gray">Gray</option></select>');
+    newRow.append(color);
+
+    var quantity = $("<td>").html('<input type="number" class="quantity" value="0">');
+    newRow.append(quantity);
+
+    var addRowButton = $("<td>").html('<intput type="button" class="addRow">Add Row</button>');
+    newRow.append(addRowButton);
+
+    var deleteRowButton = $("<td>").html('<intput type="button"  class="deleteRow">Delete Row</button>');
+    newRow.append(deleteRowButton);
+
+    // 새로운 행을 마지막 행으로 추가합니다.
+    $("#myTable tbody").append(newRow);
+  });
+
+  // 행 삭제 버튼에 대한 클릭 이벤트 핸들러 등록
+  $("#myTable").on("click", ".deleteRow", function() {
+    // 현재 행을 삭제합니다.
+    $(this).closest("tr").remove();
+  });
+});
+</script>
+</head>
+<body>
+<form>
+<div id="itemForm">
+ <label for="subject">Subject:</label>
+  <input type="text" id="subject" name="subject" required>
+  <br>
+ 
+<label for="categoryName1">Category 1:</label>
+<select id="categoryName1" name="categoryName1" required>
+  <option value="categoryName1">Select a category</option>
+  <option th:each="category : ${T(com.himedia.item.entity.enums.CategoryEnum1).values()}"
+          th:value="${category.name()}"
+          th:text="${category.name()}"></option>
+</select>
+<br>
+<label for="categoryName2">Category 2:</label>
+<select id="categoryName2" name="categoryName2" required>
+  <option value="CategoryName2">Select a category</option>
+  <option th:each="category : ${T(com.himedia.item.entity.enums.CategoryEnum2).values()}"
+          th:value="${category.name()}"
+          th:text="${category.name()}"></option>
+</select>
+<br>
+  <label for="price">Price:</label>
+  <input type="number" id="price" name="price" required>
+  <br>
+  <label for="img">Image:</label>
+  <input type="file" id="img" name="imgfile" accept="image/*">
+  <br>
+  </div>
+<table id="myTable">
+  <thead>
+    <tr>
+      <th>Size</th>
+      <th>Color</th>
+      <th>Quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <select class="size">
+          <option value=""></option>
+          <option value="S">S</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+        </select>
+      </td>
+      <td>
+        <select class="color">
+          <option value=""></option>
+          <option value="Red">Red</option>
+          <option value="Blue">Blue</option>
+          <option value="Green">Green</option>
+          <option value="Yellow">Yellow</option>
+          <option value="Black">Black</option>
+          <option value="Gray">Gray</option>
+        </select>
+      </td>
+      <td><input type="number" class="quantity" value="0"></td>
+      <td><input type="button" class="addRow"></button></td>
+    </tr>
+  </tbody>
+</table>
+</form>
+</body>
+</html>
