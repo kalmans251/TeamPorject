@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.himedia.member.dto.MemberAddrForm;
 import com.himedia.member.dto.MemberCreateForm;
+import com.himedia.member.dto.MemberModifyPasswordForm;
+import com.himedia.member.email.EmailService;
 import com.himedia.member.entity.Member;
 import com.himedia.member.entity.MemberAddress;
 import com.himedia.member.role.MemberRole;
@@ -31,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 
 	private final MemberService memberService;
+	private final EmailService emailService;
 	
 	//member login 관련 controller 메소드 이후 MemberConfigService 에서 해결
 	@GetMapping("/login")
@@ -152,6 +155,42 @@ public class MemberController {
 		}else{
 			bindingResult.rejectValue("password", "passwordInCorrect","패스워드가 일치하지 않습니다");
 			return "member_delete";
+		}
+	}
+	@GetMapping("/modify")
+	public String modifyMember() {
+		
+		return null;
+	}
+	@GetMapping("/modify/password")
+	public String modifyPassword(MemberModifyPasswordForm memberModifyPsasswordForm) {
+		
+		return "modify_password";
+	}
+	@PostMapping("/modify/password")
+	public String modifyPasswordPost(Principal principal,@Valid MemberModifyPasswordForm memberModifyPsasswordForm,BindingResult bindingResult) {
+		Member member = this.memberService.getMember(principal.getName());
+		if(!member.getPassword().equals(memberModifyPsasswordForm.getPassword1())) {
+			bindingResult.rejectValue("password2", "passwordInCorrect","두개의 패스워드가 일치하지 않습니다");
+			return "modify_password";
+		}else if(memberModifyPsasswordForm.getPassword2().equals(memberModifyPsasswordForm.getPassword3())) {
+			bindingResult.rejectValue("password2", "passwordInCorrect","두개의 패스워드가 일치하지 않습니다");
+			return "modify_password";
+		}
+		return "";
+	}
+	
+	@PostMapping("/compulsion/password")
+	public String modifyCompulsionPass(@RequestParam String username) throws Exception {
+		Member member =this.memberService.getMember(username);
+		if(member.getUsername().isEmpty()) {
+			return "등록되어있지 않는 회원입니다.";
+		}else{
+			String password = this.emailService.createPassword(username);
+			Member changeMember = this.memberService.getMember(username);
+			changeMember.setPassword(password);
+			this.memberService.modifypass(username, password);
+			return "비밀번호가 성공적으로 이메일 전송되었습니다.";
 		}
 	}
 }
