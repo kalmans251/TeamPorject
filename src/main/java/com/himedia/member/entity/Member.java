@@ -38,5 +38,8 @@ public class Member {
 
 	@Enumerated(EnumType.STRING)
 	public Social social;
+
+	@Column(unique=true)
+	public String token;
 	
 }

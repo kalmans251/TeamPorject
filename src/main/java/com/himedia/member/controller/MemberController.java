@@ -109,11 +109,14 @@ public class MemberController {
 	//memberAddr 관련 controller메소드
 	@GetMapping("/create/addr")
 	public String addrAddForm(MemberAddrForm memberAddrForm,Model model,Principal principal) {
-		Member member = this.memberService.getMember(principal.getName());
-		List<MemberAddress> memberaddr = this.memberService.findMemberAddr(member);
-		model.addAttribute("memberAddr", memberaddr);
-		MemberAddress memberAddress = this.memberService.findMemberMainAddr(member);
-		model.addAttribute("memberMainAddr",memberAddress);
+		System.out.println(principal.getName());
+//		Member member = this.memberService.getMember(principal.getName());
+//		System.out.println(member.getToken());
+//		System.out.println(member.getIdx());
+//		List<MemberAddress> memberaddr = this.memberService.findMemberAddr(member);
+//		model.addAttribute("memberAddr", memberaddr);
+//		MemberAddress memberAddress = this.memberService.findMemberMainAddr(member);
+//		model.addAttribute("memberMainAddr",memberAddress);
 		return "addr_create";	
 	}
 	@PostMapping("/create/addr")
