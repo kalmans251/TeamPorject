@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.himedia.item.entity.Item;
 import com.himedia.member.entity.Member;
 import com.himedia.member.entity.MemberAddress;
 import com.himedia.member.repository.MemberAddrRepository;
@@ -15,6 +17,10 @@ import com.himedia.member.repository.MemberRepository;
 import com.himedia.member.role.MemberRole;
 import com.himedia.member.role.Social;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -36,12 +42,13 @@ public class MemberService {
 		member.setPhoneNum(phoneNum);
 		member.setMemberRole(memberRole.USER);
 		member.setSocial(Social.LOCAL);
+		member.setToken(username);
 		member.setNickName(nickName);
 		this.memberRepository.save(member);
 	}
 	
 	public Member getMember(String username) {
-		Optional<Member> member =this.memberRepository.findByUsername(username);
+		Optional<Member> member =this.memberRepository.findByToken(username);
 			return member.get();
 	}
 	
@@ -82,7 +89,6 @@ public class MemberService {
 		this.memberAddrRepository.deleteById(idx);
 	}
 	public List<MemberAddress> findMemberAddr(Member member) {
-		
 		return this.memberAddrRepository.findByMainAndMember(0,member);
 	}
 	public MemberAddress findMemberMainAddr(Member member){
