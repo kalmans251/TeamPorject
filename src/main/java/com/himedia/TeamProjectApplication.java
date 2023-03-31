@@ -1,5 +1,7 @@
 package com.himedia;
 
+import java.util.List;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,6 +30,16 @@ public class TeamProjectApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		// TODO Auto-generated method stub
 			String s = null;
+			List<Color> lc = this.colorRepository.findAll();
+			List<Size> ls = this.sizeRepository.findAll();
+			for(int i = 0 ; i < lc.size() ; i++) {
+				this.colorRepository.delete(lc.get(i));
+			}
+			for(int i = 0 ; i< ls.size() ; i++) {
+				this.sizeRepository.delete(ls.get(i));
+			}
+			
+			
 			for(int i = 0 ; i < SizeEnum.values().length ; i++) {
 				Size size= new Size();
 				s = SizeEnum.values()[i].getValue();
