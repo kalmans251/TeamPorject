@@ -1,5 +1,9 @@
 <html layout:decorate="~{layout}">
+<head>
 
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+
+</head>
 <div layout:fragment="content">
 
 <h2> 주문서 작성</h2>
@@ -7,10 +11,74 @@
 <h3>상품정보</h3>
 	
 	
+	<img style="width:100px;height:100px;" th:src="${orderDto.url}">
+	<div th:text="${orderDto.subject}"></div>
+	상품사이즈<div th:text="${orderDto.size}"></div>
+	상품색상<div th:text="${orderDto.color}"></div>
+	상품가격<div id="price" th:text="${orderDto.price}"></div>
+	상품수량<div id="count" th:text="${orderDto.orderCount}"></div>
 	
+	<div th:text="${orderDto.member.nickName}"></div>
+	<div th:text="${orderDto.member.phoneNum}"></div>
+	<div th:text="${orderDto.memberAdress}"></div>
+	<div th:text="${orderDto.memberAdress}"></div>	
+	<button onclick="totalPrice()">총금액</button>
 	
-	
-	
-	
+	<button onclick="requestPay()">결제하기</button>
 </div>
+
+	
+
+<script layout:fragment="javascriptContent">
+	
+	const count = document.getElementById('count');
+	const price = document.getElementById('price');
+	
+	function totalPrice(){
+		let total = count.innerText*price.innerText;
+		
+		console.log(total+'원');
+	}
+	
+	
+	var IMP = window.IMP;
+	IMP.init("imp65475667");
+
+	function requestPay() {
+		IMP.request_pay({
+			pg : 'inicis',
+			pay_method : 'card',
+			merchant_uid : "57008833-33005",
+			name : '당근 10kg',
+			amount : 100,
+			buyer_email : 'my03262@naver.com',
+			buyer_name : '포트원 기술지원팀',
+			buyer_tel : '010-1234-5678',
+			buyer_addr : '서울특별시 강남구 삼성동',
+			buyer_postcode : '123-456'
+		}, function(rsp) { // callback
+			if (rsp.success) {
+				// 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
+			      // jQuery로 HTTP 요청
+			      console.log(rsp)
+			      $.ajax({
+			        url: "/save", 
+			        method: "POST",
+			        headers: { "Content-Type": "application/json" },
+			        data: {
+			          imp_uid: rsp.imp_uid,            // 결제 고유번호
+			          merchant_uid: rsp.merchant_uid   // 주문번호
+			        }
+			      }).done(function (data) {
+			        // 가맹점 서버 결제 API 성공시 로직
+			      })
+			} else {
+				console.log(rsp);
+			}
+		});
+	}
+	
+</script>
+
+
 </html>
