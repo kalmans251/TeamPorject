@@ -83,19 +83,27 @@ public class ItemService {
 		for (int i = 0; i < imgfile.size(); i++) {
 			ItemImg itemImg = new ItemImg();
 			itemImg.setItem(items);
-
+			System.out.println(itemImg.getItem().getId());
 			if (i == 0)
 				itemImg.setRepimgYn("Y");
 			else
 				itemImg.setRepimgYn("N");
-
 			if (!(imgfile.get(i).getOriginalFilename() == ""))
 				this.itemImgService.saveItemImg(itemImg, imgfile.get(i), principal);
-
 		}
 		
 		 return items.getId();
-	} 
+	}
+	public List<ItemImg> getImgList(Long idx){
+		
+		List<ItemImg> itemImg = this.itemImgRepository.findByItemIdOrderByIdAsc(idx);
+		
+		return itemImg;
+	}
+	
+
+	
+	
 	
 	
 
