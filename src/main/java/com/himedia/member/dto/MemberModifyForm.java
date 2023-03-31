@@ -7,8 +7,8 @@ import lombok.Setter;
 @Setter
 public class MemberModifyForm {
 
-	public String nicname;
+	public String nickName;
 	
-	public String PhoneNum;
+	public String phoneNum;
 	
 }
