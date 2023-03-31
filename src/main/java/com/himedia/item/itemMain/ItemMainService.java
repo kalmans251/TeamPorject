@@ -10,8 +10,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.himedia.item.entity.Item;
-import com.himedia.item.entity.enums.CategoryEnum1;
-import com.himedia.item.entity.enums.CategoryEnum2;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -50,7 +48,7 @@ public class ItemMainService {
 		}else if(sort.equals("3")) {
 			sorts.add(Sort.Order.asc("price")); //낮은가격순
 		}else if(sort.equals("4")) {
-			sorts.add(Sort.Order.desc("")); //인기순
+			sorts.add(Sort.Order.desc("favorListNum")); //인기순
 		}
 		
 		Pageable pageable= PageRequest.of(page-1, size, Sort.by(sorts));
@@ -82,4 +80,3 @@ public class ItemMainService {
 	
 	
 }
-

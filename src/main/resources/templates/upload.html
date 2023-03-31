@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
 <title>test</title>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<head>
+  <meta charset="UTF-8">
+  <title>test</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+</head>
 <script>
 $(document).ready(function() {
   // 행 추가 버튼에 대한 클릭 이벤트 핸들러 등록
@@ -13,17 +20,15 @@ $(document).ready(function() {
     // 새로운 행을 생성합니다.
     var newRow = $("<tr>");
     // 각 셀에 입력한 값을 가져와서 추가합니다.
-    var size = $("<td>").html('<select class="size"><option value=""></option><option value="S">S</option><option value="M">M</option><option value="L">L</option><option value="XL">XL</option></select>');
+    var size = $("<td>").html('<select class="size" name="sizeList"><option value=""></option><option value="S">S</option><option value="M">M</option><option value="L">L</option><option value="XL">XL</option></select>');
     newRow.append(size);
 
-    var color = $("<td>").html('<select class="color"><option value=""></option><option value="Red">Red</option><option value="Blue">Blue</option><option value="Green">Green</option><option value="Yellow">Yellow</option><option value="Black">Black</option><option value="Gray">Gray</option></select>');
+    var color = $("<td>").html('<select class="color" name="colorList"><option value=""></option><option value="Red">Red</option><option value="Blue">Blue</option><option value="Green">Green</option><option value="Yellow">Yellow</option><option value="Black">Black</option><option value="Gray">Gray</option></select>');
     newRow.append(color);
 
-    var quantity = $("<td>").html('<input type="number" class="quantity" value="0">');
+    var quantity = $("<td>").html('<input type="number" class="quantity" name="sellCountList" value="0">');
     newRow.append(quantity);
 
-    var addRowButton = $("<td>").html('<intput type="button" class="addRow">Add Row</button>');
-    newRow.append(addRowButton);
 
     var deleteRowButton = $("<td>").html('<intput type="button"  class="deleteRow">Delete Row</button>');
     newRow.append(deleteRowButton);
@@ -41,8 +46,8 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
-<form>
-<div id="itemForm">
+<form th:object="${itemAndImgDto}" th:action="@{/shop/create}" method="POST" enctype="multipart/form-data">
+
  <label for="subject">Subject:</label>
   <input type="text" id="subject" name="subject" required>
   <br>
@@ -69,7 +74,7 @@ $(document).ready(function() {
   <label for="img">Image:</label>
   <input type="file" id="img" name="imgfile" accept="image/*">
   <br>
-  </div>
+
 <table id="myTable">
   <thead>
     <tr>
@@ -81,7 +86,7 @@ $(document).ready(function() {
   <tbody>
     <tr>
       <td>
-        <select class="size">
+        <select class="size" name="sizeList">
           <option value=""></option>
           <option value="S">S</option>
           <option value="M">M</option>
@@ -90,7 +95,7 @@ $(document).ready(function() {
         </select>
       </td>
       <td>
-        <select class="color">
+        <select class="color" name="colorList">
           <option value=""></option>
           <option value="Red">Red</option>
           <option value="Blue">Blue</option>
@@ -100,11 +105,12 @@ $(document).ready(function() {
           <option value="Gray">Gray</option>
         </select>
       </td>
-      <td><input type="number" class="quantity" value="0"></td>
+      <td><input type="number" class="quantity" value="0" name="sellCountList"></td>
       <td><input type="button" class="addRow"></button></td>
     </tr>
   </tbody>
 </table>
+<button type="submit">Submit</button>
 </form>
 </body>
 </html>

@@ -26,7 +26,7 @@ public class ItemController {
 	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/good")
-	public String itemForm(Model model) {
+	public String itemForm(Model model,ItemAndImgDto itemAndImgDto) {
 		model.addAttribute("itemAndImgDto", new ItemAndImgDto());
 		return "upload";
 		
@@ -35,11 +35,10 @@ public class ItemController {
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/shop/create")
 	public String itemNew(@Valid ItemAndImgDto itemAndImgDto, BindingResult bindingResult,
-			Model model, @RequestParam("imgfile") List<MultipartFile> imgfile, Principal principal,  @RequestParam("sizeList") List<String> sizeList,
-            @RequestParam("colorList") List<String> colorList,
-            @RequestParam("sellCountList") List<String> sellCountList ) {
+			Model model, @RequestParam("imgfile") List<MultipartFile> imgfile, Principal principal 
+             ) {
 		
-		if(bindingResult.hasErrors()) {
+		if(bindingResult.hasErrors()) { 
 			return "upload";
 		}
 		if (imgfile.get(0).isEmpty() && itemAndImgDto.getId() == null) {
@@ -50,6 +49,8 @@ public class ItemController {
 		try {
 			itemService.saveItem(itemAndImgDto, imgfile , principal);
 			
+			
+			
 		}catch (Exception e) {
 			model.addAttribute("errorMessage", "상품 등록 중 에러가 발생하였습니다.");
 			return "index";
@@ -58,5 +59,8 @@ public class ItemController {
 		
 		return "redirect:/";
 	}
+	
+	
+
 }
 

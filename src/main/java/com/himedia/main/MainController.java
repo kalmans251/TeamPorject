@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.himedia.item.entity.Item;
 import com.himedia.item.itemMain.ItemListingAjaxDto;
 import com.himedia.item.itemMain.ItemMainService;
+import com.himedia.item.repository.ItemImgRepository;
+import com.himedia.item.repository.ItemRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +23,8 @@ import lombok.RequiredArgsConstructor;
 public class MainController {
 
 	private final ItemMainService itemMainService;
-	
+	private final ItemRepository itemRepository;
+	private final ItemImgRepository itemImgRepository;
 	@GetMapping("/")
 	public String index() {
 		return "index";
@@ -56,6 +59,21 @@ public class MainController {
 		return items;
 	
 	}
-	
+	@GetMapping("/detailorder/{id}")
+	public String detailOrder(@PathVariable Long id) {
+		
+		Item item = this.itemRepository.findById(id).get();
+		
+		item.getCategory1();
+		item.getCategory2();
+		item.getPrice();
+		item.getSubject();
+		
+		item.getTemperature();
+		item.getFavorList().size();
+		//this.itemImgRepository.findAllByItem(id);
+		
+		return "detailorder";
+	}
 	
 }

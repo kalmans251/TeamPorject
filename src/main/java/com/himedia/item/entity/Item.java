@@ -33,11 +33,10 @@ public class Item {
 	
 	private String subject;		//상품
 	
-	@Enumerated(EnumType.STRING)
-	private CategoryEnum1 category1;		//큰분류
 	
-	@Enumerated(EnumType.STRING)
-	private CategoryEnum2 category2;		//작은분류
+	private String category1;		//큰분류
+	
+	private String category2;		//작은분류
 	
 	@OneToMany(cascade = CascadeType.REMOVE,mappedBy ="item")
 	private List<Favor> favorList;		//찜목록

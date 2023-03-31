@@ -37,7 +37,7 @@ public class ItemImgService {
 	                    itemImgFile.getBytes());
 	            url = "/images/item/" + name;
 	        }
-
+	        
 	        //상품 이미지 정보 저장
 	        itemImg.updateItemImg(oriName, name, url);
 	        itemImgRepository.save(itemImg);
