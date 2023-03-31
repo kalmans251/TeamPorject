@@ -40,7 +40,7 @@ public class CartController {
 		
 		CartItem cartItem = new CartItem();
 		cartItem.setItemSellingInform(this.itemSellingInformRepository.findById(Long.parseLong(id)).get());
-		cartItem.setMember(this.memberRepository.findByUsername(principal.getName()).get());
+		cartItem.setMember(this.memberRepository.findByToken(principal.getName()).get());
 		cartItem.setCount(count);
 		cartItem.setRegDate(LocalDateTime.now());
 		try {

@@ -46,7 +46,7 @@ public class ItemService {
 		 * System.out.println(items.getCategory1());
 		 * System.out.println(items.getCategory2());
 		 */
-		Optional<Member> member = this.memberRepository.findByUsername(principal.getName());
+		Optional<Member> member = this.memberRepository.findByToken(principal.getName());
 		items.setMember(member.get());
 		items.setRegDate(LocalDateTime.now());
 		items.setFavorListNum(0);
