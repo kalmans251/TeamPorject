@@ -8,11 +8,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.himedia.item.dto.ItemAndImgDto;
+import com.himedia.item.entity.ItemImg;
 import com.himedia.item.service.ItemService;
 
 import jakarta.validation.Valid;
@@ -60,23 +62,22 @@ public class ItemController {
 		return "redirect:/";
 	}
 	
-//	   @GetMapping(value = "/admin/item/{itemId}")
-//	    public String itemDtl(@PathVariable("itemId") Long itemId, Model model){
-//
-//	        try {
-//	            ItemAndImgDto itemAndImgDto = itemService.get
-//	            model.addAttribute("itemAndImgDto", itemAndImgDto);
-//	        } catch(EntityNotFoundException e){
-//	            model.addAttribute("errorMessage", "존재하지 않는 상품 입니다.");
-//	            model.addAttribute("itemFormDto", new ItemFormDto());
-//	            return "item/itemForm";
-//	        }
-//
-//	        return "item/itemForm";
-//	    }
-	
-	
-	
+	@GetMapping(value="/detail/{itemId}")				//3월5일
+	public String itemdetail(Model model, @PathVariable long itemId) {
+		
+		List<ItemImg> itemImgList = this.itemService.getImgList(itemId);
+		
+		model.addAttribute("itemImgList", itemImgList);
+		
+		for(ItemImg img : itemImgList) {
+			if(img.getRepimgYn().equals("Y")) {
+				model.addAttribute("repimg", img);
+				model.addAttribute("item", img.getItem());
+			}
+		}
+		
+		return "detail";
+	}
 
 }
 
