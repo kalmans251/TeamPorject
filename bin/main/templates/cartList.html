@@ -1,54 +1,23 @@
 
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout}">
+<html layout:decorate="~{layout}">
 <head>
-<meta name="_csrf" th:content="${_csrf.token}" />
-<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
 </head>
 
-<th:block layout:fragment="script">
-
-	<script th:inline="javascript">
-		
-	</script>
-</th:block>
-
 <main layout:fragment="content">
-	<div>gdgd</div>
-	<div th:each="cartItemDto : ${cartItemDtoList}">
-
-		<input type="checkbox" name="cartChkBox"
-			th:value="${cartItemDto.cartItemId}">
-		<div class="repImg">
-			<img th:src="${cartItemDto.imgUrl}" th:alt="${cartItemDto.subject}">
-		</div>
-
-
-		<div th:text="${cartItemDto.subject}"></div>
-		<span th:id="'price_' + ${cartItemDto.cartItemId}"
-			  th:data-price="${cartItemDto.price}"
-			  th:text="${cartItemDto.price} + '원'"> </span>
-			
-		<input type="number" name="count" th:id="'count_' + ${cartItemDto.cartItemId}"
-			   th:value="${cartItemDto.count}" min="1" onchange="changeCount(this)">
-		<button type="button" class="close" >
-		<span aria-hidden="true" th:data-id="${cartItemDto.cartItemId}"
-				onclick="deleteCartItem(this)">&times;</span>
-		</button>
-
-
-
-		<div th:text="{cartItemDto.subject}"></div>
-		<div th:text="cartItemDto.size"></div>
-		<div th:text="cartItemDto.color"></div>
-		<div th:text="cartItemDto.count"></div>
-		<div th:text="cartItemDto.price"></div>
-		<div th:text="cartItemDto.price"></div>
-		<div th:text="cartItemDto.price"></div>
-
-	</div>
-
+<div>gdgd</div>
+<div th:each="cartItemDto : ${cartItemDtoList}"> 
+ 	
+ 	<div th:text="cartItemDto.price"></div>
+ 	<div th:text="cartItemDto.price"></div>
+ 	<div th:text="cartItemDto.price"></div>
+ 	<div th:text="cartItemDto.price"></div>
+ 	<div th:text="cartItemDto.price"></div>
+ 	<div th:text="cartItemDto.price"></div>
+ 	<div th:text="cartItemDto.price"></div>
+ 	
+ </div>
+ 
 </main>
 
 </html>

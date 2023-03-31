@@ -9,9 +9,9 @@ import lombok.Setter;
 @Setter
 public class CartItemDto {
 	
-	private Long cartItemId;
+	private Long id;
 	
-	private String imgUrl;
+	private String url;
 	
 	private String subject;
 	
@@ -22,7 +22,4 @@ public class CartItemDto {
 	private Integer count;
 	
 	private Long price;
-	
-	
-	
 }
