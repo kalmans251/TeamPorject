@@ -2,7 +2,6 @@ package com.himedia.member.controller;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.himedia.member.dto.MemberAddrForm;
 import com.himedia.member.dto.MemberCreateForm;
+import com.himedia.member.dto.MemberModifyForm;
 import com.himedia.member.dto.MemberModifyPasswordForm;
 import com.himedia.member.email.EmailService;
 import com.himedia.member.entity.Member;
@@ -164,10 +164,19 @@ public class MemberController {
 		}
 	}
 	@GetMapping("/modify")
-	public String modifyMember() {
-		
-		return null;
+	public String modifyMember(MemberModifyForm memberModifyForm,Principal principal,Model model) {
+		Member member = this.memberService.getMember(principal.getName());
+		model.addAttribute("member", member);
+		System.out.println(member.getSocial());
+		return "member_modify";
 	}
+	@PostMapping("/modify")
+	public String modifyMember(@Valid MemberModifyForm memberModifyForm, BindingResult bindingResult, Principal principal) {
+		this.memberService.modifyMemberInfo(principal.getName(), memberModifyForm.getPhoneNum(),memberModifyForm.getNickName());
+		return "redirect:/";
+	}
+	
+	
 	
 	@GetMapping("/modify/password")
 	public String modifyPassword(MemberModifyPasswordForm memberModifyPasswordForm) {

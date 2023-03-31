@@ -78,7 +78,7 @@ public class MemberService {
 		this.memberRepository.save(member);
 	}
 	public void modifyMemberInfo(String username, String phonenum, String nickname) {
-		Optional<Member> bmember = this.memberRepository.findByUsername(username);
+		Optional<Member> bmember = this.memberRepository.findByToken(username);
 		Member member = bmember.get();
 		member.setNickName(nickname);
 		member.setPhoneNum(phonenum);
