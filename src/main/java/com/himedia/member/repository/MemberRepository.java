@@ -8,4 +8,5 @@ import com.himedia.member.entity.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 	Optional<Member> findByUsername(String username);
+	Optional<Member> findByToken(String token);
 }
