@@ -1,0 +1,38 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	  layout:decorate="~{layout}">
+<head>	
+<script src="/jquery-3.6.3.min.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<div layout:fragment="content">
+
+<h1>회원 정보 수정 페이지</h1>
+
+<form th:action="@{/member/modify}" th:object="${memberModifyForm}" method="post">
+<div>
+	<label>
+		사용자 이메일
+	</label>
+	<input type="text" disabled th:value="${member.username}"><a>등록 되어있는 이메일은 수정이 불가능 합니다.</a>
+</div>
+<div>
+<label for="nickName">
+사용자 닉네임
+</label>
+<input type="text" name="nickName" th:value="${member.nickName}"/>
+</div>
+<div>
+	<label for="phoneNum">
+	휴대전화 번호
+	</label> 
+<input type="text" name="phoneNum" th:value="${member.phoneNum}"/>
+</div>
+<br>
+<button class="btn btn-primary">회원 정보 수정</button>&nbsp&nbsp<button th:if="${#strings.equals(member.social, 'LOCAL')}" onclick="location.href='/member/modify/password'" type="button" class="btn btn-primary">비밀번호 변경</button>
+</form>
+<div th:if="${#strings.equals(member.social, 'GOOGLE') or #strings.equals(member.social, 'NAVER')}">
+	Social로그인 한 사용자는 비밀번호 변경이 불가능합니다.
+</div>
+</div>
+</html>
