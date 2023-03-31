@@ -2,6 +2,7 @@ package com.himedia.member.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -51,17 +52,18 @@ public class MemberService {
 		memberAddr.setMember(member);
 		memberAddr.setCreateDate(LocalDateTime.now());
 		memberAddr.setReference(reference);
-		if((this.memberAddrRepository.findByMemberAndMain(member,1)).isEmpty()) {
-			memberAddr.setMain(1);
-		}else {
+		MemberAddress memberAddress = this.memberAddrRepository.findByMemberAndMain(member,1);
+		if(Objects.nonNull(memberAddress)) {
 			memberAddr.setMain(0);
+		}else {
+			memberAddr.setMain(1);
 		}
 		this.memberAddrRepository.save(memberAddr);
 	}
 	public void modifypass(String username, String password) {
 		Optional<Member> bmember = this.memberRepository.findByUsername(username);
 		Member member = bmember.get();
-		member.setPassword(password);
+		member.setPassword(this.passwordEncoder.encode(password));
 		this.memberRepository.save(member);
 	}
 	public void modifyMemberInfo(String username, String phonenum, String nickname) {
@@ -83,15 +85,14 @@ public class MemberService {
 		
 		return this.memberAddrRepository.findByMainAndMember(0,member);
 	}
-	public Optional<MemberAddress> findMemberMainAddr(Member member){
+	public MemberAddress findMemberMainAddr(Member member){
 		
 		return this.memberAddrRepository.findByMemberAndMain(member, 1);
 	}
 	public void AddrChange(Member member) {
-		Optional<MemberAddress> memberaddrb1 = this.memberAddrRepository.findByMemberAndMain(member, 1);
-		MemberAddress memberAddr1 = memberaddrb1.get();
-		memberAddr1.setMain(0);
-		this.memberAddrRepository.save(memberAddr1);
+		MemberAddress memberaddr1 = this.memberAddrRepository.findByMemberAndMain(member, 1);
+		memberaddr1.setMain(0);
+		this.memberAddrRepository.save(memberaddr1);
 	}
 	public void AddrChangeMain(Long idx) {
 		Optional<MemberAddress> memberAddrb2 = this.memberAddrRepository.findById(idx);

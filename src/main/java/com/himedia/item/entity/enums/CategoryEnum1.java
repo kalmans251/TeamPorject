@@ -1,5 +1,8 @@
 package com.himedia.item.entity.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum CategoryEnum1 {
 	TOP("TOP"),
 	BOTTOM("BOTTOM"),
