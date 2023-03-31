@@ -14,7 +14,6 @@ import lombok.Setter;
 public class Color {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
 	@Column(unique = true)

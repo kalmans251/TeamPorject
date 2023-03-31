@@ -19,7 +19,6 @@ import lombok.Setter;
 @Setter
 public class Size {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
 	@Column(unique = true)

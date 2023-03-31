@@ -1,13 +1,61 @@
 
 <html layout:decorate="~{layout}">
 <head>
-
+	<script src="/jquery-3.6.3.min.js"></script>
+	<meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <div layout:fragment="content">
-	
-	
+
+	<div>
+		<select id="orderNum">
+		  <option th:each="isi:${isiList}" th:text="${isi.id}+${isi.color.name}+${isi.size.name}" th:value="${isi.id}">Volvo</option>
+		</select>
+		<input type="number" id="countNum" >
+		<button onclick="addCart()">add to cart</button>
+		<button onclick="order()">buy now</button>
+	</div>
 	
 	
 	
 </div>
+<script layout:fragment="javascriptContent">
+	const orderNum= document.getElementById('orderNum');
+	const countNum= document.getElementById('countNum');
+	
+	function addCart(){
+		var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+			
+        let params={
+					id:orderNum.value,
+					count:countNum.value
+			};
+			
+			$.ajax ({		
+				type:"post",
+				url:"/cartAddAjax",
+				
+				// parameter 값을 서버로 전송 하기 
+				data:params,
+				beforeSend : function(xhr){
+	                xhr.setRequestHeader(header, token);
+	            },
+				//요청이 성공했을때 실행되는 부분 
+				success:function(res){
+					console.log("성공", res)	
+					
+				},
+				
+				//요청이 실패 했을때 실행되는 블락 (예외 처리 )
+				error:function(){
+					console.log("실패 ")
+				}			
+			})
+	}
+	
+	function order(){
+		location.href="/orderform/"+orderNum.value;
+	}
+</script>
 </html>

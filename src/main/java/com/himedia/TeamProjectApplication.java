@@ -32,23 +32,21 @@ public class TeamProjectApplication implements CommandLineRunner {
 			String s = null;
 			List<Color> lc = this.colorRepository.findAll();
 			List<Size> ls = this.sizeRepository.findAll();
-			for(int i = 0 ; i < lc.size() ; i++) {
-				this.colorRepository.delete(lc.get(i));
-			}
-			for(int i = 0 ; i< ls.size() ; i++) {
-				this.sizeRepository.delete(ls.get(i));
-			}
+			
 			
 			
 			for(int i = 0 ; i < SizeEnum.values().length ; i++) {
 				Size size= new Size();
 				s = SizeEnum.values()[i].getValue();
+				System.out.println(s);
+				size.setId(i+1);
 				size.setName(s);
 				this.sizeRepository.save(size);
 			}
 			for(int i = 0 ; i < ColorEnum.values().length ; i++) {
 				Color color  = new Color();
 				s = ColorEnum.values()[i].getValue();
+				color.setId(i+1);
 				color.setName(s);
 				this.colorRepository.save(color);
 			}

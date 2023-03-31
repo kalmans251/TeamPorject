@@ -1,6 +1,8 @@
 package com.himedia.main;
 
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.himedia.item.entity.Item;
+import com.himedia.item.entity.ItemSellingInform;
 import com.himedia.item.itemMain.ItemListingAjaxDto;
 import com.himedia.item.itemMain.ItemMainService;
 import com.himedia.item.repository.ItemImgRepository;
 import com.himedia.item.repository.ItemRepository;
+import com.himedia.item.repository.ItemSellingInformRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +29,7 @@ public class MainController {
 	private final ItemMainService itemMainService;
 	private final ItemRepository itemRepository;
 	private final ItemImgRepository itemImgRepository;
+	private final ItemSellingInformRepository itemSellingInformRepository;
 	@GetMapping("/")
 	public String index() {
 		return "index";
@@ -60,17 +65,21 @@ public class MainController {
 	
 	}
 	@GetMapping("/detailorder/{id}")
-	public String detailOrder(@PathVariable Long id) {
+	public String detailOrder(@PathVariable Long id,Model model) {
 		
-		Item item = this.itemRepository.findById(id).get();
+		List<ItemSellingInform> isiList = this.itemSellingInformRepository.findByItem(this.itemRepository.findById(id).get());
+		System.out.println(isiList);
+		model.addAttribute("isiList", isiList);
 		
-		item.getCategory1();
-		item.getCategory2();
-		item.getPrice();
-		item.getSubject();
 		
-		item.getTemperature();
-		item.getFavorList().size();
+//		
+//		item.getCategory1();
+//		item.getCategory2();
+//		item.getPrice();
+//		item.getSubject();
+//		
+//		item.getTemperature();
+//		item.getFavorList().size();
 		//this.itemImgRepository.findAllByItem(id);
 		
 		return "detailorder";

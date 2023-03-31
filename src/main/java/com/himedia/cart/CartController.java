@@ -11,6 +11,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +21,7 @@ import com.himedia.item.repository.ItemImgRepository;
 import com.himedia.item.repository.ItemSellingInformRepository;
 import com.himedia.member.repository.MemberRepository;
 
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -78,5 +80,10 @@ public class CartController {
 		return "cartList";
 	}
 	
+	@GetMapping("/orderform/{id}")
+	public String orderForm(@PathVariable Long id) {
+		
+		return "orderform";
+	}
 	
 }
