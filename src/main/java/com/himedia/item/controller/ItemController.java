@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.himedia.item.dto.ItemAndImgDto;
-import com.himedia.item.entity.ItemSellingInform;
 import com.himedia.item.service.ItemService;
 
 import jakarta.validation.Valid;
@@ -39,7 +38,7 @@ public class ItemController {
 			Model model, @RequestParam("imgfile") List<MultipartFile> imgfile, Principal principal 
              ) {
 		
-		if(bindingResult.hasErrors()) {
+		if(bindingResult.hasErrors()) { 
 			return "upload";
 		}
 		if (imgfile.get(0).isEmpty() && itemAndImgDto.getId() == null) {
@@ -60,5 +59,8 @@ public class ItemController {
 		
 		return "redirect:/";
 	}
+	
+	
+
 }
 

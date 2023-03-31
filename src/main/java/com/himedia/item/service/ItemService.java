@@ -37,7 +37,7 @@ public class ItemService {
 	private final ItemSellingInformRepository itemSellingInformRepository;
 	private final MemberRepository memberRepository;
 	
-	public void saveItem(ItemAndImgDto itemAndImgDto, List<MultipartFile> imgfile, Principal principal)
+	public Long saveItem(ItemAndImgDto itemAndImgDto, List<MultipartFile> imgfile, Principal principal)
 			throws Exception {
 
 		Item items = itemAndImgDto.toItem(itemAndImgDto);
@@ -51,6 +51,7 @@ public class ItemService {
 		items.setRegDate(LocalDateTime.now());
 		items.setFavorListNum(0);
 		items.setTemperature(itemAndImgDto.getTemperature());
+		
 		
 		
 		this.itemRepository.save(items);
@@ -92,7 +93,11 @@ public class ItemService {
 				this.itemImgService.saveItemImg(itemImg, imgfile.get(i), principal);
 
 		}
-	}
+		
+		 return items.getId();
+	} 
 	
+	
+
 	
 }
