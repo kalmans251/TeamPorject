@@ -22,10 +22,6 @@ import com.himedia.member.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 
-/**
- * @author USER
- *
- */
 @Controller
 @RequiredArgsConstructor
 public class CartController {
@@ -64,18 +60,18 @@ public class CartController {
 			CartItemDto cartItemDto = new CartItemDto();
 			ItemImg itemImg = this.itemImgRepository.findByItemAndRepimgYn(cartItemList.get(i).getItemSellingInform().getItem().getId(),"Y");
 			CartItem cartItem = cartItemList.get(i);
-			cartItemDto.setUrl(itemImg.getUrl());
+			cartItemDto.setImgUrl(itemImg.getUrl());
 			cartItemDto.setPrice(itemImg.getItem().getPrice());
-			cartItemDto.setId(itemImg.getItem().getId());
+			cartItemDto.setCartItemId(itemImg.getItem().getId());
 			cartItemDto.setCount(cartItem.getCount());
 			cartItemDto.setColor(cartItem.getItemSellingInform().getColor().toString());
 			cartItemDto.setSize(cartItem.getItemSellingInform().getSize().toString());
-			//cartItemDto.setSubject(itemImg.getItem().getSubject());
+			cartItemDto.setSubject(itemImg.getItem().getSubject());
 			cartItemDtoList.add(cartItemDto);
 		}
 		
 		model.addAttribute("cartItemDtoList", cartItemDtoList);
-		return "cartList";
+		return "cartList"; 
 	}
 	@GetMapping("/cart1")
 	public String openCartList() {
