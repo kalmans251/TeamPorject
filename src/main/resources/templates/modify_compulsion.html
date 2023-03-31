@@ -1,0 +1,53 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	  layout:decorate="~{layout}">
+<head>	
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<script src="/jquery-3.6.3.min.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<div layout:fragment="content">
+	<h1>회원 이메일로 비밀번호 발송</h1>
+	<div>
+		<label for="username">등록된 회원 이메일 작성</label>
+		<input type="email" name="username" id="username"><a id="result"></a><br>
+		<input type="submit" value = "비밀번호 변경" id="submit" onclick="idcheck()">
+	</div>
+	<div>
+		<a th:href="@{/member/login}">로그인</a>
+	</div>
+	<div>
+		<a th:href="@{/member/create}">회원가입</a>
+	</div>
+	<script>
+	const idcheck = () => {
+		var username = $('#username').val();
+		 var token = $("meta[name='_csrf']").attr("content");
+	     var header = $("meta[name='_csrf_header']").attr("content");
+		
+	     $.ajax({
+	     	url:'/member/compulsion/password',
+	     	type:'post',
+	     	data:{"username":username}, 
+	     	beforeSend : function(xhr){
+	                xhr.setRequestHeader(header, token);
+	            },
+	     	success:function(res){
+	     		if(res==0){
+	     			$('#result').text("가입되어있지 않은 사용자 입니다. 회원가입을 해주세요")
+		 		}else if (res==1){
+	     			$('#result').text("이메일로 비밀번호를 발송했습니다. 이메일을 확인해주세요")
+	     		}else if(res == 2){
+	     			$('#result').text("소셜 로그인 되었습니다. 구글이나 네이버로 로그인 해주세요")
+	     		}
+	     	},error:function(){
+	     		alert("에러입니다.")
+	     	}
+	     			
+	     })
+	}
+	     
+	</script>
+</div>
+</html>

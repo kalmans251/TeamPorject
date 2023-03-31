@@ -23,6 +23,7 @@ import com.himedia.member.email.EmailService;
 import com.himedia.member.entity.Member;
 import com.himedia.member.entity.MemberAddress;
 import com.himedia.member.role.MemberRole;
+import com.himedia.member.role.Social;
 import com.himedia.member.service.MemberService;
 
 import jakarta.validation.Valid;
@@ -110,13 +111,13 @@ public class MemberController {
 	@GetMapping("/create/addr")
 	public String addrAddForm(MemberAddrForm memberAddrForm,Model model,Principal principal) {
 		System.out.println(principal.getName());
-//		Member member = this.memberService.getMember(principal.getName());
-//		System.out.println(member.getToken());
-//		System.out.println(member.getIdx());
-//		List<MemberAddress> memberaddr = this.memberService.findMemberAddr(member);
-//		model.addAttribute("memberAddr", memberaddr);
-//		MemberAddress memberAddress = this.memberService.findMemberMainAddr(member);
-//		model.addAttribute("memberMainAddr",memberAddress);
+		Member member = this.memberService.getMember(principal.getName());
+		System.out.println(member.getToken());
+		System.out.println(member.getIdx());
+		List<MemberAddress> memberaddr = this.memberService.findMemberAddr(member);
+		model.addAttribute("memberAddr", memberaddr);
+		MemberAddress memberAddress = this.memberService.findMemberMainAddr(member);
+		model.addAttribute("memberMainAddr",memberAddress);
 		return "addr_create";	
 	}
 	@PostMapping("/create/addr")
@@ -191,17 +192,27 @@ public class MemberController {
 		}
 	}
 	
+	@GetMapping("/compulsion/password")
+	public String modifyCompuls() {
+		return "modify_compulsion";
+	}
+	@ResponseBody
 	@PostMapping("/compulsion/password")
-	public String modifyCompulsionPass(@RequestParam String username) throws Exception {
-		Member member =this.memberService.getMember(username);
+	public Integer modifyCompulsionPass(@RequestParam("username") String username) throws Exception {
+		Member member =this.memberService.getLocalMember(username);
 		if(member.getUsername().isEmpty()) {
-			return "등록되어있지 않는 회원입니다.";
+			return 0;
 		}else{
-			String password = this.emailService.createPassword(username);
-			Member changeMember = this.memberService.getMember(username);
-			changeMember.setPassword(password);
-			this.memberService.modifypass(username, password);
-			return "비밀번호가 성공적으로 이메일 전송되었습니다.";
+			if(member.getSocial().equals(Social.LOCAL)) {
+				String password = this.emailService.createPassword(username);
+				Member changeMember = this.memberService.getMember(username);
+				changeMember.setPassword(password);
+				this.memberService.modifypass(username, password);
+				return 1;
+			}else {
+				return 2;
+			}
 		}
 	}
+	
 }
