@@ -51,6 +51,10 @@ public class MemberService {
 		Optional<Member> member =this.memberRepository.findByToken(username);
 			return member.get();
 	}
+	public Member getLocalMember(String username) {		
+		Optional<Member> member =this.memberRepository.findByUsername(username);
+		return member.get();
+		}
 	
 	public void addrInsert(Member member,Integer addr1, String addr,String reference) {
 		MemberAddress memberAddr = new MemberAddress();
