@@ -89,7 +89,6 @@ public class MemberController {
 	@PostMapping("/ajaxtest")
 	@ResponseBody
 	public Integer ajax(@RequestParam("username")String username) {
-		System.out.println(username);
 
 		int a;
 		if(username.equals("")) {
@@ -110,10 +109,7 @@ public class MemberController {
 	//memberAddr 관련 controller메소드
 	@GetMapping("/create/addr")
 	public String addrAddForm(MemberAddrForm memberAddrForm,Model model,Principal principal) {
-		System.out.println(principal.getName());
 		Member member = this.memberService.getMember(principal.getName());
-		System.out.println(member.getToken());
-		System.out.println(member.getIdx());
 		List<MemberAddress> memberaddr = this.memberService.findMemberAddr(member);
 		model.addAttribute("memberAddr", memberaddr);
 		MemberAddress memberAddress = this.memberService.findMemberMainAddr(member);
@@ -167,7 +163,6 @@ public class MemberController {
 	public String modifyMember(MemberModifyForm memberModifyForm,Principal principal,Model model) {
 		Member member = this.memberService.getMember(principal.getName());
 		model.addAttribute("member", member);
-		System.out.println(member.getSocial());
 		return "member_modify";
 	}
 	@PostMapping("/modify")

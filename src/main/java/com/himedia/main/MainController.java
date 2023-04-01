@@ -19,7 +19,10 @@ import com.himedia.item.itemMain.ItemMainService;
 import com.himedia.item.repository.ItemImgRepository;
 import com.himedia.item.repository.ItemRepository;
 import com.himedia.item.repository.ItemSellingInformRepository;
+import com.himedia.member.entity.Member;
+import com.himedia.member.service.MemberService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -30,8 +33,19 @@ public class MainController {
 	private final ItemRepository itemRepository;
 	private final ItemImgRepository itemImgRepository;
 	private final ItemSellingInformRepository itemSellingInformRepository;
+	private final MemberService memberService;
+	
 	@GetMapping("/")
-	public String index() {
+	public String index(HttpServletRequest request,Model model) {
+		String username = request.getRemoteUser();
+		if(username!=null) {
+			Member member = this.memberService.getMember(username);
+			model.addAttribute("member", member);
+	        model.addAttribute("loggedIn", true);
+		}else {
+	        model.addAttribute("loggedIn", false);	
+		}
+		
 		return "index";
 	}
 	
