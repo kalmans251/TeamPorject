@@ -55,6 +55,7 @@ public class MemberController {
 	@PostMapping("/create")
 	private String memberinsert(@Valid MemberCreateForm memberCreateForm,BindingResult bindingResult) {
 		
+		
 		if(bindingResult.hasErrors()) {
 			
 			return "member_create";
@@ -97,9 +98,15 @@ public class MemberController {
 			return a;
 		}else{
 			try {
-				Member member = this.memberService.getMember(username);
-				a=1;
-				return a;
+				Member member = this.memberService.getLocalMember(username);
+				if(member.getSocial().equals("LOCAL")) {
+					a=1;
+					return a;
+				}else {
+					a=3;
+					return a; 
+				}
+				
 			}catch(Exception e) {
 				a=0;
 				return a;
