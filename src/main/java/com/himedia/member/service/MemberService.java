@@ -110,4 +110,7 @@ public class MemberService {
 		memberaddr2.setMain(1);
 		this.memberAddrRepository.save(memberaddr2);
 	}
+	public List<Member> allmember(){
+		return this.memberRepository.findAll();
+	}
 }

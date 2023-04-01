@@ -3,6 +3,7 @@ package com.himedia.member.controller;
 import java.security.Principal;
 import java.util.List;
 
+import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -141,21 +142,19 @@ public class MemberController {
 		return "redirect:/member/create/addr";
 	}
 	//member delete 관련 controller 메소드
-	@GetMapping("/delete/form")
+	@GetMapping("/delete")
 	public String deleteMember() {
 		
 		return "member_delete";
 	}
 	
-	@PostMapping("/delete/form")
-	public String deleteMember(@RequestParam String password, Principal principal, BindingResult bindingResult) {
+	@PostMapping("/delete")
+	public String deleteMember(@RequestParam("password") String password, Principal principal) {
 		Member member = this.memberService.getMember(principal.getName());
-		String password1 = member.getPassword();
-		if(password.equals(password1)) {
+		if(passwordEncoder.matches( password, member.getPassword())) {
 			this.memberService.memberDelete(member.getUsername());
 			return "redirect:/member/logout";
 		}else{
-			bindingResult.rejectValue("password", "passwordInCorrect","패스워드가 일치하지 않습니다");
 			return "member_delete";
 		}
 	}

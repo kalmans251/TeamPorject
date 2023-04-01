@@ -1,8 +1,12 @@
 package com.himedia.member.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.himedia.member.role.MemberRole;
 import com.himedia.member.role.Social;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,6 +14,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -42,4 +47,6 @@ public class Member {
 	@Column(unique=true)
 	public String token;
 	
+	@OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<MemberAddress> memberAddresses;
 }

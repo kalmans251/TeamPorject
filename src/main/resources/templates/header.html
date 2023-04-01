@@ -61,7 +61,6 @@
 		      <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
 		      <label for="floatingPassword">Password</label>
 		    </div>
-		
 		    <div class="checkbox mb-3">
 		      <label>
 		        <input type="checkbox" value="remember-me"> Remember me
@@ -78,7 +77,11 @@
         
         <main style="position:absolute;top:100px;" id="accountdiv">
 	        <div th:if="${loggedIn==true}">
-	        	<a th:text="${member.nickName}"></a><br>
+	        	<a th:if="${#strings.equals(member.memberRole, 'ADMIN')}">관리자 계정 입니다</a>
+	        	<a th:if="${#strings.equals(member.memberRole, 'USER')}">일반 회원 계정 입니다</a>
+	        	<a th:if="${#strings.equals(member.memberRole, 'MANAGER')}">매니저 계정 입니다</a>
+	        	<br>
+	        	<a th:text="|${member.nickName} 님|"></a><br>
 	        	<a th:text="${member.username}"></a><br>
 	        	<a th:text="${member.phoneNum}"></a><br>
 	        	<button onclick="location.href='/member/modify'" type="button" class="btn btn-primary">회원정보 수정</button>
