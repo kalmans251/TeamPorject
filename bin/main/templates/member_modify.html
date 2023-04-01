@@ -29,7 +29,8 @@
 <input type="text" name="phoneNum" th:value="${member.phoneNum}"/>
 </div>
 <br>
-<button class="btn btn-primary">회원 정보 수정</button>&nbsp&nbsp<button th:if="${#strings.equals(member.social, 'LOCAL')}" onclick="location.href='/member/modify/password'" type="button" class="btn btn-primary">비밀번호 변경</button>
+<button class="btn btn-primary">회원 정보 수정</button>&nbsp&nbsp<button th:if="${#strings.equals(member.social, 'LOCAL')}" onclick="location.href='/member/modify/password'" type="button" class="btn btn-primary">비밀번호 변경</button>&nbsp&nbsp
+<button th:if="${#strings.equals(member.social, 'LOCAL')}" onclick="location.href='/member/delete'" type="button" class="btn btn-primary">회원 탈퇴</button>
 </form>
 <div th:if="${#strings.equals(member.social, 'GOOGLE') or #strings.equals(member.social, 'NAVER')}">
 	Social로그인 한 사용자는 비밀번호 변경이 불가능합니다.
