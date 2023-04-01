@@ -99,8 +99,14 @@ public class MemberController {
 		}else{
 			try {
 				Member member = this.memberService.getLocalMember(username);
-				a=1;
-				return a;
+				if(member.getSocial().equals("LOCAL")) {
+					a=1;
+					return a;
+				}else {
+					a=3;
+					return a; 
+				}
+				
 			}catch(Exception e) {
 				a=0;
 				return a;

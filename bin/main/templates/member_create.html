@@ -203,6 +203,8 @@ textarea::placeholder {
      				}else if(res==2){
      					$('#dupli').text("이메일을 입력해 주세요.");
      					$('#username').focus();
+     				}else if(res==3){
+     					$('#dupli').text("소셜로그인 된 사용자 입니다. 구글이나 네이버로 로그인 해주세요");
      				}
      			},error:function(){
      				alert("에러입니다.")
