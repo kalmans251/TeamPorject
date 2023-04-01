@@ -2,6 +2,9 @@
 <head>
 
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<script src="/jquery-3.6.3.min.js"></script>
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
 </head>
 <div layout:fragment="content">
@@ -10,21 +13,22 @@
 
 <h3>상품정보</h3>
 	
-	
+	<input id="isiId" type="hidden" th:value="${isiId}">
 	<img style="width:100px;height:100px;" th:src="${orderDto.url}">
-	<div th:text="${orderDto.subject}"></div>
+	<div th:text="${orderDto.subject}" id="subject"></div>
 	상품사이즈<div th:text="${orderDto.size}"></div>
 	상품색상<div th:text="${orderDto.color}"></div>
 	상품가격<div id="price" th:text="${orderDto.price}"></div>
 	상품수량<div id="count" th:text="${orderDto.orderCount}"></div>
 	
-	<div th:text="${orderDto.member.nickName}"></div>
-	<div th:text="${orderDto.member.phoneNum}"></div>
-	<div th:text="${orderDto.memberAdress}"></div>
-	<div th:text="${orderDto.memberAdress}"></div>	
+	<div th:text="${orderDto.member.nickName}" id="buyerName"></div>
+	<div th:text="${orderDto.member.phoneNum}" id="phone"></div>
+	<div th:text="${orderDto.memberAdress}" id="addr"></div>
+	<div th:text="${orderDto.memberAdress}" id="postcode"></div>	
 	<button onclick="totalPrice()">총금액</button>
 	
 	<button onclick="requestPay()">결제하기</button>
+	<button onclick="cancelPay()">환불하기</button>
 </div>
 
 	
@@ -32,45 +36,61 @@
 <script layout:fragment="javascriptContent">
 	
 	const count = document.getElementById('count');
-	const price = document.getElementById('price');
+	const price = document.getElementById('price'); 
+	const isiId = document.getElementById('isiId');
 	
+	let total = count.innerText*price.innerText;
 	function totalPrice(){
-		let total = count.innerText*price.innerText;
 		
 		console.log(total+'원');
 	}
 	
 	
 	var IMP = window.IMP;
-	IMP.init("imp65475667");
+	IMP.init("imp57806750");
+	
+	
+	const subject = document.getElementById('subject');
+	const buyerName = document.getElementById('buyerName');
+	const phone = document.getElementById('phone');
+	const addr = document.getElementById('addr');
+	const postcode = document.getElementById('postcode');
 
 	function requestPay() {
+		var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        
 		IMP.request_pay({
 			pg : 'inicis',
 			pay_method : 'card',
-			merchant_uid : "57008833-33005",
-			name : '당근 10kg',
-			amount : 100,
+			merchant_uid : "",
+			name : subject.innerText,
+			amount : total,
 			buyer_email : 'my03262@naver.com',
-			buyer_name : '포트원 기술지원팀',
-			buyer_tel : '010-1234-5678',
-			buyer_addr : '서울특별시 강남구 삼성동',
-			buyer_postcode : '123-456'
+			buyer_name : buyerName.innerText,
+			buyer_tel : phone.innerText,
+			buyer_addr : addr.innerText,
+			buyer_postcode : postcode.innerText
 		}, function(rsp) { // callback
 			if (rsp.success) {
 				// 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
 			      // jQuery로 HTTP 요청
-			      console.log(rsp)
+			      console.log(rsp.imp_uid);
 			      $.ajax({
 			        url: "/save", 
 			        method: "POST",
-			        headers: { "Content-Type": "application/json" },
+			        beforeSend : function(xhr){
+		                xhr.setRequestHeader(header, token);
+		            },
 			        data: {
 			          imp_uid: rsp.imp_uid,            // 결제 고유번호
-			          merchant_uid: rsp.merchant_uid   // 주문번호
+			          merchant_uid: rsp.merchant_uid,   // 주문번호
+			          buyCount:count.innerText,
+			          id:isiId.value
 			        }
 			      }).done(function (data) {
-			        // 가맹점 서버 결제 API 성공시 로직
+			        console.log(data);
+			        alert(data);
 			      })
 			} else {
 				console.log(rsp);

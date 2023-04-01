@@ -7,9 +7,10 @@
 </head>
 <div layout:fragment="content">
 
+	
 	<div>
 		<select id="orderNum">
-		  <option th:each="isi:${isiList}" th:text="${isi.id}+${isi.color.name}+${isi.size.name}" th:value="${isi.id}">Volvo</option>
+		  <option th:each="isi:${isiList}" th:text="${isi.id}+${isi.color.name}+${isi.size.name}" th:value="${isi.id}"></option>
 		</select>
 		<input type="number" id="countNum" >
 		<button onclick="addCart()">add to cart</button>
@@ -55,7 +56,7 @@
 	}
 	
 	function order(){
-		location.href="/orderform/"+orderNum.value+"?counts="+countNum.value;
+		location.href="/orderform/"+orderNum.value+"?counts="+countNum.value+"&id="+orderNum.value;
 	}
 </script>
 </html>

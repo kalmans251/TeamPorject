@@ -62,7 +62,7 @@ public class CartController {
 	@GetMapping("/cart")
 	public String openCartList(Model model,Principal principal) {
 	
-		List<CartItem> cartItemList = this.cartItemRepository.findAllByMember(this.memberRepository.findByUsername(principal.getName()).get().getIdx());
+		List<CartItem> cartItemList = this.cartItemRepository.findAllByMember(this.memberRepository.findByToken(principal.getName()).get());
 		List<CartItemDto> cartItemDtoList = new ArrayList<CartItemDto>();
 		for(int i=0 ; i < cartItemList.size() ; i++) {
 			CartItemDto cartItemDto = new CartItemDto();
@@ -72,8 +72,8 @@ public class CartController {
 			cartItemDto.setPrice(itemImg.getItem().getPrice());
 			cartItemDto.setCartItemId(itemImg.getItem().getId());
 			cartItemDto.setCount(cartItem.getCount());
-			cartItemDto.setColor(cartItem.getItemSellingInform().getColor().toString());
-			cartItemDto.setSize(cartItem.getItemSellingInform().getSize().toString());
+			cartItemDto.setColor(cartItem.getItemSellingInform().getColor().getName());
+			cartItemDto.setSize(cartItem.getItemSellingInform().getSize().getName());
 			cartItemDto.setSubject(itemImg.getItem().getSubject());
 			cartItemDtoList.add(cartItemDto);
 		}
@@ -82,19 +82,25 @@ public class CartController {
 		return "cartList"; 
 	}
 	@GetMapping("/cart1")
-	public String openCartList() {
+	public String openCartList(Model model) {
 		return "cartList";
 	}
 	
 	@GetMapping("/orderform/{id}")
-	public String orderForm(Model model,@PathVariable Long id,@RequestParam(name = "counts") Integer count,Principal principal) {
+	public String orderForm(Model model,@PathVariable Long id,@RequestParam(name = "counts") Integer count,@RequestParam(name = "id") Integer isiId,Principal principal) {
 		ItemSellingInform itsi = this.itemSellingInformRepository.findById(id).get();
 		Item item = itsi.getItem();
 		ItemImg itemImg = this.itemImgRepository.findByItemAndRepimgYn(itsi.getItem(), "Y");
 		
-		OrderDto orderDto = new OrderDto(itemImg.getUrl(),item.getSubject(),item.getPrice(),itsi.getSize().getName(),itsi.getColor().getName(),count,this.memberRepository.findByToken(principal.getName()).get(), this.memberAddrRepository.findByMainAndMember(1, this.memberRepository.findByToken(principal.getName()).get()).get(0));
+		OrderDto orderDto = new OrderDto(itemImg.getUrl(),item.getSubject(),item.getPrice(),itsi.getSize().getName(),itsi.getColor().getName(),count,
+							this.memberRepository.findByToken(principal.getName()).get(),
+							this.memberAddrRepository.findByMainAndMember(1, this.memberRepository.findByToken(principal.getName()).get()).get(0));
 		model.addAttribute("orderDto", orderDto);
+		model.addAttribute("isiId",isiId);
 		return "orderform";
 	}
+	
+	
+	
 	
 }
