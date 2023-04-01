@@ -1,0 +1,13 @@
+<html layout:decorate="~{layout}">
+<head>
+<script src="/jquery-3.6.3.min.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<div layout:fragment="content">
+<form th:action="@{/member/delete}" method="post">
+	<label for="password">회원 비밀 번호를 입력해 주세요</label>
+	<input type="password" name="password">
+	<button class="btn btn-primary">회원 탈퇴</button>
+</form>
+</div>
+</html>
