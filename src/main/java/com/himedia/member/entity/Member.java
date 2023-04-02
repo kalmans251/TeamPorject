@@ -47,6 +47,6 @@ public class Member {
 	@Column(unique=true)
 	public String token;
 	
-	@OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<MemberAddress> memberAddresses;
+//	@OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+//    private List<MemberAddress> memberAddresses;
 }

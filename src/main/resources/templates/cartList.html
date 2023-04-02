@@ -5,9 +5,9 @@
 <head>
 <meta name="_csrf" th:content="${_csrf.token}" />
 <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+<script src="/jquery-3.6.3.min.js"></script>
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 </head>
-
-
 
 <main layout:fragment="content">
 	<div th:each="cartItemDto : ${cartItemDtoList}">
@@ -20,11 +20,81 @@
 		<div th:text="${cartItemDto.subject}"></div>
 		<div th:text="${cartItemDto.size}"></div>
 		<div th:text="${cartItemDto.color}"></div>
-		<div th:text="${cartItemDto.count}"></div>
-		<div th:text="${cartItemDto.price}"></div>
+		<input type="number" th:id="@{|count_${cartItemDto.cartItemId}|}" th:value="${cartItemDto.count}">
+		<div th:id="@{|price_${cartItemDto.cartItemId}|}" th:text="${cartItemDto.price}" th:data-price="${cartItemDto.price}"></div>
 
 	</div>
-
+	<div id="orderTotalPrice"></div>
+	<button onclick="requestPay()">구매하기</button>
 </main>
+
+<script layout:fragment="javascriptContent">
+	
+	$(document).ready(function(){
+		$("input[name=cartChkBox]").change(function(){
+			getOrderTotalPrice();
+		});
+	});
+	
+	function getOrderTotalPrice(){
+		let orderTotalPrice=0;
+		$("input[name=cartChkBox]:checked").each(function(){
+			let cartItemId=$(this).val();
+			let price = $("#price_"+cartItemId).attr("data-price");
+			let count = $("#count_"+cartItemId).val();
+			orderTotalPrice +=price*count;
+		});
+		console.log(orderTotalPrice)
+		$("#orderTotalPrice").html(orderTotalPrice);
+	}
+	
+	
+	var IMP = window.IMP;
+	IMP.init("imp57806750");
+
+
+	function requestPay() {
+		var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        
+		IMP.request_pay({
+			pg : 'inicis',
+			pay_method : 'card',
+			merchant_uid : "",
+			name : '이름',
+			amount : $("#orderTotalPrice").html(),
+			buyer_email : 'my03262@naver.com',
+			buyer_name : '테스트',
+			buyer_tel : '전화번호',
+			buyer_addr : '주소',
+			buyer_postcode : '우편번호'
+		}, function(rsp) { // callback
+			if (rsp.success) {
+				// 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
+			      // jQuery로 HTTP 요청
+			      console.log(rsp.imp_uid);
+			      $.ajax({
+			        url: "/save", 
+			        method: "POST",
+			        beforeSend : function(xhr){
+		                xhr.setRequestHeader(header, token);
+		            },
+			        data: {
+			          imp_uid: rsp.imp_uid,            // 결제 고유번호
+			          merchant_uid: rsp.merchant_uid,   // 주문번호
+			          buyCount:count.innerText,
+			          id:isiId.value
+			        }
+			      }).done(function (data) {
+			        console.log(data);
+			        alert(data);
+			      })
+			} else {
+				console.log(rsp);
+			}
+		});
+	}
+	
+</script>
 
 </html>

@@ -6,7 +6,7 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <div layout:fragment="content">
-
+	<input id="itemId" type="hidden" th:value="${itemId}">
 	
 	<div>
 		<select id="orderNum">
@@ -15,6 +15,7 @@
 		<input type="number" id="countNum" >
 		<button onclick="addCart()">add to cart</button>
 		<button onclick="order()">buy now</button>
+		<button onclick="favor()">별</button>
 	</div>
 	
 	
@@ -55,8 +56,42 @@
 			})
 	}
 	
+	
+	
 	function order(){
 		location.href="/orderform/"+orderNum.value+"?counts="+countNum.value+"&id="+orderNum.value;
 	}
+	
+	function favor(){
+		var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+			
+        let params={
+					id:document.getElementById('itemId').value,
+			};
+			
+			$.ajax ({		
+				type:"post",
+				url:"/addfavor",
+				
+				// parameter 값을 서버로 전송 하기 
+				data:params,
+				beforeSend : function(xhr){
+	                xhr.setRequestHeader(header, token);
+	            },
+				//요청이 성공했을때 실행되는 부분 
+				success:function(res){
+					alert(res);
+				},
+				
+				//요청이 실패 했을때 실행되는 블락 (예외 처리 )
+				error:function(){
+					alert("통신실패");
+				}			
+			})
+	}
+	
+	
+	
 </script>
 </html>
