@@ -1,5 +1,6 @@
 package com.himedia.item.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,5 +12,6 @@ import com.himedia.member.entity.Member;
 public interface FavorRepository extends JpaRepository<Favor, Long> {
 	
 	Optional<Favor> findByMemberAndItem(Member member, Item item);
+	List<Favor> findByMember(Member member);
 
 }

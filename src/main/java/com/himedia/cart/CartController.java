@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,6 +60,7 @@ public class CartController {
 		
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/cart")
 	public String openCartList(Model model,Principal principal) {
 	
