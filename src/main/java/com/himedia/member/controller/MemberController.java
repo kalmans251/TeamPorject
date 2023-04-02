@@ -76,7 +76,7 @@ public class MemberController {
 			bindingResult.reject("singupFailed",e.getMessage());
 			return "member_create";
 		}
-		Member member = this.memberService.getMember(memberCreateForm.getUsername());
+		Member member = this.memberService.getLocalMember(memberCreateForm.getUsername());
 		try {
 			this.memberService.addrInsert(member, Integer.parseInt(memberCreateForm.getAddr1()), addr,memberCreateForm.getReference());
 		}catch(DataIntegrityViolationException e) {
