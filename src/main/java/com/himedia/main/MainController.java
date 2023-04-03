@@ -2,6 +2,7 @@ package com.himedia.main;
 
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import com.himedia.item.entity.Item;
 import com.himedia.item.entity.ItemSellingInform;
 import com.himedia.item.itemMain.ItemListingAjaxDto;
 import com.himedia.item.itemMain.ItemMainService;
+import com.himedia.item.itemMain.ItemOutputListAjaxDto;
 import com.himedia.item.repository.FavorRepository;
 import com.himedia.item.repository.ItemImgRepository;
 import com.himedia.item.repository.ItemRepository;
@@ -70,19 +72,24 @@ public class MainController {
 	
 	@PostMapping("/test")
 	@ResponseBody
-	public Page<Item> ajaxTest(@RequestBody ItemListingAjaxDto itemListingAjaxDto) {
+	public List<ItemOutputListAjaxDto> ajaxTest(@RequestBody ItemListingAjaxDto itemListingAjaxDto) {
 		Page<Item> items = null;
 		try {
 			items = this.itemMainService.findItemsByCategory(itemListingAjaxDto.getCategory(),itemListingAjaxDto.getSort(),itemListingAjaxDto.getPage());
-			System.out.println(items);
-			System.out.println(itemListingAjaxDto.getCategory());
-			System.out.println(itemListingAjaxDto.getSort());
-			return items;
+			
+			List<ItemOutputListAjaxDto> iolaList= new ArrayList<>();
+			for(Item item : items) {
+				
+				ItemOutputListAjaxDto iola= new ItemOutputListAjaxDto(item.getId(),this.itemImgRepository.findByItemAndRepimgYn(item, "Y").getUrl(),item.getSubject(), item.getPrice(), item.getFavorListNum());
+				iolaList.add(iola);
+			}
+			
+			return iolaList;
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		
-		return items;
+		return null;
 	
 	}
 	@GetMapping("/detailorder/{id}")
