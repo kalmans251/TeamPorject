@@ -72,7 +72,7 @@ public class MainController {
 	
 	@PostMapping("/test")
 	@ResponseBody
-	public List<ItemOutputListAjaxDto> ajaxTest(@RequestBody ItemListingAjaxDto itemListingAjaxDto) {
+	public List<ItemOutputListAjaxDto> ajaxTest(@RequestBody ItemListingAjaxDto itemListingAjaxDto,Principal principal) {
 		Page<Item> items = null;
 		try {
 			items = this.itemMainService.findItemsByCategory(itemListingAjaxDto.getCategory(),itemListingAjaxDto.getSort(),itemListingAjaxDto.getPage());
@@ -81,6 +81,11 @@ public class MainController {
 			for(Item item : items) {
 				
 				ItemOutputListAjaxDto iola= new ItemOutputListAjaxDto(item.getId(),this.itemImgRepository.findByItemAndRepimgYn(item, "Y").getUrl(),item.getSubject(), item.getPrice(), item.getFavorListNum());
+				if(this.favorRepository.findByMemberAndItem(this.memberRepository.findByToken(principal.getName()).get(), item).isEmpty()) {
+					iola.setIsFavor(false);
+				}else {
+					iola.setIsFavor(true);
+				}
 				iolaList.add(iola);
 			}
 			
@@ -128,6 +133,8 @@ public class MainController {
 			favor.setMember(member);
 			try {
 				this.favorRepository.save(favor);
+				item.setFavorListNum(this.favorRepository.findByItem(item).size());
+				this.itemRepository.save(item);
 				return "찜등록";
 			}catch(Exception e) {
 				return "찜등록실패";

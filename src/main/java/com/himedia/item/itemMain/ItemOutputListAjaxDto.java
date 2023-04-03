@@ -17,6 +17,8 @@ public class ItemOutputListAjaxDto {
 	
 	private Integer favorListNum;
 	
+	private Boolean isFavor;
+	
 	public ItemOutputListAjaxDto(Long itemId,String url,String subject , Long price,Integer favorListNum) {
 		this.itemId=itemId;
 		this.url=url;
