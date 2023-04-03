@@ -1,18 +1,9 @@
-<!DOCTYPE html>
-<html>
+
+
+<html layout:decorate="~{layout}">
 <head>
 
-<meta charset="UTF-8">
-<title>test</title>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<head>
-  <meta charset="UTF-8">
-  <title>test</title>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  
-</head>
+<script src="/jquery-3.6.3.min.js"></script>
 <script>
 $(document).ready(function() {
   // 행 추가 버튼에 대한 클릭 이벤트 핸들러 등록
@@ -44,46 +35,63 @@ $(document).ready(function() {
   });
 });
 </script>
+
+<script>
+function addImage() {
+  // 새로운 이미지 입력 필드와 삭제 버튼을 감싸는 div를 생성
+  var newImgDiv = document.createElement("div");
+  newImgDiv.className = "img-div";
+  newImgDiv.innerHTML = '<label for="img"></label><input type="file" id="img" name="imgfile" accept="image/*"><input type="button" value="Delete" onclick="removeImage(this)">';
+  
+  // 새로운 이미지 입력 필드를 기존의 필드들 바로 밑에 추가
+  var imgContainer = document.getElementById("plusImg");
+  imgContainer.parentNode.insertBefore(newImgDiv, imgContainer.nextSibling);
+}
+
+function removeImage(btn) {
+  // 삭제 버튼이 속한 div를 찾아서 삭제
+  var imgDiv = btn.parentNode;
+  imgDiv.parentNode.removeChild(imgDiv);
+}
+</script>
 </head>
 <body>
+
+<div layout:fragment="content">
+<div style="width:500px; margin:auto; margin-top:20px;">
 <form th:object="${itemAndImgDto}" th:action="@{/shop/create}" method="POST" enctype="multipart/form-data">
 
- <label for="subject">Subject:</label>
-  <input type="text" id="subject" name="subject" required>
+ <label for="subject" style="width:110px;text-align:center" class="input-group-text" id="inputGroup-sizing-sm">Subject</label>
+  <input type="text" id="subject" name="subject" required class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
   <br>
  
-<label for="categoryName1">Category 1:</label>
-<select id="categoryName1" name="categoryName1" required>
-  <option value="categoryName1">Select a category</option>
+<label for="categoryName1" style="width:110px;text-align:center" class="input-group-text" id="inputGroup-sizing-sm">Category 1</label>
+<select id="categoryName1" name="categoryName1" required class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+  <option value="categoryName1" >Select a category</option>
   <option th:each="category : ${T(com.himedia.item.entity.enums.CategoryEnum1).values()}"
           th:value="${category.name()}"
           th:text="${category.name()}"></option>
 </select>
 <br>
-<label for="categoryName2">Category 2:</label>
-<select id="categoryName2" name="categoryName2" required>
+<label for="categoryName2" style="width:110px;text-align:center" class="input-group-text" id="inputGroup-sizing-sm">Category 2</label>
+<select id="categoryName2" name="categoryName2" required class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
   <option value="CategoryName2">Select a category</option>
   <option th:each="category : ${T(com.himedia.item.entity.enums.CategoryEnum2).values()}"
           th:value="${category.name()}"
           th:text="${category.name()}"></option>
 </select>
 <br>
-  <label for="price">Price:</label>
-  <input type="number" id="price" name="price" required>
+  <label for="price" style="width:110px;text-align:center" class="input-group-text" id="inputGroup-sizing-sm">Price</label>
+  <input type="number" id="price" name="price" required class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
   <br>
-  <label for="img">Image:</label>
+<div id="plusImg" style="margin-bottom:10px" class="input-group">
+  <label for="img" style="width:110px; margin-bottom:10px; text-align:center" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">Image </label>
   <input type="file" id="img" name="imgfile" accept="image/*">
-  <label for="img">Image:</label>
-  <input type="file" id="img" name="imgfile" accept="image/*">
-  <label for="img">Image:</label>
-  <input type="file" id="img" name="imgfile" accept="image/*">
-  <label for="img">Image:</label>
-  <input type="file" id="img" name="imgfile" accept="image/*">
-  <label for="img">Image:</label>
-  <input type="file" id="img" name="imgfile" accept="image/*">
-  <br>
+  <input type="button" name="plusImg" value="img+" onclick="addImage()" id="inputGroupFileAddon04" class="btn btn-outline-secondary">
+</div>
 
-<table id="myTable">
+  
+<table id="myTable" style="margin-top:10px;">
   <thead>
     <tr>
       <th>Size</th>
@@ -91,7 +99,7 @@ $(document).ready(function() {
       <th>Quantity</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody >
     <tr>
       <td>
         <select class="size" name="sizeList">
@@ -114,11 +122,16 @@ $(document).ready(function() {
         </select>
       </td>
       <td><input type="number" class="quantity" value="0" name="sellCountList"></td>
-      <td><input type="button" class="addRow"></button></td>
+      <td><input type="button" class="addRow" value="+"></button></td>
     </tr>
   </tbody>
 </table>
-<button type="submit">Submit</button>
+<button type="submit" style=" display:block; margin:auto; margin-top:20px;" class="btn btn-secondary">상품 등록</button>
 </form>
+
+
+
+</div>
+</div>
 </body>
 </html>
