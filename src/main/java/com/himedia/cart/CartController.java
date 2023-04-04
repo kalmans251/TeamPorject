@@ -7,6 +7,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -60,6 +61,49 @@ public class CartController {
 		
 	}
 	
+	
+	@GetMapping("/deletecartAjax")
+	@ResponseBody
+	public String cartDeleteAjax(@RequestParam Long id) {
+		try {
+			this.cartItemRepository.delete(this.cartItemRepository.findById(id).get());
+			return "삭제완료";
+		}catch(Exception e) {
+			e.printStackTrace();
+			return "삭제실패";
+		}
+	}
+	
+	@GetMapping("/isCart")
+	@ResponseBody
+	public String carUpdateAjax(@RequestParam Long itemSellingInformId, Principal principal) {
+		
+		Optional<CartItem> _cartItem = this.cartItemRepository.findByMemberAndItemSellingInform(this.memberRepository.findByToken(principal.getName()).get(), this.itemSellingInformRepository.findById(itemSellingInformId).get());
+		if(_cartItem.isEmpty()) {
+			return "0";
+		}else {
+			return "1";
+		}
+	}
+	
+	@PostMapping("cartCountAddAjax")
+	@ResponseBody
+	public String cartCountAddAjax(@RequestParam Long id,@RequestParam Integer count, Principal principal) {
+		
+		Optional<CartItem> _CartItem = this.cartItemRepository.findByMemberAndItemSellingInform(this.memberRepository.findByToken(principal.getName()).get(), this.itemSellingInformRepository.findById(id).get());
+		_CartItem.get().addCount(count);
+		
+		try {
+			this.cartItemRepository.save(_CartItem.get());
+			return count+"개 추가 완료";
+		}catch(Exception e) {
+			e.printStackTrace();
+			return "카트 아이템 갱신 실패";
+		}
+	
+	}
+	
+	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/cart")
 	public String openCartList(Model model,Principal principal) {
@@ -72,7 +116,8 @@ public class CartController {
 			CartItem cartItem = cartItemList.get(i);
 			cartItemDto.setImgUrl(itemImg.getUrl());
 			cartItemDto.setPrice(itemImg.getItem().getPrice());
-			cartItemDto.setCartItemId(itemImg.getItem().getId());
+			cartItemDto.setItemId(itemImg.getItem().getId());
+			cartItemDto.setCartItemId(cartItem.getId());
 			cartItemDto.setCount(cartItem.getCount());
 			cartItemDto.setColor(cartItem.getItemSellingInform().getColor().getName());
 			cartItemDto.setSize(cartItem.getItemSellingInform().getSize().getName());

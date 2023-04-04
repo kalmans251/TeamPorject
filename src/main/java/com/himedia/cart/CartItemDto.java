@@ -11,6 +11,8 @@ public class CartItemDto {
 	
 	private Long cartItemId;
 	
+	private Long itemId;
+	
 	private String imgUrl;
 	
 	private String subject;

@@ -26,6 +26,12 @@
 	const countNum= document.getElementById('countNum');
 	
 	function addCart(){
+		
+		if(orderNum.value==""||countNum.value==""){
+			alert("장바구니등록:상품옵션과 갯수를 입력해주세요.");
+			return null;
+		}
+		
 		var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
 			
@@ -35,23 +41,59 @@
 			};
 			
 			$.ajax ({		
-				type:"post",
-				url:"/cartAddAjax",
-				
+				type:"get",
+				url:"/isCart",
 				// parameter 값을 서버로 전송 하기 
-				data:params,
-				beforeSend : function(xhr){
-	                xhr.setRequestHeader(header, token);
-	            },
+				data:{itemSellingInformId:orderNum.value},
+				
 				//요청이 성공했을때 실행되는 부분 
 				success:function(res){
-					console.log("성공", res)	
 					
+					if(res==1){
+						if(confirm("이미 등록된 상품입니다. 상품을 추가하시겠습니까?")){
+							$.ajax ({		
+								type:"post",
+								url:"/cartCountAddAjax",
+								
+								data:params,
+								beforeSend : function(xhr){
+					                xhr.setRequestHeader(header, token);
+					            },
+								success:function(res){
+									alert(res)
+									
+								},
+								error:function(){
+									alert("통신실패")
+								}			
+							})
+						}else{
+							return null;
+						}
+					}else{
+						$.ajax ({		
+							type:"post",
+							url:"/cartAddAjax",
+							
+							data:params,
+							beforeSend : function(xhr){
+				                xhr.setRequestHeader(header, token);
+				            },
+							success:function(res){
+								alert("장바구니 추가 완료")
+								
+							},
+							error:function(){
+								alert("장바구니 추가 실패")
+							}			
+						})
+					}
 				},
 				
 				//요청이 실패 했을때 실행되는 블락 (예외 처리 )
 				error:function(){
-					console.log("실패 ")
+					alert("장바구니 추가 실패")
+					
 				}			
 			})
 	}
@@ -59,6 +101,12 @@
 	
 	
 	function order(){
+		
+		if(orderNum.value==""||countNum.value==""){
+			alert("구매하기:상품옵션과 갯수를 입력해주세요.");
+			return null;
+		}
+		
 		location.href="/orderform/"+orderNum.value+"?counts="+countNum.value+"&id="+orderNum.value;
 	}
 	
@@ -73,18 +121,16 @@
 			$.ajax ({		
 				type:"post",
 				url:"/addfavor",
-				
-				// parameter 값을 서버로 전송 하기 
+
 				data:params,
 				beforeSend : function(xhr){
 	                xhr.setRequestHeader(header, token);
 	            },
-				//요청이 성공했을때 실행되는 부분 
+
 				success:function(res){
 					alert(res);
 				},
-				
-				//요청이 실패 했을때 실행되는 블락 (예외 처리 )
+
 				error:function(){
 					alert("통신실패");
 				}			
