@@ -16,6 +16,7 @@ import com.himedia.item.entity.Item;
 import com.himedia.item.entity.ItemImg;
 import com.himedia.item.repository.FavorRepository;
 import com.himedia.item.repository.ItemImgRepository;
+import com.himedia.item.repository.ItemRepository;
 import com.himedia.member.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class FavorController {
 	private final FavorRepository favorRepository;
 	private final MemberRepository memberRepository;
 	private final ItemImgRepository itemImgRepository;
+	private final ItemRepository itemRepository;
 
 	@GetMapping("/favorlist")
 	public String favorList(Model model, Principal principal) {
@@ -48,7 +50,12 @@ public class FavorController {
 	@ResponseBody
 	public String deleteFavorAjax(@RequestParam Long favorId) {
 		try {
-			this.favorRepository.delete(this.favorRepository.findById(favorId).get());
+			Favor favor = this.favorRepository.findById(favorId).get();
+			this.favorRepository.delete(favor);
+			Item item = favor.getItem();
+			item.setFavorListNum(this.favorRepository.findByItem(favor.getItem()).size());
+			this.itemRepository.save(item);
+			
 		}catch(Exception e) {
 			return "오류발생";
 		}

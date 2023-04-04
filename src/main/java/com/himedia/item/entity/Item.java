@@ -38,8 +38,8 @@ public class Item {
 	
 	private String category2;		//작은분류
 	
-//	@OneToMany(cascade = CascadeType.REMOVE,mappedBy ="item")
-//	private List<Favor> favorList;		//찜목록
+	@OneToMany(cascade = CascadeType.REMOVE,mappedBy ="item")
+	private List<Favor> favorList;		//찜목록
 	
 	private Integer favorListNum; // 찜한사람수
 	

@@ -2,6 +2,7 @@ package com.himedia.main;
 
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -67,24 +68,35 @@ public class MainController {
 		return "category";
 	}
 	
+//	
+//	@PostMapping("/test")
+//	@ResponseBody
+//	public List<ItemOutputListAjaxDto> ajaxTest(@RequestBody ItemListingAjaxDto itemListingAjaxDto,Principal principal) {
+//		Page<Item> items = null;
+//		try {
+//			items = this.itemMainService.findItemsByCategory(itemListingAjaxDto.getCategory(),itemListingAjaxDto.getSort(),itemListingAjaxDto.getPage());
+//			
+//			List<ItemOutputListAjaxDto> iolaList= new ArrayList<>();
+//			for(Item item : items) {
+//				
+//				ItemOutputListAjaxDto iola= new ItemOutputListAjaxDto(item.getId(),this.itemImgRepository.findByItemAndRepimgYn(item, "Y").getUrl(),item.getSubject(), item.getPrice(), item.getFavorListNum());
+//				if(this.favorRepository.findByMemberAndItem(this.memberRepository.findByToken(principal.getName()).get(), item).isEmpty()) {
+//					iola.setIsFavor(false);
+//				}else {
+//					iola.setIsFavor(true);
+//				}
+//				iolaList.add(iola);
+//			}
+//			
+//			return iolaList;
+//		}catch(Exception e) {
+//			e.printStackTrace();
+//		}
+//		
+//		return null;
+//	
+//	}
 	
-	@PostMapping("/test")
-	@ResponseBody
-	public Page<Item> ajaxTest(@RequestBody ItemListingAjaxDto itemListingAjaxDto) {
-		Page<Item> items = null;
-		try {
-			items = this.itemMainService.findItemsByCategory(itemListingAjaxDto.getCategory(),itemListingAjaxDto.getSort(),itemListingAjaxDto.getPage());
-			System.out.println(items);
-			System.out.println(itemListingAjaxDto.getCategory());
-			System.out.println(itemListingAjaxDto.getSort());
-			return items;
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		
-		return items;
-	
-	}
 	@GetMapping("/detailorder/{id}")
 	public String detailOrder(@PathVariable Long id,Model model) {
 		
@@ -121,6 +133,8 @@ public class MainController {
 			favor.setMember(member);
 			try {
 				this.favorRepository.save(favor);
+				item.setFavorListNum(this.favorRepository.findByItem(item).size());
+				this.itemRepository.save(item);
 				return "찜등록";
 			}catch(Exception e) {
 				return "찜등록실패";

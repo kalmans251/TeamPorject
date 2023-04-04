@@ -13,5 +13,6 @@ public interface FavorRepository extends JpaRepository<Favor, Long> {
 	
 	Optional<Favor> findByMemberAndItem(Member member, Item item);
 	List<Favor> findByMember(Member member);
+	List<Favor> findByItem(Item item);
 
 }

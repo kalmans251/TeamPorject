@@ -10,18 +10,19 @@
 </head>
 
 <main layout:fragment="content">
-	<div th:each="cartItemDto : ${cartItemDtoList}">
+	<div th:id="@{|cart_${cartItemDto.cartItemId}|}" th:each="cartItemDto : ${cartItemDtoList}">
 
-		<input type="checkbox" name="cartChkBox" th:value="${cartItemDto.cartItemId}">
-		<div class="repImg">
+		<input type="checkbox" name="cartChkBox" th:value="${cartItemDto.itemId}">
+		<span class="repImg">
 			<img style="width:100px;height:100px;" th:src="${cartItemDto.imgUrl}" th:alt="${cartItemDto.subject}">
-		</div>
+		</span>
 
-		<div th:text="${cartItemDto.subject}"></div>
-		<div th:text="${cartItemDto.size}"></div>
-		<div th:text="${cartItemDto.color}"></div>
-		<input type="number" th:id="@{|count_${cartItemDto.cartItemId}|}" th:value="${cartItemDto.count}">
-		<div th:id="@{|price_${cartItemDto.cartItemId}|}" th:text="${cartItemDto.price}" th:data-price="${cartItemDto.price}"></div>
+		<span th:text="${cartItemDto.subject}"></span>
+		<span th:text="${cartItemDto.size}"></span>
+		<span th:text="${cartItemDto.color}"></span>
+		<input type="number" th:id="@{|count_${cartItemDto.itemId}|}" th:value="${cartItemDto.count}">
+		<span th:id="@{|price_${cartItemDto.itemId}|}" th:text="${cartItemDto.price}" th:data-price="${cartItemDto.price}"></span>
+		<button th:onclick="@{|deletecart(${cartItemDto.cartItemId})|}">취소하기</button>
 
 	</div>
 	<div id="orderTotalPrice"></div>
@@ -35,6 +36,22 @@
 			getOrderTotalPrice();
 		});
 	});
+	
+	
+	function deletecart(cartItemId){
+		$.ajax ({		
+			type:"get",
+			url:"/deletecartAjax",
+			data:{id : cartItemId},
+			success:function(res){
+				alert(res)
+				document.getElementById('cart_'+cartItemId).style.display='none';
+			},
+			error:function(){
+				alert(res)
+			}			
+		})
+	}
 	
 	function getOrderTotalPrice(){
 		let orderTotalPrice=0;
