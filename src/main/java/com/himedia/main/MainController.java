@@ -20,6 +20,7 @@ import com.himedia.item.entity.Item;
 import com.himedia.item.entity.ItemSellingInform;
 import com.himedia.item.itemMain.ItemListingAjaxDto;
 import com.himedia.item.itemMain.ItemMainService;
+import com.himedia.item.itemMain.ItemOutputListAjaxDto;
 import com.himedia.item.repository.FavorRepository;
 import com.himedia.item.repository.ItemImgRepository;
 import com.himedia.item.repository.ItemRepository;
@@ -68,34 +69,40 @@ public class MainController {
 		return "category";
 	}
 	
-//	
-//	@PostMapping("/test")
-//	@ResponseBody
-//	public List<ItemOutputListAjaxDto> ajaxTest(@RequestBody ItemListingAjaxDto itemListingAjaxDto,Principal principal) {
-//		Page<Item> items = null;
-//		try {
-//			items = this.itemMainService.findItemsByCategory(itemListingAjaxDto.getCategory(),itemListingAjaxDto.getSort(),itemListingAjaxDto.getPage());
-//			
-//			List<ItemOutputListAjaxDto> iolaList= new ArrayList<>();
-//			for(Item item : items) {
-//				
-//				ItemOutputListAjaxDto iola= new ItemOutputListAjaxDto(item.getId(),this.itemImgRepository.findByItemAndRepimgYn(item, "Y").getUrl(),item.getSubject(), item.getPrice(), item.getFavorListNum());
-//				if(this.favorRepository.findByMemberAndItem(this.memberRepository.findByToken(principal.getName()).get(), item).isEmpty()) {
-//					iola.setIsFavor(false);
-//				}else {
-//					iola.setIsFavor(true);
-//				}
-//				iolaList.add(iola);
-//			}
-//			
-//			return iolaList;
-//		}catch(Exception e) {
-//			e.printStackTrace();
-//		}
-//		
-//		return null;
-//	
-//	}
+	
+	@PostMapping("/test")
+	@ResponseBody
+	public List<ItemOutputListAjaxDto> ajaxTest(@RequestBody ItemListingAjaxDto itemListingAjaxDto,Principal principal) {
+		Page<Item> items = null;
+		try {
+			items = this.itemMainService.findItemsByCategory(itemListingAjaxDto.getCategory(),itemListingAjaxDto.getSort(),itemListingAjaxDto.getPage());
+			
+			List<ItemOutputListAjaxDto> iolaList= new ArrayList<>();
+			for(Item item : items) {
+				
+				ItemOutputListAjaxDto iola= new ItemOutputListAjaxDto(item.getId(),this.itemImgRepository.findByItemAndRepimgYn(item, "Y").getUrl(),item.getSubject(), item.getPrice(), item.getFavorListNum());
+				
+				if(principal==null) {
+					iola.setIsFavor(false);
+				}else {
+					if(this.favorRepository.findByMemberAndItem(this.memberRepository.findByToken(principal.getName()).get(), item).isEmpty()) {
+						iola.setIsFavor(false);
+					}else {
+						iola.setIsFavor(true);
+					}
+				}
+				
+				iolaList.add(iola);
+			}
+			
+			return iolaList;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	
+	}
 	
 	@GetMapping("/detailorder/{id}")
 	public String detailOrder(@PathVariable Long id,Model model) {
