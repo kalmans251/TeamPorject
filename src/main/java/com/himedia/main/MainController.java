@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.himedia.item.dto.ItemDetailDto;
 import com.himedia.item.entity.Favor;
 import com.himedia.item.entity.Item;
+import com.himedia.item.entity.ItemImg;
 import com.himedia.item.entity.ItemSellingInform;
 import com.himedia.item.itemMain.ItemListingAjaxDto;
 import com.himedia.item.itemMain.ItemMainService;
@@ -106,8 +108,17 @@ public class MainController {
 	
 	@GetMapping("/detailorder/{id}")
 	public String detailOrder(@PathVariable Long id,Model model) {
+		Item item = this.itemRepository.findById(id).get();
+		List<ItemImg> item_list =this.itemImgRepository.findByItem(item);
+		List<String> urlList = new ArrayList<>();
+		for(ItemImg itemImg : item_list) {
+			urlList.add(itemImg.getUrl());
+		}
+		ItemDetailDto itemDetailDto = new ItemDetailDto(item.getPrice(),item.getSubject(),item.getCategory1(),item.getCategory2(),urlList);
 		
-		List<ItemSellingInform> isiList = this.itemSellingInformRepository.findByItem(this.itemRepository.findById(id).get());
+		model.addAttribute("itemDetailDto", itemDetailDto);
+		
+		List<ItemSellingInform> isiList = this.itemSellingInformRepository.findByItem(item);
 		System.out.println(isiList);
 		model.addAttribute("isiList", isiList);
 		model.addAttribute("itemId",id);
@@ -125,6 +136,7 @@ public class MainController {
 		
 		return "detailorder";
 	}
+	
 	
 	@PostMapping("/addfavor")
 	@ResponseBody

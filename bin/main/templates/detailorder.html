@@ -8,15 +8,89 @@
 <div layout:fragment="content">
 	<input id="itemId" type="hidden" th:value="${itemId}">
 	
-	<div>
+	<div class="album py-5 bg-light">
+	
+    <div style="width:100%">
+	<div style="width:90%;height:40px;margin:0 auto;background-color:black;margin-bottom:40px;border-radius:15px;">
+		<div style="position:relative;left:30px;width:200px;margin:0 auto;"class="input-group">
+		  <input style="margin-top:7px;height:25px;" type="text" class="form-control" aria-label="Text input with segmented dropdown button">
+		  <button style="margin-top:7px;height:25px;line-height:10px;width:40px;font-size:10px;" type="button" class="btn btn-outline-secondary"><span style="position:absolute;left:3px;top:6px;">Search</span></button>
+		  <button style="margin-top:7px;height:25px;line-height:10px;" type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+		    <span class="visually-hidden">Toggle Dropdown</span>
+		  </button>
+		  <ul class="dropdown-menu dropdown-menu-end">
+		    <li><a class="dropdown-item" href="#">Action</a></li>
+		    <li><a class="dropdown-item" href="#">Another action</a></li>
+		    <li><a class="dropdown-item" href="#">Something else here</a></li>
+		    <li><hr class="dropdown-divider"></li>
+		    <li><a class="dropdown-item" href="#">Separated link</a></li>
+		  </ul>
+		</div>
+		
+	</div>
+	
+	
+	
+	<main style="background-color:black;width:1200px;margin:0 auto;">
+	<div style="width:647px;height:494px;background:white;float:right;position:relative;top:3px;right:3px;padding:50px;">
+		<p><span>카테고리 : </span><span th:text="${itemDetailDto.category1}"></span>>><span th:text="${itemDetailDto.category2}"></span></p>
+		<p><span>상품명</span> : <span th:text="${itemDetailDto.subject}">불러와야함.</span></p>
+		<p><span>상품설명</span> : <span>불러와야함.</span></p>
+		<p><span>상품가격</span> : <span th:text="${itemDetailDto.price}">불러와야함.</span></p>
+		
+		<p><span>옵션:</span>
 		<select id="orderNum">
-		  <option th:each="isi:${isiList}" th:text="${isi.id}+${isi.color.name}+${isi.size.name}" th:value="${isi.id}"></option>
-		</select>
-		<input type="number" id="countNum" >
+		  <option th:each="isi:${isiList}" th:text="@{|색상:${isi.color.name}   사이즈:${isi.size.name}|}" th:value="${isi.id}"></option>
+		</select></p>
+		
+		<p><span>수량:</span>
+		<input style="width:50px;" type="number" id="countNum" ><span>개</span></p>
+		
 		<button onclick="addCart()">add to cart</button>
 		<button onclick="order()">buy now</button>
 		<button onclick="favor()">별</button>
+		
+		
 	</div>
+	
+	
+	<div style="width:547px;height:500px;" id="carouselExampleCaptions" class="carousel slide">
+	  
+	  <div class="carousel-inner">
+	    <div class="carousel-item active">
+	      <img style="height:500px;" th:src="${itemDetailDto.urlList[0]}" class="d-block w-100" alt="...">
+	      <div class="carousel-caption d-none d-md-block">
+	        <h5>First slide label</h5>
+	        <p>Some representative placeholder content for the first slide.</p>
+	      </div>
+		 </div>
+	    <div th:each="i:${#numbers.sequence(1,itemDetailDto.urlList.size()-1)}" class="carousel-item">
+	      <img style="height:500px;" th:src="${itemDetailDto.urlList[i]}" class="d-block w-100" alt="...">
+	      <div class="carousel-caption d-none d-md-block">
+	        <h5>Second slide label</h5>
+	        <p>Some representative placeholder content for the second slide.</p>
+	      </div>
+	    </div>
+	  </div>
+	  <div style="overflow-x:auto;width:500px;">
+	    <a th:each="i:${#numbers.sequence(0,itemDetailDto.urlList.size()-1)}" type="button" data-bs-target="#carouselExampleCaptions" th:data-bs-slide-to="${i}" class="active" aria-current="true" th:aria-label="@{|Slide ${i}|}"><img th:src="${itemDetailDto.urlList[i]}"></a>
+	  </div>
+	  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+	    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+	    <span class="visually-hidden">Previous</span>
+	  </button>
+	  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+	    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+	    <span class="visually-hidden">Next</span>
+	  </button>
+	</div>
+	
+	</main>
+	
+	
+	
+	
+	
 	
 	
 	
