@@ -113,4 +113,10 @@ public class MemberService {
 	public List<Member> allmember(){
 		return this.memberRepository.findAll();
 	}
+	public List<Member> selectByRole(MemberRole memberRole){
+		return this.memberRepository.findByMemberRole(memberRole);
+	}
+	public void memberNull(Member member) {
+		this.memberRepository.save(member);
+	}
 }

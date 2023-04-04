@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.himedia.member.entity.Member;
 import com.himedia.member.repository.MemberRepository;
@@ -25,25 +26,35 @@ public class AdminController {
 	private final MemberRepository memberRepository;
 	
 	@GetMapping("/member/change/role")
-	public String memberRoleChange(Model model) {
-		List<Member> memberGet = this.memberService.allmember();
-		model.addAttribute("member", memberGet);
+	public String memberRoleChange(Model model,@RequestParam(value = "role", defaultValue="") String role) {
+		List<Member> member;
+		if(role.equals("")) {
+			member = this.memberService.allmember();
+			model.addAttribute("member", member);
+		} else if(role.equals("manager")) {
+			member = this.memberService.selectByRole(MemberRole.MANAGER);
+			model.addAttribute("member", member);
+		} else if(role.equals("user")) {
+			member = this.memberService.selectByRole(MemberRole.USER);
+			model.addAttribute("member", member);
+		} else if(role.equals("admin")) {
+			member = this.memberService.selectByRole(MemberRole.ADMIN);
+			model.addAttribute("member", member);
+		}
+		
 		return "admin_memberrole";
 	}
-	@GetMapping(value="/member/change/manager/{idx}")
-	public String ChangeToManager(@PathVariable Long idx) {
+	@GetMapping(value="/member/change/{memberRole}/{idx}")
+	public String ChangeToManager(@PathVariable("idx") Long idx, @PathVariable("memberRole") String memberRole) {
 		Optional<Member> OPmember = this.memberRepository.findById(idx);
 		Member member = OPmember.get();
-		member.setMemberRole(MemberRole.MANAGER);
-		this.memberRepository.save(member);
-		return "redirect:/admin/member/change/role";
-	}
-	@GetMapping(value="/member/change/user/{idx}")
-	public String ChangeToUser(@PathVariable Long idx) {
-		Optional<Member> OPmember = this.memberRepository.findById(idx);
-		Member member = OPmember.get();
-		member.setMemberRole(MemberRole.USER);
+		if(memberRole.equals("manager")) {
+			member.setMemberRole(MemberRole.MANAGER);
+		}else if(memberRole.equals("user")) {
+			member.setMemberRole(MemberRole.USER);
+		}
 		this.memberRepository.save(member);
 		return "redirect:/admin/member/change/role";
 	}
 }
+

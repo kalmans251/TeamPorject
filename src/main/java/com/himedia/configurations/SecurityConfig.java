@@ -3,6 +3,7 @@ package com.himedia.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -14,6 +15,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.himedia.member.repository.MemberRepository;
+
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -23,6 +26,8 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 	
 	private final CustomOAuth2MemberService oAuth2MemberService;
+	
+	private final MemberRepository memberRepository;
 	
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -46,6 +51,7 @@ public class SecurityConfig {
 		.logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
 		.logoutSuccessUrl("/")
 		.invalidateHttpSession(true)
+		.logoutSuccessHandler(myCustomLogoutSuccessHandler())
 		.and()
 		.oauth2Login()
 		.loginPage("/login")
@@ -56,6 +62,13 @@ public class SecurityConfig {
 		
 		return http.build();
 	}
+
+	@Bean
+	@Primary
+	CustomLogoutSuccessHandler myCustomLogoutSuccessHandler() {
+	    return new CustomLogoutSuccessHandler(memberRepository);
+	}
+	
 	@Bean
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();

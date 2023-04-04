@@ -5,10 +5,21 @@
 <title>Insert title here</title>
 </head>
 <body>
+<form th:action="@{/admin/member/change/role}" method="get"  enctype="application/x-www-form-urlencoded">
+<select id="role" name="role">
+    <option value="">전체 회원</option>
+    <option value="manager">매니저 회원</option>
+    <option value="user">일반 회원</option>
+    <option value="admin">관리자</option>
+</select>
+<input type="submit" value="제출하기">
+</form>
 <div th:each="member,loop : ${member}">
 	<a th:text="${loop.count}"></a><a style="margin-left: 30px" th:text="${member.username}"></a>
-	<a th:text="${member.social}"  style="margin-left: 30px"></a><a style="margin-left: 30px" th:text=${member.memberRole}></a><a th:if="${#strings.equals(member.memberRole, 'USER')}" th:href="@{|/admin/member/change/manager/${member.idx}|}" style="margin-left: 30px">manager 권한 주기</a>
+	<a th:text="${member.social}"  style="margin-left: 30px"></a><a style="margin-left: 30px" th:text=${member.memberRole}></a>
+	<a th:if="${#strings.equals(member.memberRole, 'USER')}" th:href="@{|/admin/member/change/manager/${member.idx}|}" style="margin-left: 30px">manager 권한 주기</a>
 	<a th:if="${#strings.equals(member.memberRole, 'MANAGER')}" th:href="@{|/admin/member/change/user/${member.idx}|}" style="margin-left: 30px">USER 권한 주기</a>
+	<a th:if="${#strings.equals(member.memberRole, 'ADMIN')}"></a>
 </div>
 </body>
 </html>
