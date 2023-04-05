@@ -72,7 +72,7 @@
 	      </div>
 	    </div>
 	  </div>
-	  <div  style="white-space:no-wrap;overflow-x:auto;width:500px;">
+	  <div  style="white-space:nowrap;overflow-x:auto;width:500px;">
 	    <a th:each="i:${#numbers.sequence(0,itemDetailDto.urlList.size()-1)}" type="button" data-bs-target="#carouselExampleCaptions" th:data-bs-slide-to="${i}" class="active" aria-current="true" th:aria-label="@{|Slide ${i}|}"><img style="width:100px;height:100px;" th:src="${itemDetailDto.urlList[i]}"></a>
 	  </div>
 	  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
