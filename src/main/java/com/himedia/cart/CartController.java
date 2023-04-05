@@ -84,7 +84,7 @@ public class CartController {
 		}
 	}
 	
-	@PostMapping("cartCountAddAjax")
+	@PostMapping("/cartCountAddAjax")
 	@ResponseBody
 	public String cartCountAddAjax(@RequestParam Long id,@RequestParam Integer count, Principal principal) {
 		
@@ -101,7 +101,7 @@ public class CartController {
 	}
 	
 	
-	@PostMapping("checkcount")
+	@PostMapping("/checkcount")
 	@ResponseBody
 	public String checkCount(@RequestParam Long id,@RequestParam Integer buyCount) {
 		
@@ -116,7 +116,7 @@ public class CartController {
 		
 	}
 	
-	@PostMapping("rollbackcount")
+	@PostMapping("/rollbackcount")
 	@ResponseBody
 	public String rollbackCount(@RequestParam Long id,@RequestParam Integer buyCount) {
 		ItemSellingInform itsi = itemSellingInformRepository.findById(id).get();
@@ -161,9 +161,17 @@ public class CartController {
 		Item item = itsi.getItem();
 		ItemImg itemImg = this.itemImgRepository.findByItemAndRepimgYn(itsi.getItem(), "Y");
 		
-		OrderDto orderDto = new OrderDto(itemImg.getUrl(),item.getSubject(),item.getPrice(),itsi.getSize().getName(),itsi.getColor().getName(),count,
-							this.memberRepository.findByToken(principal.getName()).get(),
-							this.memberAddrRepository.findByMainAndMember(1, this.memberRepository.findByToken(principal.getName()).get()).get(0));
+		OrderDto orderDto = null;
+		if(this.memberAddrRepository.findByMainAndMember(1, this.memberRepository.findByToken(principal.getName()).get()).isEmpty()){
+			orderDto = new OrderDto(itemImg.getUrl(),item.getSubject(),item.getPrice(),itsi.getSize().getName(),itsi.getColor().getName(),count,
+					this.memberRepository.findByToken(principal.getName()).get(),
+					null);
+		}else {
+			orderDto = new OrderDto(itemImg.getUrl(),item.getSubject(),item.getPrice(),itsi.getSize().getName(),itsi.getColor().getName(),count,
+					this.memberRepository.findByToken(principal.getName()).get(),
+					this.memberAddrRepository.findByMainAndMember(1, this.memberRepository.findByToken(principal.getName()).get()).get(0));
+		}
+		
 		model.addAttribute("orderDto", orderDto);
 		model.addAttribute("isiId",isiId);
 		return "orderform";
