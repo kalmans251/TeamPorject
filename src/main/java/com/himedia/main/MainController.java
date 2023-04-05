@@ -164,6 +164,17 @@ public class MainController {
 		}
 	}
 	
+	@PostMapping("/countcheck")
+	@ResponseBody
+	public String countCheck(@RequestParam Integer countNum,@RequestParam Long orderNum) {
+		
+		Integer remain = this.itemSellingInformRepository.findById(orderNum).get().getSellCount();
+		if(remain >= countNum) {
+			return "재고있음";
+		}else {
+			return "재고부족";
+		}
+	}
 	
 	
 }

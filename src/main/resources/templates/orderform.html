@@ -25,11 +25,10 @@
 	<div th:text="${orderDto.member.phoneNum}" id="phone"></div>
 	<div th:text="${orderDto.memberAdress}" id="addr"></div>
 	<div th:text="${orderDto.memberAdress}" id="postcode"></div>	
-	<button onclick="totalPrice()">총금액</button>
-	
+
+	<div id="calcPrice"><span></span></div>
 	<button onclick="requestPay()">결제하기</button>
-	<button onclick="canclePay()">환불하기</button>
-	<button onclick="getToken()">토큰받기</button>
+<!-- 	<button onclick="getToken()">토큰받기</button> -->
 </div>
 
 	
@@ -39,13 +38,9 @@
 	const count = document.getElementById('count');
 	const price = document.getElementById('price'); 
 	const isiId = document.getElementById('isiId');
-	
+	const calcPrice = document.getElementById('calcPrice');
 	let total = count.innerText*price.innerText;
-	function totalPrice(){
-		
-		console.log(total+'원');
-	}
-	
+	calcPrice.innerText='결제금액:'+total.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+'원';
 	
 	var IMP = window.IMP;
 	IMP.init("imp57806750");
@@ -69,13 +64,10 @@
 			beforeSend : function(xhr){
                 xhr.setRequestHeader(header, token);
             },
-            
             data: {
-                imp_key: "2815781784137510", // REST API 키
-                imp_secret: "MZeWAg9WKeBWFAfDyIb7Ru146T4W1eJBFjVD946vPnAD6Tt7iDGtJisRyXXmZaVwNit6ZIx7FYyMEfFo" // REST API Secret
-                	
+                imp_key: "1316173255877318", // REST API 키
+                imp_secret: "lUB6JL8jzRq5nktPytzoO8pkOzZIwEWADhMx72C7XVzJf6riHWm8dY2uQBokTy4cyEg5cCCzzeV81gAJ"
             }
-            
 		}).done(function (data) {
 			console.log(data);
 		});

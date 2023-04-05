@@ -36,7 +36,7 @@
 		<p><span>카테고리 : </span><span th:text="${itemDetailDto.category1}"></span>>><span th:text="${itemDetailDto.category2}"></span></p>
 		<p><span>상품명</span> : <span th:text="${itemDetailDto.subject}">불러와야함.</span></p>
 		<p><span>상품설명</span> : <span>불러와야함.</span></p>
-		<p><span>상품가격</span> : <span th:text="${itemDetailDto.price}">불러와야함.</span></p>
+		<p><span>상품가격</span> : <span id="itemPrice" th:text="${itemDetailDto.price}">불러와야함.</span></p>
 		
 		<p><span>옵션:</span>
 		<select id="orderNum">
@@ -44,11 +44,11 @@
 		</select></p>
 		
 		<p><span>수량:</span>
-		<input style="width:50px;" type="number" id="countNum" ><span>개</span></p>
-		
-		<button onclick="addCart()">add to cart</button>
-		<button onclick="order()">buy now</button>
-		<button onclick="favor()">별</button>
+		<input style="width:50px;" type="number" id="countNum" value=1><span>개</span></p>
+		<div style="margin-bottom:10px;padding:5px;width:fit-content;border:1px solid black;border-radius:5px;font-size:30px;" id="calcPrice"></div>
+		<button onclick="addCart()">Add To Cart</button>
+		<button onclick="order()">Buy Now</button>
+		<button onclick="favor()">Wish List</button>
 		
 		
 	</div>
@@ -102,6 +102,18 @@
 <script layout:fragment="javascriptContent">
 	const orderNum= document.getElementById('orderNum');
 	const countNum= document.getElementById('countNum');
+	const itemPrice= document.getElementById('itemPrice');
+	countNum.addEventListener('input',handleChange);
+	document.getElementById('calcPrice').innerText=(itemPrice.innerText).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+'원';
+	
+	
+	
+	function handleChange(event){
+		if(countNum.value < 1){
+			countNum.value=1;
+		}
+		document.getElementById('calcPrice').innerText=(countNum.value*itemPrice.innerText).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+'원';
+	}
 	
 	function addCart(){
 		
@@ -182,12 +194,31 @@
 		var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
         
-		if(orderNum.value==""||countNum.value==""){
-			alert("구매하기:상품옵션과 갯수를 입력해주세요.");
-			return null;
-		}
+		$.ajax ({		
+			type:"post",
+			url:"/countcheck",
+			data:{countNum:countNum.value,orderNum:orderNum.value},
+			beforeSend : function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
+			success:function(res){
+				if(res==="재고부족"){
+					alert("재고부족");
+				}else{
+					if(orderNum.value==""||countNum.value==""){
+						alert("구매하기:상품옵션과 갯수를 입력해주세요.");
+						return null;
+					}
+					location.href="/orderform/"+orderNum.value+"?counts="+countNum.value+"&id="+orderNum.value;
+				}
+			},
+
+			error:function(){
+				alert("통신실패");
+			}			
+		});
+        
 		
-		location.href="/orderform/"+orderNum.value+"?counts="+countNum.value+"&id="+orderNum.value;
 	}
 	
 	function favor(){
