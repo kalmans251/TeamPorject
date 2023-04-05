@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.himedia.cart;
 
 import java.security.Principal;
@@ -100,7 +98,31 @@ public class CartController {
 			e.printStackTrace();
 			return "카트 아이템 갱신 실패";
 		}
+	}
 	
+	
+	@PostMapping("checkcount")
+	@ResponseBody
+	public String checkCount(@RequestParam Long id,@RequestParam Integer buyCount) {
+		
+		ItemSellingInform itsi = itemSellingInformRepository.findById(id).get();
+		if(itsi.getSellCount()<buyCount) {
+			return "재고없음";
+		}else{
+			itsi.setSellCount(itsi.getSellCount()-buyCount);
+			this.itemSellingInformRepository.save(itsi);
+			return "구매진행";
+		}
+		
+	}
+	
+	@PostMapping("rollbackcount")
+	@ResponseBody
+	public String rollbackCount(@RequestParam Long id,@RequestParam Integer buyCount) {
+		ItemSellingInform itsi = itemSellingInformRepository.findById(id).get();
+		itsi.setSellCount(itsi.getSellCount()+buyCount);
+		this.itemSellingInformRepository.save(itsi);
+		return "주문취소";
 	}
 	
 	

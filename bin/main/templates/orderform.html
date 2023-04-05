@@ -28,7 +28,8 @@
 	<button onclick="totalPrice()">총금액</button>
 	
 	<button onclick="requestPay()">결제하기</button>
-	<button onclick="cancelPay()">환불하기</button>
+	<button onclick="canclePay()">환불하기</button>
+	<button onclick="getToken()">토큰받기</button>
 </div>
 
 	
@@ -55,49 +56,125 @@
 	const phone = document.getElementById('phone');
 	const addr = document.getElementById('addr');
 	const postcode = document.getElementById('postcode');
-
+	console.log(location.origin);
+	function getToken(){
+		var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        
+		$.ajax({
+			url:"https://api.iamport.kr/users/getToken",
+			method: "post",
+			headers: { "Content-Type": "application/json"
+			},
+			beforeSend : function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
+            
+            data: {
+                imp_key: "2815781784137510", // REST API 키
+                imp_secret: "MZeWAg9WKeBWFAfDyIb7Ru146T4W1eJBFjVD946vPnAD6Tt7iDGtJisRyXXmZaVwNit6ZIx7FYyMEfFo" // REST API Secret
+                	
+            }
+            
+		}).done(function (data) {
+			console.log(data);
+		});
+	}
+	
 	function requestPay() {
 		var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
         
-		IMP.request_pay({
-			pg : 'inicis',
-			pay_method : 'card',
-			merchant_uid : "",
-			name : subject.innerText,
-			amount : total,
-			buyer_email : 'my03262@naver.com',
-			buyer_name : buyerName.innerText,
-			buyer_tel : phone.innerText,
-			buyer_addr : addr.innerText,
-			buyer_postcode : postcode.innerText
-		}, function(rsp) { // callback
-			if (rsp.success) {
-				// 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
-			      // jQuery로 HTTP 요청
-			      console.log(rsp.imp_uid);
-			      $.ajax({
-			        url: "/save", 
-			        method: "POST",
-			        beforeSend : function(xhr){
-		                xhr.setRequestHeader(header, token);
-		            },
-			        data: {
-			          imp_uid: rsp.imp_uid,            // 결제 고유번호
-			          merchant_uid: rsp.merchant_uid,   // 주문번호
-			          buyCount:count.innerText,
-			          id:isiId.value
-			        }
-			      }).done(function (data) {
-			        console.log(data);
-			        alert(data);
-			      })
-			} else {
-				console.log(rsp);
-			}
-		});
+        $.ajax({
+	        url: "/checkcount", 
+	        method: "POST",
+	        beforeSend : function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
+	        data: {
+	          buyCount:count.innerText,
+	          id:isiId.value
+	        }
+	      }).done(function (data) {
+	        if(data==="재고없음"){
+	        	alert(data);
+	        }else{
+	        	IMP.request_pay({
+	    			pg : 'inicis',
+	    			pay_method : 'card',
+	    			merchant_uid : "",
+	    			name : subject.innerText,
+	    			amount : total,
+	    			buyer_email : 'my03262@naver.com',
+	    			buyer_name : buyerName.innerText,
+	    			buyer_tel : phone.innerText,
+	    			buyer_addr : addr.innerText,
+	    			buyer_postcode : postcode.innerText
+	    		}, function(rsp) { // callback
+	    			if (rsp.success) {
+	    				// 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
+	    			      // jQuery로 HTTP 요청
+	    			      console.log(rsp.imp_uid);
+	    		
+	    			      $.ajax({
+	    			        url: "/save", 
+	    			        method: "POST",
+	    			        beforeSend : function(xhr){
+	    		                xhr.setRequestHeader(header, token);
+	    		            },
+	    			        data: {
+	    			          imp_uid: rsp.imp_uid,            // 결제 고유번호
+	    			          merchant_uid: rsp.merchant_uid,   // 주문번호
+	    			          buyCount:count.innerText,
+	    			          id:isiId.value
+	    			        }
+	    			      }).done(function (data) {
+	    			        console.log(data);
+	    			        alert(data);
+	    			      })
+	    			} else {
+	    				
+	    				$.ajax({
+	    			        url: "/rollbackcount", 
+	    			        method: "POST",
+	    			        beforeSend : function(xhr){
+	    		                xhr.setRequestHeader(header, token);
+	    		            },
+	    			        data: {
+	    			          buyCount:count.innerText,
+	    			          id:isiId.value
+	    			        }
+	    			      }).done(function (data) {
+	    			        alert(data);
+	    			      })
+	    			}
+	    		});
+	        }
+	      })	
+        
+		
 	}
 	
+	function canclePay() {
+	    $.ajax({
+	      // 예: http://www.myservice.com/payments/cancel
+	      "url": "https://www.weawea.com", 
+	      "type": "POST",
+	      "contentType": "application/json",
+	      "data": JSON.stringify({
+	        "merchant_uid": "nobody_1680679656859", // 예: ORD20180131-0000011
+	        "cancel_request_amount": 100, // 환불금액
+	        "reason": "테스트 결제 환불", // 환불사유
+	        // [가상계좌 환불시 필수입력] 환불 수령계좌 예금주
+	        "refund_holder": "김지수", 
+	        // [가상계좌 환불시 필수입력] 환불 수령계좌 은행코드(예: KG이니시스의 경우 신한은행은 88번)
+	        "refund_bank": "20" ,
+	        // [가상계좌 환불시 필수입력] 환불 수령계좌 번호
+	        "refund_account": "1002743321262" 
+	      }),
+	      "dataType": "json"
+	    });
+	  }
 </script>
 
 
