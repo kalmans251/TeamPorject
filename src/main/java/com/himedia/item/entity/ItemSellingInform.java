@@ -22,7 +22,7 @@ public class ItemSellingInform {
 	@ManyToOne
 	private Item item;		//아이템 (판매등록 아이템)
 	
-	private int sellCount;  //등록된 행
+	private int sellCount;  //상품의 수량
 	
 	@ManyToOne
 	private Size size;		//사이즈
@@ -30,6 +30,6 @@ public class ItemSellingInform {
 	@ManyToOne
 	private Color color;	//수량
 	
-	private int quantity;	//상품의 수량
+
 	
 }
