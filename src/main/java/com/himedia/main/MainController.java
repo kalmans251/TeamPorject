@@ -28,6 +28,7 @@ import com.himedia.item.repository.ItemImgRepository;
 import com.himedia.item.repository.ItemRepository;
 import com.himedia.item.repository.ItemSellingInformRepository;
 import com.himedia.member.entity.Member;
+import com.himedia.member.entity.MemberAddress;
 import com.himedia.member.repository.MemberRepository;
 import com.himedia.member.service.MemberService;
 
@@ -53,6 +54,8 @@ public class MainController {
 			Member member = this.memberService.getMember(username);
 			model.addAttribute("member", member);
 	        model.addAttribute("loggedIn", true);
+	        MemberAddress memberAddress = this.memberService.findMemberMainAddr(member);
+			model.addAttribute("memberMainAddr",memberAddress);
 		}else {
 	        model.addAttribute("loggedIn", false);	
 		}
