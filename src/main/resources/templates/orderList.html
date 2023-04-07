@@ -1,0 +1,53 @@
+<html layout:decorate="~{layout}">
+
+
+<div layout:fragment="content">
+
+<h2>주문 내역 조회</h2>
+
+<div th:each="orderDto : ${orderDtoList}">
+
+		
+		<span th:text="${#temporals.format(orderDto.regDate, 'yyyy-MM-dd')}"></span>
+		<span th:text="${orderDto.subject}"></span>
+		<img style="width:100px;height:100px;" th:src="${orderDto.url}">
+		<span th:text="${orderDto.price}"></span>
+		<span th:text="${orderDto.size}"></span>
+		<span th:text="${orderDto.color}"></span>
+		
+		<!--  <a th:href="@{}">리뷰쓰기</a>-->
+	
+</div>
+ 
+<!-- <button onclick="canclePay()">환불하기</button> -->
+
+</div>
+
+
+<!-- 
+<script layout:fragment="javascriptContent">
+function canclePay() {
+    $.ajax({
+      // 예: http://www.myservice.com/payments/cancel
+      "url": "http://www.myservice.com/payments/cancel", 
+      "type": "POST",
+      "contentType": "application/json",
+      "data": JSON.stringify({
+        "merchant_uid": "nobody_1680679656859", // 예: ORD20180131-0000011
+        "cancel_request_amount": 100, // 환불금액
+        "reason": "테스트 결제 환불", // 환불사유
+        // [가상계좌 환불시 필수입력] 환불 수령계좌 예금주
+        "refund_holder": "홍길동", 
+        // [가상계좌 환불시 필수입력] 환불 수령계좌 은행코드(예: KG이니시스의 경우 신한은행은 88번)
+        "refund_bank": "20" ,
+        // [가상계좌 환불시 필수입력] 환불 수령계좌 번호
+        "refund_account": "1002743321262" 
+      }),
+      "dataType": "json"
+    });
+  }
+ -->
+
+</script>
+
+</html>

@@ -163,11 +163,11 @@ public class CartController {
 		
 		OrderDto orderDto = null;
 		if(this.memberAddrRepository.findByMainAndMember(1, this.memberRepository.findByToken(principal.getName()).get()).isEmpty()){
-			orderDto = new OrderDto(itemImg.getUrl(),item.getSubject(),item.getPrice(),itsi.getSize().getName(),itsi.getColor().getName(),count,
+			orderDto = new OrderDto(null,itemImg.getUrl(),item.getSubject(),item.getPrice(),itsi.getSize().getName(),itsi.getColor().getName(),count,
 					this.memberRepository.findByToken(principal.getName()).get(),
 					null);
 		}else {
-			orderDto = new OrderDto(itemImg.getUrl(),item.getSubject(),item.getPrice(),itsi.getSize().getName(),itsi.getColor().getName(),count,
+			orderDto = new OrderDto(null,itemImg.getUrl(),item.getSubject(),item.getPrice(),itsi.getSize().getName(),itsi.getColor().getName(),count,
 					this.memberRepository.findByToken(principal.getName()).get(),
 					this.memberAddrRepository.findByMainAndMember(1, this.memberRepository.findByToken(principal.getName()).get()).get(0));
 		}

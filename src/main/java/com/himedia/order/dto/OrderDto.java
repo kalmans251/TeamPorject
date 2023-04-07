@@ -1,5 +1,7 @@
 package com.himedia.order.dto;
 
+import java.time.LocalDateTime;
+
 import com.himedia.member.entity.Member;
 import com.himedia.member.entity.MemberAddress;
 
@@ -9,6 +11,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OrderDto {
+	
+	private LocalDateTime regDate;
 	
 	private String url;
 	
@@ -26,7 +30,8 @@ public class OrderDto {
 	
 	private MemberAddress memberAdress;
 	
-	public OrderDto(String url,String subject , Long price , String size , String color , Integer orderCount , Member member, MemberAddress memberAddress){
+	public OrderDto(LocalDateTime regDate, String url,String subject , Long price , String size , String color , Integer orderCount , Member member, MemberAddress memberAddress){
+		this.regDate = regDate;
 		this.url = url;
 		this.subject=subject;
 		this.price=price;
