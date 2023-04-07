@@ -37,12 +37,20 @@
 }
 
 #plusImg {
-	float: right;
-}
-#ctnt{
-	height:200px;
+	margin: 10px auto auto 300px;
 }
 
+#btn2-sc {
+	margin: -20px auto 30px 600px;
+}
+
+#ctnt {
+	height: 200px;
+}
+
+.box1 {
+	margin: 30px;
+}
 </style>
 <script>
 	function addImage() {
@@ -69,6 +77,17 @@
 	<div class="card my-3" th:each="review, loop : ${paging}">
 		<div>
 			<div>
+				<div>
+					<br>&nbsp;&nbsp;&nbsp;<span th:if="${review.author != null}"
+						th:text="${#strings.length(review.author.nickName) &lt;= 8 ? review.author.nickName : review.author.nickName.substring(0, 3) + '****'}"></span>
+					(<span
+						th:text="${#temporals.format(review.createDate, 'yyyy-MM-dd HH:mm')}"></span>)
+				</div>
+			</div>
+		</div>
+
+		<div class="box1">
+			<div>
 				<div th:text="${review.content}"></div>
 				<div class="clear"></div>
 
@@ -84,17 +103,11 @@
 						<div
 							th:text="${#temporals.format(review.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
 					</div>
-					<div class="badge bg-light text-dark p-2 text-start">
-						<div class="mb-2">
-							<span th:if="${review.author != null}"
-								th:text="${review.author.nickName}"></span>
-						</div>
-						<div
-							th:text="${#temporals.format(review.createDate, 'yyyy-MM-dd HH:mm')}"></div>
-					</div>
+					<div class="clear"></div>
+					<br> <br>
 				</div>
 				<div class="my-3">
-					<a th:href="@{|/review/vote/${review.id}|}"
+					&nbsp;&nbsp;&nbsp; <a th:href="@{|/review/vote/${review.id}|}"
 						class="recommend btn  btn-outline-secondary"> <svg
 							xmlns="http://www.w3.org/2000/svg" width="16" height="16"
 							fill="currentColor" class="bi bi-suit-heart-fill"
