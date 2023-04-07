@@ -89,13 +89,15 @@ private final QuestionRepository questionrepository;
 	}
 	
 	public void vote(Question question, Member member) {
-
-		question.getVoter().add(member);
-		this.questionrepository.save(question);
-		
-		
+		Optional<Question> _question = this.questionrepository.findByIdAndVoter(question.getId(), member);
+		if(_question.isPresent()) {
+			question.getVoter().remove(member);
+		}else {
+			question.getVoter().add(member);
+		}
+		this.questionrepository.save(question);	
 	}
-
+	
 	
 	
 	public Page<Question> getList(int page,String itemId, String kw) {
