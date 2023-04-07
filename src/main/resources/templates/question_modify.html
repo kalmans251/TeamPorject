@@ -1,0 +1,16 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3">
+
+<form th:action="@{|/question/modify/|} + ${question.id}" th:object="${questionForm}" method="post">
+	<div class="subject">
+		<label>제목</label> 
+		<input type="text" name="subject" class="form-control" th:value="${question.subject}"/>
+	</div>
+	<div class="content">
+		<label for="content" >내용</label>
+		<textarea name="content" class="form-control">[[${question.content}]]</textarea>
+	</div>
+	<input type="submit" value="수정하기">
+</form>
+</div>
+</html>

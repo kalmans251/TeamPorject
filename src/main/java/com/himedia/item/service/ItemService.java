@@ -100,6 +100,10 @@ public class ItemService {
 		
 		return itemImg;
 	}
+	public Optional<Item> getOneItem(Long idx){
+		
+		return this.itemRepository.findById(idx);
+	}
 	
 
 	

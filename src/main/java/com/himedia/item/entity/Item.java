@@ -3,14 +3,12 @@ package com.himedia.item.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.himedia.item.entity.enums.CategoryEnum1;
-import com.himedia.item.entity.enums.CategoryEnum2;
 import com.himedia.member.entity.Member;
+import com.himedia.qna.question.Question;
+import com.himedia.review.Review;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -38,7 +36,7 @@ public class Item {
 	
 	private String category2;		//작은분류
 	
-	@OneToMany(cascade = CascadeType.REMOVE,mappedBy ="item")
+	@OneToMany(cascade = CascadeType.REMOVE,mappedBy ="item",targetEntity = Favor.class)
 	private List<Favor> favorList;		//찜목록
 	
 	private Integer favorListNum; // 찜한사람수
@@ -50,5 +48,11 @@ public class Item {
 	private LocalDateTime modifiedDate;		//수정일
 	
 	private Long price;		//가격
+	
+	@OneToMany(cascade = CascadeType.REMOVE,mappedBy ="item",targetEntity = Question.class)
+	private List<Question> question;
+	
+	@OneToMany(cascade = CascadeType.REMOVE,mappedBy ="item",targetEntity = Review.class)
+	private List<Review> review;
 	
 }
