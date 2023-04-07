@@ -89,4 +89,8 @@ public class ReviewService {
 		Pageable pageable = PageRequest.of(page, 3, Sort.by(sorts));
 		return this.reviewrepository.findByItem(pageable, item);
 	}
+	public List<Review> getReviewList(long itemId){
+		return this.reviewrepository.findByItem(itemId);
+	}
+	
 }

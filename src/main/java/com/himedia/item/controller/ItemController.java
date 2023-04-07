@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.himedia.item.dto.ItemAndImgDto;
 import com.himedia.item.entity.ItemImg;
 import com.himedia.item.service.ItemService;
+import com.himedia.review.Review;
+import com.himedia.review.ReviewService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class ItemController {
 	
 	private final ItemService itemService;
+	private final ReviewService reviewService;
 	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/good")

@@ -54,6 +54,7 @@ public class ReviewController {
 	    if (bindingResult.hasErrors()) {
 	        return "review_list";
 	    }
+	    System.out.println(reviewForm.getStar());
 	    Member member = this.memberService.getMember(principal.getName());
 	    Optional<Item> item = this.itemService.getOneItem(idx);
 	    this.reviewService.create(reviewForm.getContent(), member, reviewForm.getStar(),file,item.get());

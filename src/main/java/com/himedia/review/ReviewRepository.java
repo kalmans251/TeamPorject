@@ -1,5 +1,6 @@
 package com.himedia.review;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
 	 Page<Review> findAll(Specification<Review> spec, Pageable pageable);
 	 Page<Review> findByItem(Pageable pageable, Item item);
 	 Optional<Review> findByIdAndVoter(Integer id, Member member);
+	 List<Review> findByItem(Long item);
 	 
 	 
 	 Review findByContent(String content);

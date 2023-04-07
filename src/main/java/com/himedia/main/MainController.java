@@ -30,6 +30,8 @@ import com.himedia.item.repository.ItemSellingInformRepository;
 import com.himedia.member.entity.Member;
 import com.himedia.member.repository.MemberRepository;
 import com.himedia.member.service.MemberService;
+import com.himedia.review.Review;
+import com.himedia.review.ReviewService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +47,7 @@ public class MainController {
 	private final MemberService memberService;
 	private final MemberRepository memberRepository;
 	private final FavorRepository favorRepository;
+	private final ReviewService reviewService;
 	
 	@GetMapping("/")
 	public String index(HttpServletRequest request,Model model) {
@@ -111,6 +114,13 @@ public class MainController {
 		Item item = this.itemRepository.findById(id).get();
 		List<ItemImg> item_list =this.itemImgRepository.findByItem(item);
 		List<String> urlList = new ArrayList<>();
+//		List<Review> review = this.reviewService.getReviewList(id);
+//		Long staradd = 0L ;
+//		for(int i = 0 ; i < review.size(); i++) {
+//		    staradd += review.get(i).getStar();
+//		}
+//		long starAvg = staradd / review.size();
+//		System.out.println(starAvg);
 		for(ItemImg itemImg : item_list) {
 			urlList.add(itemImg.getUrl());
 		}
