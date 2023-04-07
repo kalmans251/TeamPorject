@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.himedia.cart;
 
 import java.security.Principal;
@@ -86,7 +84,7 @@ public class CartController {
 		}
 	}
 	
-	@PostMapping("cartCountAddAjax")
+	@PostMapping("/cartCountAddAjax")
 	@ResponseBody
 	public String cartCountAddAjax(@RequestParam Long id,@RequestParam Integer count, Principal principal) {
 		
@@ -100,7 +98,31 @@ public class CartController {
 			e.printStackTrace();
 			return "카트 아이템 갱신 실패";
 		}
+	}
 	
+	
+	@PostMapping("/checkcount")
+	@ResponseBody
+	public String checkCount(@RequestParam Long id,@RequestParam Integer buyCount) {
+		
+		ItemSellingInform itsi = itemSellingInformRepository.findById(id).get();
+		if(itsi.getSellCount()<buyCount) {
+			return "재고없음";
+		}else{
+			itsi.setSellCount(itsi.getSellCount()-buyCount);
+			this.itemSellingInformRepository.save(itsi);
+			return "구매진행";
+		}
+		
+	}
+	
+	@PostMapping("/rollbackcount")
+	@ResponseBody
+	public String rollbackCount(@RequestParam Long id,@RequestParam Integer buyCount) {
+		ItemSellingInform itsi = itemSellingInformRepository.findById(id).get();
+		itsi.setSellCount(itsi.getSellCount()+buyCount);
+		this.itemSellingInformRepository.save(itsi);
+		return "주문취소";
 	}
 	
 	
@@ -139,9 +161,17 @@ public class CartController {
 		Item item = itsi.getItem();
 		ItemImg itemImg = this.itemImgRepository.findByItemAndRepimgYn(itsi.getItem(), "Y");
 		
-		OrderDto orderDto = new OrderDto(itemImg.getUrl(),item.getSubject(),item.getPrice(),itsi.getSize().getName(),itsi.getColor().getName(),count,
-							this.memberRepository.findByToken(principal.getName()).get(),
-							this.memberAddrRepository.findByMainAndMember(1, this.memberRepository.findByToken(principal.getName()).get()).get(0));
+		OrderDto orderDto = null;
+		if(this.memberAddrRepository.findByMainAndMember(1, this.memberRepository.findByToken(principal.getName()).get()).isEmpty()){
+			orderDto = new OrderDto(itemImg.getUrl(),item.getSubject(),item.getPrice(),itsi.getSize().getName(),itsi.getColor().getName(),count,
+					this.memberRepository.findByToken(principal.getName()).get(),
+					null);
+		}else {
+			orderDto = new OrderDto(itemImg.getUrl(),item.getSubject(),item.getPrice(),itsi.getSize().getName(),itsi.getColor().getName(),count,
+					this.memberRepository.findByToken(principal.getName()).get(),
+					this.memberAddrRepository.findByMainAndMember(1, this.memberRepository.findByToken(principal.getName()).get()).get(0));
+		}
+		
 		model.addAttribute("orderDto", orderDto);
 		model.addAttribute("isiId",isiId);
 		return "orderform";
