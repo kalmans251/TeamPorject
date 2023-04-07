@@ -1,0 +1,107 @@
+<html layout:decorate="~{layout}">
+<head>
+<script src="/jquery-3.6.3.min.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<div layout:fragment="content">
+<h1>[[${item.subject}]]</h1>
+	<div class="row my-3">
+		<div class="col-6">
+			<a th:href="@{|/question/create/${item.id}|}" class="btn btn-primary">질문 등록하기</a>
+		</div>
+		<div class="col-6">
+			<form th:action="@{|/question/list/${item.id}|}" method="get" id="searchForm">
+				<input type="text" id="kw" name="kw" th:value="${kw}"> <input
+					type="hidden" id="page" name="page" th:value="${paging.number}">
+				<input type="submit" id="page" name="page" value="검색">
+			</form>
+		</div>
+	</div>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th style="width: 50%">제목</th>
+				<th>글쓴이</th>
+				<th>작성일시</th>
+			</tr>
+		</thead>
+		<tbody>
+
+			<tr class="text-center" th:each="question, loop : ${paging}">
+				<td
+					th:text="${paging.getTotalElements() - (paging.getNumber() * paging.getSize()) - loop.index}">번호</td>
+				<td class="text-start"><span
+					th:if="${question.secret == 'Y' 
+                or question.author == null 
+                or question.author.token == #authentication.name 
+                or #authorization.expression('hasAuthority(''ROLE_ADMIN'')')}">
+						<a th:href="@{|/question/shop/${question.id}|}"
+						th:text="${question.subject}">제목</a>
+				</span> <span
+					th:if="${question.secret == 'N' 
+                and question.author != null 
+                and question.author.token != #authentication.name 
+                and not #authorization.expression('hasAuthority(''ROLE_ADMIN'')')}">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+							fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
+        <path
+								d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" />
+      </svg>비밀글입니다.
+				</span> <span class="text-danger small ms-2"
+					th:if="${#lists.size(question.answerList)>0}"
+					th:text="${#lists.size(question.answerList)}"></span></td>
+				<td><span th:if="${question.author != null}"
+					th:text="${question.author.username}"></span></td>
+				<td>[[${#temporals.format(question.createDate, 'yyyy-MM-dd
+					HH:mm')}]]</td>
+			</tr>
+
+
+
+		</tbody>
+	</table>
+	<!-- 페이징처리 시작 -->
+	<div th:if="${!paging.isEmpty()}">
+		<ul class="pagination justify-content-center">
+			<li class="page-item"
+				th:classappend="${!paging.hasPrevious} ? 'disabled'"><a
+				class="page-link" href="javascript:void(0)"
+				th:data-page="${paging.number-1}"> <span>이전</span>
+			</a></li>
+			<li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+				th:if="${page >= paging.number-5 and page <= paging.number+5}"
+				th:classappend="${page == paging.number} ? 'active'"
+				class="page-item"><a th:text="${page}" class="page-link"
+				href="javascript:void(0)" th:data-page="${page}"></a></li>
+			<li class="page-item"
+				th:classappend="${!paging.hasNext} ? 'disabled'"><a
+				class="page-link" href="javascript:void(0)"
+				th:data-page="${paging.number+1}"> <span>다음</span>
+			</a></li>
+		</ul>
+		<!-- 페이징처리 끝 -->
+		<form th:action="@{/question/list}" method="get" id="searchForm">
+			<input type="hidden" id="kw" name="kw" th:value="${kw}"> <input
+				type="hidden" id="page" name="page" th:value="${paging.number}">
+		</form>
+
+	</div>
+	<script layout:fragment="script" type='text/javascript'>
+		const page_elements = document.getElementsByClassName("page-link");
+		Array.from(page_elements).forEach(function(element) {
+			element.addEventListener('click', function() {
+				document.getElementById('page').value = this.dataset.page;
+				document.getElementById('searchForm').submit();
+			});
+		});
+		const btn_search = document.getElementById("btn_search");
+		btn_search.addEventListener('click', function() {
+			document.getElementById('kw').value = document
+					.getElementById('search_kw').value;
+			document.getElementById('page').value = 0; // 검색버튼을 클릭할 경우 0 페이지부터 조회한다.
+			document.getElementById('searchForm').submit();
+		});
+	</script>
+</html>
+
