@@ -28,11 +28,14 @@ textarea::placeholder {
 		<button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="idcheck()">중복확인및 인증번호 발송</button>
 	</div>
 	<div id="result" role="alert">
-  		<a id="dupli"></a><a id="checkresult"></a>
 	</div>
+  		<div id="dupli" role="alert"></div><div id="checkresult" role="alert"></div>
 	<div>
-		<a>이메일 체크</a><input type="text" id="check"><a onclick="check2()">인증번호 확인</a><a id="checkresult2"></a>
+		<span style="width:110px;text-align:center" class="input-group-text" id="inputGroup-sizing-sm">인증번호</span>
+		<input type="text" id="check" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+		<button class="btn btn-outline-secondary" type="button" id="button-addon2"  onclick="check2()">인증번호 체크</button>
 	</div>
+	<div id="checkresult2" role="alert"></div>
 	<div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="alert alert-danger" role="alert">
   	
 	</div>
@@ -221,7 +224,9 @@ textarea::placeholder {
 	
 	const check2 = () =>{
 		var check = $('#check').val();
-		if(result===check){
+		if(result===""){
+			alert("인증번호를 입력해 주세요")
+		}else if(result===check){
 			$('#checkresult2').text("인증성공");
 			$('#submit').attr("type","submit")
 		}else{
