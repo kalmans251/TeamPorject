@@ -1,0 +1,13 @@
+
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3">
+<!-- th:action="@{|/review/modify/{id}|} + ${review.id}" -->
+<form th:action="@{|/review/modify/${review.id}|}" th:object="${reviewForm}" method="post">
+	<div class="content">
+		<label for="content" >내용</label>
+		<textarea name="content" class="form-control">[[${review.content}]]</textarea>
+	</div>
+	<input type="submit" value="수정하기">
+</form>
+</div>
+</html>
