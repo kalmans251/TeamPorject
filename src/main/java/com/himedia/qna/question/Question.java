@@ -21,7 +21,7 @@ import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity 
+@Entity
 @Getter 
 @Setter
 public class Question {

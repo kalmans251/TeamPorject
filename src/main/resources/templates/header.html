@@ -84,7 +84,17 @@
 	        	<a th:text="|${member.nickName} 님|"></a><br>
 	        	<a th:text="${member.username}"></a><br>
 	        	<a th:text="${member.phoneNum}"></a><br>
+	        		        	<a>대표주소</a>
+	        	<div th:if="${memberMainAddr != null}">
+		        	<a th:text="${memberMainAddr.addrnum}"></a><br>
+		        	<a th:text="${memberMainAddr.addr}"></a><br>
+		        	<a th:text="${memberMainAddr.reference}"></a><br>
+	        	</div>
+	        	<div th:if="${memberMainAddr == null}">
+	        		<a>주소지를 등록해 주세요</a>
+	        	</div>
 	        	<button onclick="location.href='/member/modify'" type="button" class="btn btn-primary">회원정보 수정</button>
+	        	<button onclick="location.href='/member/create/addr'" type="button" class="btn btn-primary">주소지 설정</button>
 	        </div>
 	        <div th:if="${loggedIn==false}">로그인 먼저 해주세요</div>
         </main>
