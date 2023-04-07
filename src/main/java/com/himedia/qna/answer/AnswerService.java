@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.himedia.member.entity.Member;
 import com.himedia.qna.question.Question;
+import com.himedia.review.Review;
 
 import lombok.RequiredArgsConstructor;
 
@@ -57,7 +58,12 @@ public Answer create(Question question, String content, Member author) {
 	}
 	
 	public void vote(Answer answer, Member member) {
-		answer.getVoter().add(member);
+		Optional<Answer> _answer = this.answerRepository.findByIdAndVoter(answer.getId(), member);
+		if(_answer.isPresent()) {
+			answer.getVoter().remove(member);
+		}else {
+			answer.getVoter().add(member);
+		}
 		this.answerRepository.save(answer);
 	}
 }
