@@ -133,14 +133,7 @@
         var header = $("meta[name='_csrf_header']").attr("content");
         var categorys = $("meta[name='category_meta']").attr("content");
         const categoryBox = document.getElementById('categoryBox');
-        for(let i = 1 ; i <= 5 ; i++){
-			document.getElementsByClassName('page-link')[i].innerText=(i+5*(Math.floor((page-1)/5)));
-			if(document.getElementsByClassName('page-link')[i].innerText>totalpages){
-				document.getElementsByClassName('page-link')[i].style.pointerEvents="none";
-			}else{
-				document.getElementsByClassName('page-link')[i].style.pointerEvents="auto";
-			}
-		}
+       
     	let cateInnerHTML = "";
         let cate="";
        	if(categorys==="TOP"){
@@ -191,6 +184,14 @@
             cache   : false,
             success  : function(result){
             	totalpages=result[0].totalPage;
+            	 for(let i = 1 ; i <= 5 ; i++){
+         			document.getElementsByClassName('page-link')[i].innerText=(i+5*(Math.floor((page-1)/5)));
+         			if(document.getElementsByClassName('page-link')[i].innerText>totalpages){
+         				document.getElementsByClassName('page-link')[i].style.pointerEvents="none";
+         			}else{
+         				document.getElementsByClassName('page-link')[i].style.pointerEvents="auto";
+         			}
+         		}
             	for(let i = 0 ; i<result.length;i++){
                 	test[i].innerHTML='<div class="col"><div class="card shadow-sm"><a href="/detailorder/'+result[i].itemId +'"><image src="'+ result[i].url +'" style="width=100%;height=100%;object-fit:cover;width:100%;height:225px;"></a><div class="card-body"><p class="card-text">물품이름:'+result[i].subject+'<br>물품가격:'+result[i].price+'<br>찜한사람:'+result[i].favorListNum+'<br><div if="'+result[i].isFavor+'">'+result[i].isFavor+'</div></p><div class="d-flex justify-content-between align-items-center"><div class="btn-group"><button type="button" class="btn btn-sm btn-outline-secondary">View</button><button type="button" class="btn btn-sm btn-outline-secondary">Edit</button></div><small class="text-muted">9 mins</small></div></div></div></div>';
             	}
