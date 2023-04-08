@@ -5,7 +5,9 @@
 	<meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <meta name="category_meta" th:content="${category}"/>
+    <meta name="totalPages_meta" th:content="${totalPages}"/>
 	<script src="/jquery-3.6.3.min.js"></script>
+	
 </head>
 
 
@@ -60,18 +62,21 @@
       </div>
     </div>
   </div>
-	<nav aria-label="Page navigation example">
+  
+<nav style="width:fit-content;margin:0 auto;" aria-label="Page navigation example">
   <ul class="pagination">
     <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous">
+      <a class="page-link" href="javascript:void(0)" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
     <li class="page-item"><a class="page-link" href="javascript:void(0)" >1</a></li>
     <li class="page-item"><a class="page-link" href="javascript:void(0)" >2</a></li>
     <li class="page-item"><a class="page-link" href="javascript:void(0)" >3</a></li>
+    <li class="page-item"><a class="page-link" href="javascript:void(0)" >4</a></li>
+    <li class="page-item"><a class="page-link" href="javascript:void(0)" >5</a></li>
     <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
+      <a class="page-link" href="javascript:void(0)" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
       </a>
     </li>
@@ -87,7 +92,7 @@
 	const test = document.getElementsByClassName('test');
 	const categoryObject = {TOP:["KNIT","LONGSLEEVES","SHORTSLEEVES","SLEEVELESS"],BOTTOM:["PANTS","SHORTS"],OUTER:["COATPADDING","CARDIGAN"]};
 	const search = document.getElementById('searchInput');
-	
+	var totalpages=0;
 	var page ="1";
 	for(let i = 1 ; i < document.getElementsByClassName('page-link').length-1 ; i++){
 		
@@ -95,14 +100,40 @@
 			console.log(this.text);
 			page=this.text;
 			selectSort();
-	    })
+	    });
 	}
+	document.getElementsByClassName('page-link')[0].addEventListener('click', function(){   // 이벤트 리스너 부분
+		console.log(this.text);
+		if(page==1){
+			page=page;
+		}else{
+			page=page-1;
+		}
+		console.log(page);
+		for(let i = 1 ; i <= 5 ; i++){
+			document.getElementsByClassName('page-link')[i].innerText=(i+5*((page-1)/5));
+		}
+		selectSort();
+    });
+	
+	document.getElementsByClassName('page-link')[6].addEventListener('click', function(){   // 이벤트 리스너 부분
+		console.log(totalpages);
+		if(page== totalpages){
+			page=page;
+		}else{
+			page=page-1+2;
+		}
+		console.log(page);
+
+		selectSort();
+    })
 	
 	function selectSort() {
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
         var categorys = $("meta[name='category_meta']").attr("content");
         const categoryBox = document.getElementById('categoryBox');
+       
     	let cateInnerHTML = "";
         let cate="";
        	if(categorys==="TOP"){
@@ -152,7 +183,15 @@
             dataType : "json",
             cache   : false,
             success  : function(result){
-            	
+            	totalpages=result[0].totalPage;
+            	 for(let i = 1 ; i <= 5 ; i++){
+         			document.getElementsByClassName('page-link')[i].innerText=(i+5*(Math.floor((page-1)/5)));
+         			if(document.getElementsByClassName('page-link')[i].innerText>totalpages){
+         				document.getElementsByClassName('page-link')[i].style.pointerEvents="none";
+         			}else{
+         				document.getElementsByClassName('page-link')[i].style.pointerEvents="auto";
+         			}
+         		}
             	for(let i = 0 ; i<result.length;i++){
                 	test[i].innerHTML='<div class="col"><div class="card shadow-sm"><a href="/detailorder/'+result[i].itemId +'"><image src="'+ result[i].url +'" style="width=100%;height=100%;object-fit:cover;width:100%;height:225px;"></a><div class="card-body"><p class="card-text">물품이름:'+result[i].subject+'<br>물품가격:'+result[i].price+'<br>찜한사람:'+result[i].favorListNum+'<br><div if="'+result[i].isFavor+'">'+result[i].isFavor+'</div></p><div class="d-flex justify-content-between align-items-center"><div class="btn-group"><button type="button" class="btn btn-sm btn-outline-secondary">View</button><button type="button" class="btn btn-sm btn-outline-secondary">Edit</button></div><small class="text-muted">9 mins</small></div></div></div></div>';
             	}
