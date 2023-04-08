@@ -8,7 +8,7 @@
 
 <h2>주문 내역 조회</h2>
 
-<div th:each="orderDto : ${orderDtoList}">
+<!-- <div th:each="orderDto : ${orderDtoList}">
 
 		
 		<span th:text="${#temporals.format(orderDto.regDate, 'yyyy-MM-dd')}"></span>
@@ -18,9 +18,9 @@
 		<span th:text="${orderDto.size}"></span>
 		<span th:text="${orderDto.color}"></span>
 		
-		<!--  <a th:href="@{}">리뷰쓰기</a>-->
+		 <a th:href="@{}">리뷰쓰기</a>
 	
-</div>
+</div> -->
 
 <section  class="ftco-section">
 		<div class="container">
@@ -59,7 +59,7 @@
 						      <td th:text="@{|${orderDto.price + '원'} / ${orderDto.orderCount+ '개'} |}"></td>
 						      
 						     <td>
-						     	
+						     	<a th:href="@{|review/list/${orderDto.id}|}">리뷰쓰러가기</a>
 						     </td>
 						    </tr>
 

@@ -12,6 +12,8 @@ import lombok.Setter;
 @Setter
 public class OrderDto {
 	
+	private Long Id;
+	
 	private LocalDateTime regDate;
 	
 	private String url;

@@ -8,7 +8,7 @@
 
 <div layout:fragment="content">
 	
-	<div th:id="@{|box_${favorDto.favorId}|}" th:each="favorDto:${favorDtoList}">
+	<!-- <div th:id="@{|box_${favorDto.favorId}|}" th:each="favorDto:${favorDtoList}">
 	
 		<img style="width:100px;height:100px;" th:src="${favorDto.imgUrl}">
 		<span>이름:</span><span th:text="${favorDto.subject}"></span>
@@ -16,7 +16,7 @@
 		
 		<a th:href="@{|/detailorder/${favorDto.id}|}">구매하러 가기</a>
 		<button th:onclick="@{|favorDeleteAjax(${favorDto.favorId})|}">찜 삭제</button>
-	</div>
+	</div> -->
 	
 	<section  class="ftco-section">
 		<div class="container">
@@ -83,7 +83,7 @@
 		    cache   : false,
 		    success  : function(result){
 		    	alert(result)
-		    	document.getElementById('box_'+id).style.display="none";
+		    	location. reload (true);
 		    }
 		});
 	}

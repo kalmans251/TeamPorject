@@ -74,9 +74,10 @@ public class OrderController {
 			List<MemberAddress> memberAddrList = member.getMemberAddresses();
 			if(memberAddrList.isEmpty()) {
 				orderDto = new OrderDto(orders.getRegDate(),itemImg.getUrl(),item.getSubject(),item.getPrice(),itemSellingInform.getSize().getName(),itemSellingInform.getColor().getName(),orders.getBuyCount(),null,null);
+				orderDto.setId(item.getId());
 			}else {
 				orderDto = new OrderDto(orders.getRegDate(),itemImg.getUrl(),item.getSubject(),item.getPrice(),itemSellingInform.getSize().getName(),itemSellingInform.getColor().getName(),orders.getBuyCount(),null,memberAddrList.get(i));
-				
+				orderDto.setId(item.getId());
 			}
 			orderDtoList.add(orderDto);
 		}
