@@ -1,7 +1,7 @@
   
   <nav th:fragment="navbarFragment" class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Offcanvas navbar large">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">WeaWea</a>
+      <a style="height:0px;overflow:hidden;" class="navbar-brand" >WeaWea</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2" aria-controls="offcanvasNavbar2">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -41,9 +41,9 @@
               </ul>
             </li>
           </ul>
-          <span class="d-flex mt-3 mt-lg-0" role="search">
+          <span  class="d-flex mt-3 mt-lg-0" role="search">
             <input id="searchInput"  class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button onclick="selectSort()" class="btn btn-outline-success" >Search</button>
+            <button style="background-color:none;border:1px solid white;" onclick="selectSort()" class="btn btn-outline-success" >Search</button>
           </span>
         </div>
       </div>

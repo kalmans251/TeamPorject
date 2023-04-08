@@ -16,26 +16,25 @@
 <main layout:fragment="content">
 	<div th:id="@{|cart_${cartItemDto.cartItemId}|}" th:each="cartItemDto : ${cartItemDtoList}">
 
-		<input type="checkbox" name="cartChkBox" th:value="${cartItemDto.itemId}">
+		<!-- <input type="checkbox" name="cartChkBox" th:value="${cartItemDto.itemId}">
 		<span class="repImg">
 			<img style="width:100px;height:100px;" th:src="${cartItemDto.imgUrl}" th:alt="${cartItemDto.subject}">
-		</span>
+		</span> -->
 
-		<span th:text="${cartItemDto.subject}"></span>
+	<!-- 	<span th:text="${cartItemDto.subject}"></span>
 		<span th:text="${cartItemDto.size}"></span>
 		<span th:text="${cartItemDto.color}"></span>
 		<input type="number" th:id="@{|count_${cartItemDto.itemId}|}" th:value="${cartItemDto.count}">
 		<span th:id="@{|price_${cartItemDto.itemId}|}" th:text="${cartItemDto.price}" th:data-price="${cartItemDto.price}"></span>
-		<button th:onclick="@{|deletecart(${cartItemDto.cartItemId})|}">취소하기</button>
+		<button th:onclick="@{|deletecart(${cartItemDto.cartItemId})|}">취소하기</button> -->
 
 	</div>
-	<div id="orderTotalPrice"></div>
-	<button onclick="requestPay()">구매하기</button>
+
 	
 	
 	
 	
-	<section class="ftco-section">
+	<section  class="ftco-section">
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-md-6 text-center mb-4">
@@ -56,8 +55,8 @@
 						      <th>&nbsp;</th>
 						    </tr>
 						  </thead>
-						  <tbody th:id="@{|cart_${cartItemDto.cartItemId}|}" th:each="cartItemDto : ${cartItemDtoList}">
-						    <tr class="alert" role="alert">
+						  <tbody th:each="cartItemDto : ${cartItemDtoList}">
+						    <tr th:id="@{|cart_${cartItemDto.cartItemId}|}" class="alert" role="alert">
 						    	<td>
 						    		<label class="checkbox-wrap checkbox-primary">
 										  <input type="checkbox" name="cartChkBox" th:value="${cartItemDto.itemId}">
@@ -70,16 +69,16 @@
 						      <td>
 						      	<div class="email">
 						      		<span th:text="${cartItemDto.subject}"></span>
-						      		<span th:text="${cartItemDto.size}"></span>
-						      		<span th:text="${cartItemDto.color}"></span>
+						      		<span th:text="@{|${cartItemDto.size} / ${cartItemDto.color} |}"></span>
+						      		
 						      	</div>
 						      </td>
 						      <td th:id="@{|price_${cartItemDto.itemId}|}" th:text="${cartItemDto.price}" th:data-price="${cartItemDto.price}"></td>
 						      <td>
-				             	<input type="number" th:id="@{|count_${cartItemDto.itemId}|}" th:value="${cartItemDto.count}" class="quantity form-control input-number">
+				             	<input name="count" style="width:80px;" type="number" th:id="@{|count_${cartItemDto.itemId}|}" th:value="${cartItemDto.count}" class="quantity form-control input-number">
 				          </td>
 						      <td>
-						      	<button th:onclick="@{|deletecart(${cartItemDto.cartItemId})|}" type="button" class="close" data-dismiss="alert" aria-label="Close">
+						      	<button style="width:50px;" th:onclick="@{|deletecart(${cartItemDto.cartItemId})|}" type="button" class="close" data-dismiss="alert" aria-label="Close">
 				            	<span aria-hidden="true"><i class="fa fa-close"></i></span>
 				          	</button>
 				        	</td>
@@ -87,10 +86,13 @@
 
 						  </tbody>
 						</table>
+							<div align="center"><span>총 금액:</span><span id="orderTotalPrice">0원</span><br><button onclick="requestPay()">구매하기</button></div>
+							
 					</div>
 				</div>
 			</div>
 		</div>
+		
 	</section>
 	
 	
@@ -107,6 +109,9 @@
 		$("input[name=cartChkBox]").change(function(){
 			getOrderTotalPrice();
 		});
+		$("input[name=count]").change(function(){
+			getOrderTotalPrice();
+		});
 	});
 	
 	
@@ -117,7 +122,7 @@
 			data:{id : cartItemId},
 			success:function(res){
 				alert(res)
-				document.getElementById('cart_'+cartItemId).style.display='none';
+				location. reload (true);
 			},
 			error:function(){
 				alert(res)
