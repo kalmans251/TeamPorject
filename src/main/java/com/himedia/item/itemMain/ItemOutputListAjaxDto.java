@@ -19,12 +19,15 @@ public class ItemOutputListAjaxDto {
 	
 	private Boolean isFavor;
 	
-	public ItemOutputListAjaxDto(Long itemId,String url,String subject , Long price,Integer favorListNum) {
+	private Integer totalPage;
+	
+	public ItemOutputListAjaxDto(Long itemId,String url,String subject , Long price,Integer favorListNum,Integer totalPage) {
 		this.itemId=itemId;
 		this.url=url;
 		this.subject=subject;
 		this.price=price;
 		this.favorListNum=favorListNum;
+		this.totalPage=totalPage;
 	}
 	
 }

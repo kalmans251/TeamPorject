@@ -4,6 +4,7 @@ package com.himedia.main;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -77,17 +78,16 @@ public class MainController {
 	
 	@PostMapping("/test")
 	@ResponseBody
-	public List<ItemOutputListAjaxDto> ajaxTest(@RequestBody ItemListingAjaxDto itemListingAjaxDto,Principal principal) {
+	public List<ItemOutputListAjaxDto> ajaxTest(Model model,@RequestBody ItemListingAjaxDto itemListingAjaxDto,Principal principal) {
 		Page<Item> items = null;
 		try {
 			items = this.itemMainService.findItemsByCategory(itemListingAjaxDto.getCategory(),itemListingAjaxDto.getSort(),itemListingAjaxDto.getPage(),itemListingAjaxDto.getSearch());
-			System.out.println(itemListingAjaxDto.getSearch());
 			
 			
 			List<ItemOutputListAjaxDto> iolaList= new ArrayList<>();
 			for(Item item : items) {
 				
-				ItemOutputListAjaxDto iola= new ItemOutputListAjaxDto(item.getId(),this.itemImgRepository.findByItemAndRepimgYn(item, "Y").getUrl(),item.getSubject(), item.getPrice(), item.getFavorListNum());
+				ItemOutputListAjaxDto iola= new ItemOutputListAjaxDto(item.getId(),this.itemImgRepository.findByItemAndRepimgYn(item, "Y").getUrl(),item.getSubject(), item.getPrice(), item.getFavorListNum(),items.getTotalPages());
 				
 				if(principal==null) {
 					iola.setIsFavor(false);
@@ -102,6 +102,7 @@ public class MainController {
 				iolaList.add(iola);
 			}
 			
+			items.getTotalPages();
 			return iolaList;
 		}catch(Exception e) {
 			e.printStackTrace();
