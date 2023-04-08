@@ -13,9 +13,9 @@ public class ItemMainController {
 	private final ItemMainService itemMainService;
 	
 	@GetMapping("/list/{category}")
-    public String getCategoryAndSorting(String category,String sort,Integer page ) {
+    public String getCategoryAndSorting(String category,String sort,Integer page,String search ) {
     	
-    	itemMainService.findItemsByCategory(category,sort,page);
+    	itemMainService.findItemsByCategory(category,sort,page,search);
     	
     	return null;
     }

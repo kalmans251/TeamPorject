@@ -12,4 +12,6 @@ public class ItemListingAjaxDto {
 	private String category;
 	
 	private Integer page;
+	
+	private String search;
 }

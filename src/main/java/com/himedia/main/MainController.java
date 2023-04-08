@@ -80,7 +80,9 @@ public class MainController {
 	public List<ItemOutputListAjaxDto> ajaxTest(@RequestBody ItemListingAjaxDto itemListingAjaxDto,Principal principal) {
 		Page<Item> items = null;
 		try {
-			items = this.itemMainService.findItemsByCategory(itemListingAjaxDto.getCategory(),itemListingAjaxDto.getSort(),itemListingAjaxDto.getPage());
+			items = this.itemMainService.findItemsByCategory(itemListingAjaxDto.getCategory(),itemListingAjaxDto.getSort(),itemListingAjaxDto.getPage(),itemListingAjaxDto.getSearch());
+			System.out.println(itemListingAjaxDto.getSearch());
+			
 			
 			List<ItemOutputListAjaxDto> iolaList= new ArrayList<>();
 			for(Item item : items) {

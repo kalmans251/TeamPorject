@@ -36,7 +36,7 @@ public class ItemMainService {
 //	}
 
 
-	public Page<Item> findItemsByCategory(String category,String sort,Integer page) {
+	public Page<Item> findItemsByCategory(String category,String sort,Integer page,String search) {
 		int size = 9;
 		
 		List<Sort.Order> sorts = new ArrayList(); 
@@ -53,13 +53,13 @@ public class ItemMainService {
 		
 		Pageable pageable= PageRequest.of(page-1, size, Sort.by(sorts));
 		
-		Specification<Item> spe = search(category);
+		Specification<Item> spe = search(category,search);
 		
 		return itemMainRepository.findAll(spe, pageable);
 	}
 	
 	
-	private Specification<Item> search(String kw) {
+	private Specification<Item> search(String kw,String search) {
     	
         return new Specification<>() {
         	
@@ -69,11 +69,26 @@ public class ItemMainService {
             public Predicate toPredicate(Root<Item> q, CriteriaQuery<?> query, CriteriaBuilder cb) {
             	
                 query.distinct(true);  // 중복을 제거 
+                if(search.equals("")) {
+                	System.out.println("gdgd");
+                	return cb.or(
+                    		cb.like(q.get("category1"), "%" + kw + "%"), // category1(대분류)
+                            cb.like(q.get("category2"), "%" + kw + "%")      // category2(소분류)
+                    		);   // 답변 작성자 
+                	
+                }else {
+                	return cb.and(
+                			cb.like(q.get("subject"), "%" + search + "%" ),
+                			cb.or(
+                				  cb.like(q.get("category1"), "%" + kw + "%"), // category1(대분류)
+                				  cb.like(q.get("category2"), "%" + kw + "%")      // category2(소분류)
+                            	 )
+                			); 
+                			
+                			
+                			
+                }
                 
-                return cb.or(
-                		cb.like(q.get("category1"), "%" + kw + "%"), // category1(대분류)
-                        cb.like(q.get("category2"), "%" + kw + "%")      // category2(소분류)
-                        );   // 답변 작성자 
             }
         };
     }

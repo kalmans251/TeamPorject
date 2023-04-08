@@ -12,7 +12,10 @@
 <div layout:fragment="content">
 	
 	
-	<div style="margin:0 auto;width:fit-content;"><span th:text="${category}" style="font-size:50px;"></span></div>
+	<div style="margin:0 auto;width:fit-content;"><span class="category" th:text="${category}" style="font-size:50px;"></span></div>
+	<br>
+	<div id="categoryBox"></div>
+	<br>
 	<select id="sort" onchange="selectSort()" class="form-select form-select-sm" aria-label=".form-select-sm example">
   		<option value="1">최신순</option>
   		<option value="2">높은가격순</option>
@@ -82,6 +85,9 @@
 	
 	const sort = document.getElementById('sort');
 	const test = document.getElementsByClassName('test');
+	const categoryObject = {TOP:["KNIT","LONGSLEEVES","SHORTSLEEVES","SLEEVELESS"],BOTTOM:["PANTS","SHORTS"],OUTER:["COATPADDING","CARDIGAN"]};
+	const search = document.getElementById('searchInput');
+	
 	var page ="1";
 	for(let i = 1 ; i < document.getElementsByClassName('page-link').length-1 ; i++){
 		
@@ -96,12 +102,81 @@
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
         var categorys = $("meta[name='category_meta']").attr("content");
+        const categoryBox = document.getElementById('categoryBox');
+    	let cateInnerHTML = "";
+        let cate="";
+       	if(categorys==="TOP"){
+       		for(let i = 0 ; i < categoryObject.TOP.length ; i++){
+       			cate=categoryObject.TOP[i];
+       			cateInnerHTML += "<button style='width:"+(100/categoryObject.TOP.length)+"%;' href='javascript:void(0)' onclick='selectSortCategory(\""+cate+"\")'>"+categoryObject.TOP[i]+"</button>";
+       			categoryBox.innerHTML=cateInnerHTML;
+       			
+       		}
+       	}else if(categorys==="BOTTOM"){
+       		for(let i = 0 ; i < categoryObject.BOTTOM.length ; i++){
+       			cate=categoryObject.BOTTOM[i];
+       			cateInnerHTML += "<button style='width:"+(100/categoryObject.BOTTOM.length)+"%;' href='javascript:void(0)' onclick='selectSortCategory(\""+cate+"\")'>"+categoryObject.BOTTOM[i]+"</button>";
+       			categoryBox.innerHTML=cateInnerHTML;
+       			
+       		}
+       	}else if(categorys=="OUTER"){
+       		for(let i = 0 ; i < categoryObject.OUTER.length ; i++){
+       			cate=categoryObject.OUTER[i];
+       			cateInnerHTML += "<button style='width:"+(100/categoryObject.OUTER.length)+"%;' href='javascript:void(0)' onclick='selectSortCategory(\""+cate+"\")'>"+categoryObject.OUTER[i]+"</button>";
+       			categoryBox.innerHTML=cateInnerHTML;
+       			
+       		}
+       	}
+       	
+        
+        
         
         var url = "/test";
         var paramData = {
             sort : sort.value,
             category : categorys,
-            page : page
+            page : page,
+            search:search.value
+        };
+
+        var param = JSON.stringify(paramData);
+
+        $.ajax({
+            url      : url,
+            type     : "POST",
+            contentType : "application/json",
+            data     : param,
+            beforeSend : function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
+            dataType : "json",
+            cache   : false,
+            success  : function(result){
+            	
+            	for(let i = 0 ; i<result.length;i++){
+                	test[i].innerHTML='<div class="col"><div class="card shadow-sm"><a href="/detailorder/'+result[i].itemId +'"><image src="'+ result[i].url +'" style="width=100%;height=100%;object-fit:cover;width:100%;height:225px;"></a><div class="card-body"><p class="card-text">물품이름:'+result[i].subject+'<br>물품가격:'+result[i].price+'<br>찜한사람:'+result[i].favorListNum+'<br><div if="'+result[i].isFavor+'">'+result[i].isFavor+'</div></p><div class="d-flex justify-content-between align-items-center"><div class="btn-group"><button type="button" class="btn btn-sm btn-outline-secondary">View</button><button type="button" class="btn btn-sm btn-outline-secondary">Edit</button></div><small class="text-muted">9 mins</small></div></div></div></div>';
+            	}
+            	for(let i=result.length ; i <9 ; i++ ){
+            		test[i].innerHTML='';
+            	}
+            	
+            	console.log(result);
+            	
+            }
+            
+        });
+    }
+	
+	function selectSortCategory(cate) {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        
+        var url = "/test";
+        var paramData = {
+            sort : sort.value,
+            category : cate,
+            page : page,
+            search:search.value
         };
 
         var param = JSON.stringify(paramData);
