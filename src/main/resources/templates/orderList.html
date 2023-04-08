@@ -6,8 +6,6 @@
 
 <div layout:fragment="content">
 
-<h2>주문 내역 조회</h2>
-
 <!-- <div th:each="orderDto : ${orderDtoList}">
 
 		
@@ -33,13 +31,13 @@
 				<div class="col-md-12">
 					<div class="table-wrap">
 						<table class="table">
-						  <thead class="thead-primary">
+						  <thead class="thead-primary" style="background-color:lightgray;">
 						    <tr>
-						    	<th>Order Date</th>
-						    	<th>Product</th>
+						    	<th style="font-weight:bold; font-size:16px;">Order Date</th>
+						    	<th style="font-weight:bold; font-size:16px;">Product</th>
 						    	<th>&nbsp;</th>
-						      <th>Price / Quantity</th>
-						      <th>Write a review</th>
+						      <th style="font-weight:bold; font-size:16px;">Price / Quantity</th>
+						      <th style="font-weight:bold; font-size:16px;">Write a review</th>
 						    </tr>
 						  </thead>
 						  <tbody th:each="orderDto : ${orderDtoList}">
@@ -52,14 +50,13 @@
 						    	</td>
 						      <td>
 						      	<div class="email">
-						      		<span th:text="${orderDto.subject}"></span>
-						      		<span th:text="@{|${orderDto.size} / ${orderDto.color} |}"></span>
+						      		<span th:text="${orderDto.subject}"></span> 
+						      		<span style="color:gray;" th:text="@{|${'옵션 [ ' + orderDto.size} / ${orderDto.color + ' ]'} |}"></span>
 						      	</div>
 						      </td>
-						      <td th:text="@{|${orderDto.price + '원'} / ${orderDto.orderCount+ '개'} |}"></td>
-						      
+						      <td th:text="@{|${#numbers.formatInteger(orderDto.price, 3, 'COMMA')+ '원'} / ${orderDto.orderCount+ '개'} |}"></td>
 						     <td>
-						     	<a th:href="@{|review/list/${orderDto.id}|}">리뷰쓰러가기</a>
+						     	<a th:href="@{|review/list/${orderDto.id}|}" style="color:gray;">리뷰쓰러가기</a>
 						     </td>
 						    </tr>
 

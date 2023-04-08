@@ -29,12 +29,12 @@
 				<div class="col-md-12">
 					<div class="table-wrap">
 						<table class="table">
-						  <thead class="thead-primary">
+						  <thead class="thead-primary" style="background-color:lightgray;">
 						    <tr>
 						    	<th>&nbsp;</th>
-						    	<th>Product</th>
-						      <th>Price</th>
-						      <th>상품상세보기</th>
+						    	<th style="font-weight:bold; font-size:16px;">Product</th>
+						      <th style="font-weight:bold; font-size:16px;">Price</th>
+						      <th style="font-weight:bold; font-size:16px;">Detail</th>
 						      <th>&nbsp;</th>
 						    </tr>
 						  </thead>
@@ -47,10 +47,10 @@
 						      <td>
 						      		<span th:text="${favorDto.subject}"></span>
 						      </td>
-						      <td th:text="${favorDto.price}"></td>
+						      <td th:text="${#numbers.formatInteger(favorDto.price, 3, 'COMMA')+'원'}"></td>
 						     
 						     <td>
-						     	<a th:href="@{|/detailorder/${favorDto.id}|}">상품 상세보기</a>
+						     	<a th:href="@{|/detailorder/${favorDto.id}|}" style="color:gray;">상품 상세보기</a>
 						     </td>
 						      <td>
 						      	<button style="width:50px;" th:onclick="@{|favorDeleteAjax(${favorDto.favorId})|}" type="button" class="close" data-dismiss="alert" aria-label="Close">

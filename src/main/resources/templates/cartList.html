@@ -48,9 +48,9 @@
 						    <tr>
 						    	<th>&nbsp;</th>
 						    	<th>&nbsp;</th>
-						    	<th>Product</th>
-						      <th>Price</th>
-						      <th>Quantity</th>
+						    	<th style="font-weight:bold; font-size:16px;">Product</th>
+						      <th style="font-weight:bold; font-size:16px;">Price</th>
+						      <th style="font-weight:bold; font-size:16px;">Quantity</th>
 						      <th>&nbsp;</th>
 						    </tr>
 						  </thead>
@@ -68,11 +68,11 @@
 						      <td>
 						      	<div class="email">
 						      		<span th:text="${cartItemDto.subject}"></span>
-						      		<span th:text="@{|${cartItemDto.size} / ${cartItemDto.color} |}"></span>
+						      		<span th:text="@{|${'옵션 [ ' + cartItemDto.size} / ${cartItemDto.color + ' ]'}|}" style="color:gray;"></span>
 						      		
 						      	</div>
 						      </td>
-						      <td th:id="@{|price_${cartItemDto.itemId}|}" th:text="${cartItemDto.price}" th:data-price="${cartItemDto.price}"></td>
+						      <td th:id="@{|price_${cartItemDto.itemId}|}" th:text="${#numbers.formatInteger(cartItemDto.price, 3, 'COMMA') + '원'}" th:data-price="${cartItemDto.price}"></td>
 						      <td>
 				             	<input name="count" style="width:80px;" type="number" th:id="@{|count_${cartItemDto.itemId}|}" th:value="${cartItemDto.count}" class="quantity form-control input-number">
 				          </td>
