@@ -9,6 +9,11 @@
 	font-size: 2rem;
 	color: lightgrey;
 }
+.star1 {
+	position: relative;
+	font-size: 2rem;
+	color: lightgrey;
+}
 
 .star input {
 	width: 100%;
@@ -20,6 +25,13 @@
 }
 
 .star span {
+	width: 0;
+	position: absolute;
+	left: 0;
+	color: red;
+	pointer-events: none;
+}
+.star1 span {
 	width: 0;
 	position: absolute;
 	left: 0;
@@ -75,7 +87,10 @@
 
 <div layout:fragment="content" class="container my-3">
 	<div class="card my-3" th:each="review, loop : ${paging}">
-		<div>
+		<div>	
+			<span class="star1"> ★★★★★ <span th:style="@{|width:${review.star*10}%;white-space: nowrap; overflow: hidden; height: 50px;|}">★★★★★</span>
+				
+			</span>
 			<div>
 				<div>
 					<br>&nbsp;&nbsp;&nbsp;<span th:if="${review.author != null}"
@@ -140,7 +155,7 @@
 					<div>
 						<label for="star"></label> <span class="star"> ★★★★★ <span
 							style="white-space: nowrap; overflow: hidden; height: 50px;">★★★★★</span>
-							<input type="range" oninput="drawStar(this)" value="1" step="1"
+							<input type="range" oninput="drawStar(this)" name="star" value="1" step="1"
 							min="0" max="10">
 						</span>
 					</div>
