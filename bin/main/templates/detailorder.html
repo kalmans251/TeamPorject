@@ -73,12 +73,14 @@
 	    <span class="carousel-control-next-icon" aria-hidden="true"></span>
 	    <span class="visually-hidden">Next</span>
 	  </button>
-	<a th:href="@{|/question/list/${itemId}|}">상품 문의하기</a>
-	<p>
-	<a th:href="@{|/review/list/${itemId}|}">상품 후기</a>
+	  
 	</div>
+	
 	</main>
-
+	<div style="margin:0 auto;width:fit-content;margin-top:100px;" align="center">
+	  <a style="margin-right:150px;width:400px;" th:href="@{|/question/list/${itemId}|}" class="btn btn-outline-info">상품 문의하기</a>
+	  <a style="width:400px;" th:href="@{|/review/list/${itemId}|}" class="btn btn-outline-info">상품 후기</a>
+	</div>
 	
 </div>
 <script layout:fragment="javascriptContent">
