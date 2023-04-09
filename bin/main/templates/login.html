@@ -10,7 +10,7 @@
   <div th:if="${param.error}">
 	<div>회원정보가 일치 하지 않습니다.</div>
   </div>
-    <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+    <img class="mb-4" src="/img/profilepic.png" width="85" height="100" alt="">
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
     <div class="form-floating">
@@ -21,19 +21,13 @@
       <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
       <label for="floatingPassword">Password</label>
     </div>
-
-    <div class="checkbox mb-3">
-      <label>
-        <input type="checkbox" value="remember-me"> Remember me
-      </label>
-    </div>
+    
     <button class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>
     
   </form>
   	<a th:href="@{/login/google}">구글로 로그인</a><br>
   	<a th:href="@{/login/naver}">네이버로 로그인</a><br>
   <div style="margin-top:10px;"><button onclick="location.href='/member/create'" type="button" class="btn btn-primary">회원가입</button>&nbsp&nbsp<button type="button" class="btn btn-primary" onclick="location.href='/member/compulsion/password'">아이디/비밀번호 찾기</button></div>
-  	<p class="mt-5 mb-3 text-muted">&copy; 2017–2022</p>
   	</center>
   	
 </main>
