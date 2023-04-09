@@ -193,7 +193,7 @@
          			}
          		}
             	for(let i = 0 ; i<result.length;i++){
-                	test[i].innerHTML='<div class="col"><div class="card shadow-sm"><a href="/detailorder/'+result[i].itemId +'"><image src="'+ result[i].url +'" style="width=100%;height=100%;object-fit:cover;width:100%;height:225px;"></a><div class="card-body"><p class="card-text">물품이름:'+result[i].subject+'<br>물품가격:'+result[i].price+'<br>찜한사람:'+result[i].favorListNum+'<br><div if="'+result[i].isFavor+'">'+result[i].isFavor+'</div></p><div class="d-flex justify-content-between align-items-center"><div class="btn-group"><button type="button" class="btn btn-sm btn-outline-secondary">View</button><button type="button" class="btn btn-sm btn-outline-secondary">Edit</button></div><small class="text-muted">9 mins</small></div></div></div></div>';
+                	test[i].innerHTML='<div class="col"><div class="card shadow-sm"><a href="/detailorder/'+result[i].itemId +'"><image src="'+ result[i].url +'" style="width=100%;height=100%;object-fit:cover;width:100%;height:225px;"></a><div class="card-body"><p class="card-text">물품이름:'+result[i].subject+'<br>물품가격:'+result[i].price+'<br>찜한사람:'+result[i].favorListNum+'<br><div if="'+result[i].isFavor+'">'+result[i].isFavor+'</div></p></div></div></div>';
             	}
             	for(let i=result.length ; i <9 ; i++ ){
             		test[i].innerHTML='';
