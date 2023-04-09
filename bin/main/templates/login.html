@@ -5,7 +5,7 @@
 </head>
 
 <main layout:fragment="content" class="form-signin w-100 m-auto">
-	<center>
+	<center style="margin:70px 0px 70px 0px;">
   <form th:action="@{/member/login}" method="post">
   <div th:if="${param.error}">
 	<div>회원정보가 일치 하지 않습니다.</div>
@@ -22,12 +22,13 @@
       <label for="floatingPassword">Password</label>
     </div>
     
-    <button class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>
+    <button class="w-100 btn btn-lg btn-primary" type="submit" style="background-color:#2E75B6; margin:10px 0px; border:1px solid #2E75B6">LOGIN</button>
     
   </form>
-  	<a th:href="@{/login/google}">구글로 로그인</a><br>
-  	<a th:href="@{/login/naver}">네이버로 로그인</a><br>
-  <div style="margin-top:10px;"><button onclick="location.href='/member/create'" type="button" class="btn btn-primary">회원가입</button>&nbsp&nbsp<button type="button" class="btn btn-primary" onclick="location.href='/member/compulsion/password'">아이디/비밀번호 찾기</button></div>
+  	<button onclick="location.href='/login/google'" type="button" class="btn btn-outline-primary.btn-outline-*" style="color:#2E75B6; border:solid 1px #2E75B6; width:300px;">LOGIN WITH GOOGLE</button><br>
+  	<button onclick="location.href='/login/naver'" type="button" class="btn btn-outline-primary.btn-outline-*" style="color:#2E75B6; border:solid 1px #2E75B6; width:300px; margin:10px 0px;">LOGIN WITH NAVER</button><br>
+  <div style="margin-top:15px;"><button onclick="location.href='/member/create'" type="button" class="btn btn-primary" style="background-color:#2E75B6; border:1px solid #2E75B6">CREATE ACCOUNT</button>&nbsp&nbsp
+  <button type="button" class="btn btn-primary" onclick="location.href='/member/compulsion/password'" style="background-color:#2E75B6; border:1px solid #2E75B6;">FIND ID / PW</button></div>
   	</center>
   	
 </main>

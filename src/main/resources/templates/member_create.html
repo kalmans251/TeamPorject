@@ -17,8 +17,8 @@ textarea::placeholder {
 </head>
 
 <div layout:fragment="content">
-<center>
-<h2>회원가입</h2>
+<center style="margin:80px 0px 150px 0px;">
+<h2 style="margin-bottom:50px;">회원가입</h2>
 <form th:action="@{/member/create}" th:object="${memberCreateForm}" method="post">
 <div style="width:500px;margin:0 auto;">
 	<div class="input-group input-group-sm mb-3">
@@ -82,7 +82,7 @@ textarea::placeholder {
 	<div th:if="${#fields.hasErrors('phoneNum')}" th:errors="*{phoneNum}" class="alert alert-danger" role="alert">
   	
 	</div>
-		<td><input type = "hidden" id="submit" value="제출하기" class="btn btn-light"></td>
+		<td><input type = "hidden" id="submit" value="제출하기" class="btn btn-light" style="background-color:#2E75B6; color:white;"></td>
 	
 </div>
 
