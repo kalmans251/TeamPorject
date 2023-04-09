@@ -13,12 +13,10 @@
 	<div class="album py-5 bg-light">
 	
     <div class="container">
-    <select style="width:100px;float:right;position:relative;top:-40px;" id="sort" onchange="selectSort()" class="form-select form-select-sm" aria-label=".form-select-sm example">
-  		<option value="1">최신순</option>
-  		<option value="2">높은가격순</option>
-  		<option value="3">낮은가격순</option>
-  		<option value="4">인기순</option>
-	</select>
+    
+	<div align="center" style="margin:0 auto;width:fit-content;">
+		<span id="country"></span><br><span id="weather"></span>
+	</div>
 	<div style="width:90%;height:40px;margin:0 auto;background-color:#EBEBEB;margin-bottom:40px;border-radius:15px;">
 		<div style="position:relative;left:30px;width:200px;margin:0 auto;"class="input-group">
 		  <input id="geoSearch" style="margin-top:7px;height:25px;" type="text" class="form-control" aria-label="Text input with segmented dropdown button">
@@ -42,7 +40,7 @@
 		 <a href="javascript:void(0)" th:onclick="get_today()">
           <div class="card shadow-sm">
        		<img  style="height:100px;width:100px;margin:0 auto;" id="_0dayImg">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="135" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#A4A3A3"/><text x="50%" y="50%" fill="#eceeef" dy=".3em"><span style="position:relative;top:-130px;height:0px;color:white;"><span id="city"></span><span id="weather"></span><span id="country"></span></span></text></svg>
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="135" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#A4A3A3"/><text x="50%" y="50%" fill="#eceeef" dy=".3em"><span style="position:relative;top:-130px;height:0px;color:white;"><div id="city"></div><br></span></text></svg>
             
           </div>
          </a>
@@ -59,7 +57,7 @@
          </a>
         </div>
         
-        <div class="col">
+        <div style="margin-bottom:-30px;;" class="col">
          <a href="javascript:void(0)" onclick="get_7day()">
           <div class="card shadow-sm">
 			<img style="height:100px;width:100px;margin:0 auto;" id="_7dayImg">
@@ -67,6 +65,12 @@
             
           </div>
          </a>
+         <select style="width:100px;float:right;position:relative;top:50px;left:0;" id="sort" onchange="selectSort()" class="form-select form-select-sm" aria-label=".form-select-sm example">
+  		<option value="1">최신순</option>
+  		<option value="2">높은가격순</option>
+  		<option value="3">낮은가격순</option>
+  		<option value="4">인기순</option>
+		</select>
         </div>
 		
 	</div>
@@ -180,7 +184,7 @@ function get_geoSearch(){
 	    	            
 	    	            city.innerText = data.name;
 	    	            
-	    	            weater.innerText =`오늘/${data.weather[0].description} /최저온도:${(data.main.temp_min-273.15).toFixed(2)}/최고온도:${(data.main.temp_max-273.15).toFixed(2)}/현재온도 ${(data.main.temp-273.15).toFixed(2)}도`;
+	    	        	weater.innerHTML =`<div align="center"><span>오늘:${data.weather[0].description}<span><br> <span>최저온도:${(data.main.temp_min-273.15).toFixed(2)}</span><br><span>최고온도:${(data.main.temp_max-273.15).toFixed(2)}</span><br><span>현재온도:${(data.main.temp-273.15).toFixed(2)}도</span></div>`;
 	    	    		_0dayImg.src="http://openweathermap.org/img/w/"+data.weather[0].icon+".png";
 	    	    		todayTemp = (((data.main.temp_min-273.15+data.main.temp_max-273.15).toFixed(2)))/2;
 	    	        });
@@ -192,11 +196,11 @@ function get_geoSearch(){
 	    	        const country = document.getElementById('country');
 	    	        
 	    	        country.innerText = data.timezone;
-	    	        _3day.innerText='3일뒤/'+data.daily[2].weather[0].description+"/최저온도:"+((data.daily[2].temp.min-273.15).toFixed(2))+"/최고온도:"+((data.daily[2].temp.max-273.15).toFixed(2));
+	    	        _3day.innerHTML='<div align="center" ><span>3일뒤:'+data.daily[2].weather[0].description+"</span><br><span>최저온도:"+((data.daily[2].temp.min-273.15).toFixed(2))+"</span><br><span>최고온도:"+((data.daily[2].temp.max-273.15).toFixed(2))+"</span></div>";
 	    	        _3dayTemp=(((data.daily[2].temp.min-273.15)+(data.daily[2].temp.max-273.15)).toFixed(2)/2);
 	    	        _3dayImg.src="http://openweathermap.org/img/w/"+data.daily[2].weather[0].icon+".png";
 	    	        
-	    	        _7day.innerText='7일뒤/'+data.daily[6].weather[0].description+"/최저온도:"+((data.daily[6].temp.min-273.15).toFixed(2))+"/최고온도:"+((data.daily[6].temp.max-273.15).toFixed(2));
+	    	        _7day.innerHTML='<div align="center" ><span>3일뒤:'+data.daily[6].weather[0].description+"</span><br><span>최저온도:"+((data.daily[6].temp.min-273.15).toFixed(2))+"</span><br><span>최고온도:"+((data.daily[6].temp.max-273.15).toFixed(2))+"</span></div>";
 	    	        _7dayImg.src="http://openweathermap.org/img/w/"+data.daily[6].weather[0].icon+".png";
 	    	        _7dayTemp=(((data.daily[6].temp.min-273.15)+(data.daily[6].temp.max-273.15)).toFixed(2)/2);
 	    	    });
@@ -369,7 +373,7 @@ function onGeoOk(position){
             
             city.innerText = data.name;
             
-            weater.innerText =`오늘/${data.weather[0].description} /최저온도:${(data.main.temp_min-273.15).toFixed(2)}/최고온도:${(data.main.temp_max-273.15).toFixed(2)}/현재온도 ${(data.main.temp-273.15).toFixed(2)}도`;
+            weater.innerHTML =`<div align="center"><span>오늘:${data.weather[0].description}<span><br> <span>최저온도:${(data.main.temp_min-273.15).toFixed(2)}</span><br><span>최고온도:${(data.main.temp_max-273.15).toFixed(2)}</span><br><span>현재온도:${(data.main.temp-273.15).toFixed(2)}도</span></div>`;
     		_0dayImg.src="http://openweathermap.org/img/w/"+data.weather[0].icon+".png";
     		todayTemp = (((data.main.temp_min-273.15+data.main.temp_max-273.15).toFixed(2)))/2;
         });
@@ -381,11 +385,11 @@ function onGeoOk(position){
         const country = document.getElementById('country');
         
         country.innerText = data.timezone;
-        _3day.innerText='3일뒤/'+data.daily[2].weather[0].description+"/최저온도:"+((data.daily[2].temp.min-273.15).toFixed(2))+"/최고온도:"+((data.daily[2].temp.max-273.15).toFixed(2));
+        _3day.innerHTML='<div align="center" ><span>3일뒤:'+data.daily[2].weather[0].description+"</span><br><span>최저온도:"+((data.daily[2].temp.min-273.15).toFixed(2))+"</span><br><span>최고온도:"+((data.daily[2].temp.max-273.15).toFixed(2))+"</span></div>";
         _3dayTemp=(((data.daily[2].temp.min-273.15)+(data.daily[2].temp.max-273.15)).toFixed(2)/2);
         _3dayImg.src="http://openweathermap.org/img/w/"+data.daily[2].weather[0].icon+".png";
         
-        _7day.innerText='7일뒤/'+data.daily[6].weather[0].description+"/최저온도:"+((data.daily[6].temp.min-273.15).toFixed(2))+"/최고온도:"+((data.daily[6].temp.max-273.15).toFixed(2));
+        _7day.innerHTML='<div align="center" ><span>3일뒤:'+data.daily[6].weather[0].description+"</span><br><span>최저온도:"+((data.daily[6].temp.min-273.15).toFixed(2))+"</span><br><span>최고온도:"+((data.daily[6].temp.max-273.15).toFixed(2))+"</span></div>";
         _7dayImg.src="http://openweathermap.org/img/w/"+data.daily[6].weather[0].icon+".png";
         _7dayTemp=(((data.daily[6].temp.min-273.15)+(data.daily[6].temp.max-273.15)).toFixed(2)/2);
     });

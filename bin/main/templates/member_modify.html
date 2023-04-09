@@ -19,11 +19,11 @@
 </div>
 
 
-	<div class="input-group input-group-sm mb-3" style="margin-top:10px;">
+	<div style="width:600px;margin:0 auto;margin-top:10px;" class="input-group input-group-sm mb-3" >
 				<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">닉네임</span>
 				<input type="text" name="nickName" th:value="${member.nickName}" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
 	</div>
-	<div class="input-group input-group-sm mb-3">
+	<div style="width:600px;margin:0 auto;" class="input-group input-group-sm mb-3">
 				<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">전화번호</span>
 				<input placeholder="000-0000-000" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');" type="text" name="phoneNum" th:value="${member.phoneNum}" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
 	</div>

@@ -14,11 +14,11 @@
 <div layout:fragment="content">
 	
 	
-	<div style="margin:0 auto;width:fit-content;"><span class="category" th:text="${category}" style="font-size:50px;"></span></div>
+	<div style="margin:0 auto;width:fit-content;margin-top:30px;"><span class="category" th:text="${category}" style="font-size:42px;"></span></div>
 	<br>
-	<div id="categoryBox"></div>
+	<div style="width:700px;margin:0 auto;" id="categoryBox"></div>
 	<br>
-	<select id="sort" onchange="selectSort()" class="form-select form-select-sm" aria-label=".form-select-sm example">
+	<select style="width:200px;float:right;position:relative;left:-90px;" id="sort" onchange="selectSort()" class="form-select form-select-sm" aria-label=".form-select-sm example">
   		<option value="1">최신순</option>
   		<option value="2">높은가격순</option>
   		<option value="3">낮은가격순</option>
@@ -139,21 +139,24 @@
        	if(categorys==="TOP"){
        		for(let i = 0 ; i < categoryObject.TOP.length ; i++){
        			cate=categoryObject.TOP[i];
-       			cateInnerHTML += "<button style='width:"+(100/categoryObject.TOP.length)+"%;' href='javascript:void(0)' onclick='selectSortCategory(\""+cate+"\")'>"+categoryObject.TOP[i]+"</button>";
+       			categoryBox.style.width="700px";
+       			cateInnerHTML += "<button style='background-color:white;border:none;width:"+(100/categoryObject.TOP.length)+"%;' href='javascript:void(0)' onclick='selectSortCategory(\""+cate+"\")'>"+categoryObject.TOP[i]+"</button>";
        			categoryBox.innerHTML=cateInnerHTML;
        			
        		}
        	}else if(categorys==="BOTTOM"){
        		for(let i = 0 ; i < categoryObject.BOTTOM.length ; i++){
        			cate=categoryObject.BOTTOM[i];
-       			cateInnerHTML += "<button style='width:"+(100/categoryObject.BOTTOM.length)+"%;' href='javascript:void(0)' onclick='selectSortCategory(\""+cate+"\")'>"+categoryObject.BOTTOM[i]+"</button>";
+       			categoryBox.style.width="400px";
+       			cateInnerHTML += "<button style='background-color:white;border:none;width:"+(100/categoryObject.BOTTOM.length)+"%;' href='javascript:void(0)' onclick='selectSortCategory(\""+cate+"\")'>"+categoryObject.BOTTOM[i]+"</button>";
        			categoryBox.innerHTML=cateInnerHTML;
        			
        		}
        	}else if(categorys=="OUTER"){
        		for(let i = 0 ; i < categoryObject.OUTER.length ; i++){
        			cate=categoryObject.OUTER[i];
-       			cateInnerHTML += "<button style='width:"+(100/categoryObject.OUTER.length)+"%;' href='javascript:void(0)' onclick='selectSortCategory(\""+cate+"\")'>"+categoryObject.OUTER[i]+"</button>";
+       			categoryBox.style.width="400px";
+       			cateInnerHTML += "<button style='background-color:white;border:none;width:"+(100/categoryObject.OUTER.length)+"%;' href='javascript:void(0)' onclick='selectSortCategory(\""+cate+"\")'>"+categoryObject.OUTER[i]+"</button>";
        			categoryBox.innerHTML=cateInnerHTML;
        			
        		}
