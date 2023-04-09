@@ -8,25 +8,22 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 </head>
-<div layout:fragment="content">
+<div layout:fragment="content" style="margin:70px 0px 100px 0px;">
 
 <h2 style="margin:0 auto;width:fit-content;margin-top:50px;"> 주문서 작성</h2>
 <table style="margin:0 auto;width:600px;">
 <input id="isiId" type="hidden" th:value="${isiId}">
-	<tr>
-		<td>상품정보</td><td></td><td></td>
-	</tr>
 
 	<tr>
 		<td>
-			<div>
+			<div style="margin-top:40px;">
 				<img style="float:left;width:100px;height:100px;" th:src="${orderDto.url}">
 				
-				<ul>
+				<ul style="list-style:none; margin-left:80px;">
 					<li id="subject" th:text="${orderDto.subject}"></li>
 					<li><span id="price" th:text="${orderDto.price}"></span>원</li>
 					<li> [옵션:<span th:text="${orderDto.color}"></span>/<span th:text="${orderDto.size}"></span>]</li>
-					<li>QTY: <span id="count" th:text="${orderDto.orderCount}"></span></li>
+					<li> 수량: <span id="count" th:text="${orderDto.orderCount}"></span></li>
 				</ul>
 			</div>
 		</td>
@@ -35,16 +32,19 @@
 		
 		<td></td>
 	</tr>
-	<tr>
-		<td>주문정보</td>
-		<td></td>
-		<td></td>
-	</tr>
+	
 </table>
 <div style="width:600px;margin:0 auto;">
 <div align="center"  id="disable">
-	<div th:text="${orderDto.member.nickName}" id="buyerName"></div>
-	<span>전화번호:</span><input th:value="${orderDto.member.phoneNum}" id="phone">
+	
+	<div class="input-group input-group-sm mb-3" style="margin-top:10px;">
+				<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">받는 사람</span>
+				<input type="text" name="nickName" th:value="${orderDto.member.nickName}" id="buyerName" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+	</div>
+	<div class="input-group input-group-sm mb-3">
+				<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">전화 번호</span>
+				<input th:value="${orderDto.member.phoneNum}" id="phone" type="text" name="nickName" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+	</div>
 </div>
 		<div class="input-group input-group-sm mb-3">
 					<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">주소</span>
@@ -59,7 +59,7 @@
 					<input  placeholder="상세주소" type="text" id="sample6_detailAddress" name="addr3" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
 		</div>
 		<div style="margin-bottom:30px;margin:0 auto;width:fit-content;" id="calcPrice"></div>
-	  	<div style="margin-bottom:30px;margin:0 auto;width:fit-content;"><button style="margin:0 auto" onclick="requestPay()">결제하기</button></div>
+	  	<div style="margin-bottom:30px;margin:0 auto;width:fit-content;"><button onclick="requestPay()" class="w-100 btn btn-lg btn-primary" style="background-color:#2E75B6; margin:10px 0px; border:1px solid #2E75B6">결제하기</button></div>
 </div>
 	
 </div> 
@@ -73,7 +73,7 @@
 	const isiId = document.getElementById('isiId');
 	const calcPrice = document.getElementById('calcPrice');
 	let total = count.innerText*price.innerText;
-	calcPrice.innerText='결제금액:'+total.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+'원';
+	calcPrice.innerText='결제 금액 : '+total.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+'원';
 	
 	var IMP = window.IMP;
 	IMP.init("imp57806750");
