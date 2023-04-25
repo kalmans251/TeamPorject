@@ -66,7 +66,7 @@ public class MemberController {
 		}
 		String addr =memberCreateForm.getAddr2()+memberCreateForm.getAddr3();
 		try {
-			this.memberService.memberInsert(memberCreateForm.getUsername(), memberCreateForm.getPassword1(), memberCreateForm.getNickName() ,memberCreateForm.getPhoneNum(), MemberRole.USER);
+			this.memberService.memberInsert(memberCreateForm.getUsername(), memberCreateForm.getPassword1(), memberCreateForm.getNickName() ,memberCreateForm.getPhoneNum());
 		}catch(DataIntegrityViolationException e) {
 			e.printStackTrace();
 			bindingResult.reject("singupFail","이미 등록된 사용자 입니다.");

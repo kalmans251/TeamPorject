@@ -33,14 +33,14 @@ public class MemberService {
 	
 	private final MemberAddrRepository memberAddrRepository;
 	
-	public void memberInsert(String username,String password,String nickName, String phoneNum, MemberRole memberRole) {
+	public void memberInsert(String username,String password,String nickName, String phoneNum) {
 		
 		Member member = new Member();
 		
 		member.setUsername(username);
 		member.setPassword(this.passwordEncoder.encode(password));
 		member.setPhoneNum(phoneNum);
-		member.setMemberRole(memberRole.USER);
+		member.setMemberRole(MemberRole.USER);
 		member.setSocial(Social.LOCAL);
 		member.setToken(username);
 		member.setNickName(nickName);

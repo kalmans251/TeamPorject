@@ -2,6 +2,7 @@ package com.himedia.item.controller;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.himedia.item.dto.ItemAndImgDto;
 import com.himedia.item.entity.ItemImg;
 import com.himedia.item.service.ItemService;
+import com.himedia.member.entity.Member;
+import com.himedia.member.service.MemberService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,11 +28,22 @@ import lombok.RequiredArgsConstructor;
 public class ItemController {
 	
 	private final ItemService itemService;
+	private final MemberService memberService;
 	
-	@PreAuthorize("isAuthenticated()")
+//	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/good")
-	public String itemForm(Model model,ItemAndImgDto itemAndImgDto) {
+	public String itemForm(Model model,ItemAndImgDto itemAndImgDto, Principal principal) {
+		
+		System.out.println("good 컨트롤러 호출 완료 : ");
+		System.out.println("principal 출력 Name==> : "+ principal.getName());
+		System.out.println("principal 출력 ==> : "+ principal.toString());
+		Member member = this.memberService.getMember(principal.getName());
+		System.out.println(member.getMemberRole());
 		model.addAttribute("itemAndImgDto", new ItemAndImgDto());
+		
+		
+		
+		
 		return "upload";
 		
 	}

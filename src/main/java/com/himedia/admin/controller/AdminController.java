@@ -48,10 +48,16 @@ public class AdminController {
 	public String ChangeToManager(@PathVariable("idx") Long idx, @PathVariable("memberRole") String memberRole) {
 		Optional<Member> OPmember = this.memberRepository.findById(idx);
 		Member member = OPmember.get();
-		if(memberRole.equals("manager")) {
+		if(memberRole.equals("ROLE_MANAGER")) {
 			member.setMemberRole(MemberRole.MANAGER);
-		}else if(memberRole.equals("user")) {
+			
+			System.out.println("ENUM Manager 출력 : ==> " + member.getMemberRole());
+			
+		}else if(memberRole.equals("ROLE_USER")) {
 			member.setMemberRole(MemberRole.USER);
+			
+			System.out.println("ENUM Manager 출력 : ==> " + member.getMemberRole());
+
 		}
 		this.memberRepository.save(member);
 		return "redirect:/admin/member/change/role";

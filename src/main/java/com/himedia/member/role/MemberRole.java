@@ -8,10 +8,15 @@ public enum MemberRole {
 	ADMIN("ROLE_ADMIN"),
 	USER("ROLE_USER"),
 	MANAGER("ROLE_MANAGER");
+
+	private final String value;
 	
 	MemberRole(String value){
 		this.value=value;
 	}
-	private String value;
 
+    public String getRole() {
+        return "ROLE_" + value;
+    }
+	
 }

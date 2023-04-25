@@ -1,6 +1,5 @@
 package com.himedia.member.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.himedia.member.role.MemberRole;

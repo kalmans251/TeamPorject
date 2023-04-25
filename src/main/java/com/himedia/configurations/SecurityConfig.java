@@ -16,6 +16,7 @@ import org.springframework.security.web.header.writers.frameoptions.XFrameOption
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.himedia.member.repository.MemberRepository;
+import com.himedia.member.role.MemberRole;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class SecurityConfig{
 	
 	private final CustomOAuth2MemberService oAuth2MemberService;
 	
@@ -32,9 +33,13 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 		
-		http.authorizeHttpRequests().requestMatchers(
-				new AntPathRequestMatcher("/**")
-				).permitAll()
+//		http.authorizeHttpRequests().requestMatchers(
+//				new AntPathRequestMatcher("/**")
+//				).permitAll()
+		http.authorizeHttpRequests()
+		.requestMatchers("/good", "/shop/create").hasAnyRole("MANAGER","ADMIN")
+        .requestMatchers("/admin/**").hasRole("ADMIN")
+        .anyRequest().permitAll()
 		.and()
 		.csrf().ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"))
 		.and()
@@ -68,7 +73,7 @@ public class SecurityConfig {
 	CustomLogoutSuccessHandler myCustomLogoutSuccessHandler() {
 	    return new CustomLogoutSuccessHandler(memberRepository);
 	}
-	
+   
 	@Bean
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();

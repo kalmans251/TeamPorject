@@ -98,7 +98,7 @@ public class QuestionController {
 	}
 
 	@PreAuthorize("isAuthenticated()")
-	@GetMapping("question/modify/{id}")
+	@GetMapping("/question/modify/{id}")
 	public String questionModify(QuestionForm questionForm, @PathVariable("id") Integer id, Principal principal,Model model) {
 		Question question = this.questionService.getQuestion(id);
 		
@@ -107,7 +107,7 @@ public class QuestionController {
 	}
 
 	@PreAuthorize("isAuthenticated()")
-	@PostMapping("question/modify/{id}")
+	@PostMapping("/question/modify/{id}")
 	public String questionModify(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal,
 			@PathVariable("id") Integer id) {
 		if (bindingResult.hasErrors()) {
@@ -125,7 +125,7 @@ public class QuestionController {
 	}
 
 	@PreAuthorize("isAuthenticated()")
-	@GetMapping("question/delete/{id}")
+	@GetMapping("/question/delete/{id}")
 	public String questionDelete(Principal principal, @PathVariable("id") Integer id) {
 		Question question = this.questionService.getQuestion(id);
 
@@ -145,7 +145,7 @@ public class QuestionController {
 	// principal : 현재 투표하는 객체를 가지고 온다.
 
 	@PreAuthorize("isAuthenticated()")
-	@GetMapping("question/vote/{id}")
+	@GetMapping("/question/vote/{id}")
 	public String questionVote(Principal principal, @PathVariable("id") Integer id) {
 		Question question = this.questionService.getQuestion(id);
 		Member member = this.memberService.getMember(principal.getName());

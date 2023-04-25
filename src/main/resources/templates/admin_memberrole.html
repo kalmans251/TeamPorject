@@ -17,8 +17,8 @@
 <div th:each="member,loop : ${member}">
 	<a th:text="${loop.count}"></a><a style="margin-left: 30px" th:text="${member.username}"></a>
 	<a th:text="${member.social}"  style="margin-left: 30px"></a><a style="margin-left: 30px" th:text=${member.memberRole}></a>
-	<a th:if="${#strings.equals(member.memberRole, 'USER')}" th:href="@{|/admin/member/change/manager/${member.idx}|}" style="margin-left: 30px">manager 권한 주기</a>
-	<a th:if="${#strings.equals(member.memberRole, 'MANAGER')}" th:href="@{|/admin/member/change/user/${member.idx}|}" style="margin-left: 30px">USER 권한 주기</a>
+	<a th:if="${#strings.equals(member.memberRole, 'USER')and #strings.equals(member.social, 'LOCAL')}" th:href="@{|/admin/member/change/ROLE_MANAGER/${member.idx}|}" style="margin-left: 30px">manager 권한 주기</a>
+	<a th:if="${#strings.equals(member.memberRole, 'MANAGER') and #strings.equals(member.social, 'LOCAL')}" th:href="@{|/admin/member/change/ROLE_USER/${member.idx}|}" style="margin-left: 30px">USER 권한 주기</a>
 	<a th:if="${#strings.equals(member.memberRole, 'ADMIN')}"></a>
 </div>
 </body>
