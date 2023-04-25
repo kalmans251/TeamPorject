@@ -1,11 +1,14 @@
 <html layout:decorate="~{layout}">
 <head>
 	<script src="/jquery-3.6.3.min.js"></script>
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/style.css">
 </head>
 
 <div layout:fragment="content">
 	
-	<div th:id="@{|box_${favorDto.favorId}|}" th:each="favorDto:${favorDtoList}">
+	<!-- <div th:id="@{|box_${favorDto.favorId}|}" th:each="favorDto:${favorDtoList}">
 	
 		<img style="width:100px;height:100px;" th:src="${favorDto.imgUrl}">
 		<span>이름:</span><span th:text="${favorDto.subject}"></span>
@@ -13,7 +16,61 @@
 		
 		<a th:href="@{|/detailorder/${favorDto.id}|}">구매하러 가기</a>
 		<button th:onclick="@{|favorDeleteAjax(${favorDto.favorId})|}">찜 삭제</button>
-	</div>
+	</div> -->
+	
+	<section  class="ftco-section">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-6 text-center mb-4">
+					<h2 class="heading-section">WISHLIST</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="table-wrap">
+						<table class="table">
+						  <thead class="thead-primary" style="background-color:lightgray;">
+						    <tr>
+						    	<th>&nbsp;</th>
+						    	<th style="font-weight:bold; font-size:16px;">Product</th>
+						      <th style="font-weight:bold; font-size:16px;">Price</th>
+						      <th style="font-weight:bold; font-size:16px;">Detail</th>
+						      <th>&nbsp;</th>
+						    </tr>
+						  </thead>
+						  <tbody th:id="@{|box_${favorDto.favorId}|}" th:each="favorDto:${favorDtoList}">
+						    <tr class="alert" role="alert">
+						    	
+						    	<td class="repImg">
+						    		<img style="width:100px;height:100px;" th:src="${favorDto.imgUrl}">
+						    	</td>
+						      <td>
+						      		<span th:text="${favorDto.subject}"></span>
+						      </td>
+						      <td th:text="${#numbers.formatInteger(favorDto.price, 3, 'COMMA')+'원'}"></td>
+						     
+						     <td>
+						     	<a th:href="@{|/detailorder/${favorDto.id}|}" style="color:gray;">상품 상세보기</a>
+						     </td>
+						      <td>
+						      	<button style="width:50px;" th:onclick="@{|favorDeleteAjax(${favorDto.favorId})|}" type="button" class="close" data-dismiss="alert" aria-label="Close">
+				            	<span aria-hidden="true"><i class="fa fa-close"></i></span>
+				          	</button>
+				        	</td>
+						    </tr>
+
+						  </tbody>
+						</table>
+							
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</section>
+	
+	
+	
 
 <script layout:fragment="javascriptContent">
 
@@ -26,7 +83,7 @@
 		    cache   : false,
 		    success  : function(result){
 		    	alert(result)
-		    	document.getElementById('box_'+id).style.display="none";
+		    	location. reload (true);
 		    }
 		});
 	}

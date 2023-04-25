@@ -4,22 +4,24 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <div layout:fragment="content">
+
 	<center>
-	<div th:if="${not #lists.isEmpty(memberMainAddr)}">
+	<h2 style="margin-top:40px;">주소지 변경</h2>
+	<div style="border:1px solid black;width:500px;margin-top:50px;" th:if="${not #lists.isEmpty(memberMainAddr)}">
 	<a th:text="${memberMainAddr.addrnum}"></a>
 		<a th:text="${memberMainAddr.addr}"></a><br><a th:text="${memberMainAddr.reference}"></a>
 		<a th:if="${memberMainAddr.main}==1">대표주소 입니다.</a>
 	</div>
 	<div th:if="${not #lists.isEmpty(memberAddr)}">
-	<div th:each="memberAddr, loop:${memberAddr}">
+	<div style="border:1px solid black;width:500px;margin-top:30px;" th:each="memberAddr, loop:${memberAddr}">
 		<a th:text="${memberAddr.addrnum}"></a>
 		<a th:text="${memberAddr.addr}"></a><br><a th:text="${memberAddr.reference}"></a>
-		<a th:if="${memberAddr.main}==1">대표주소 입니다.</a><a th:if="${memberAddr.main}==0" th:href="@{|/member/addr/delete/${memberAddr.idx}|}">삭제</a><a th:if="${memberAddr.main}==0" th:href="@{|/member/addr/main/change/${memberAddr.idx}|}">대표주소로 변경하기</a>
+		<a th:if="${memberAddr.main}==1">대표주소 입니다.</a><a class="btn btn-outline-info" th:if="${memberAddr.main}==0" th:href="@{|/member/addr/delete/${memberAddr.idx}|}">삭제</a><a class="btn btn-outline-info" th:if="${memberAddr.main}==0" th:href="@{|/member/addr/main/change/${memberAddr.idx}|}">대표주소로 변경하기</a>
 	</div>
 	</div>
 	<form th:action="@{/member/create/addr}" th:object="${memberAddrForm}" method="post">
 	
-	<div id="disable">
+	<div style="width:600px;margin-top:30px;" id="disable">
 		<div class="input-group input-group-sm mb-3">
 					<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">주소</span>
 					<input placeholder="우편번호" id="sample6_postcode" type="text" name="addr1" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
@@ -35,10 +37,11 @@
 		<div th:if="${#fields.hasErrors('addr2')}" th:errors="*{addr2}" class="alert alert-danger" role="alert">
 	  	
 		</div>
-		<button>제출하기</button>
+		<button class="w-30 btn btn-lg btn-primary" style="background-color:#2E75B6; margin:10px 0px; border:1px solid #2E75B6">제출하기</button>
 		
 	</form>
 	</div>
+	<div style="width:5px; height:250px;"></div>
 	</center>
 	
 </div>

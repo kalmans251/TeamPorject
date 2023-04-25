@@ -5,35 +5,37 @@
 <script src="/jquery-3.6.3.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
-<div layout:fragment="content">
+<center layout:fragment="content" style="margin:70px 0px 250px 0px;">
 
-<h1>회원 정보 수정 페이지</h1>
+<h2 style="margin-bottom:40px;">회원 정보 수정</h2>
 
 <form th:action="@{/member/modify}" th:object="${memberModifyForm}" method="post">
 <div>
 	<label>
-		사용자 이메일
+		E-mail : 
 	</label>
-	<input type="text" disabled th:value="${member.username}"><a>등록 되어있는 이메일은 수정이 불가능 합니다.</a>
+	<input type="text" disabled th:value="${member.username}" style="border-radius:5px; margin-bottom:10px; text-align:center"><br>
+	<a style="color:#2E75B6;">*등록 되어있는 이메일은 수정이 불가능 합니다.</a>
 </div>
-<div>
-<label for="nickName">
-사용자 닉네임
-</label>
-<input type="text" name="nickName" th:value="${member.nickName}"/>
-</div>
-<div>
-	<label for="phoneNum">
-	휴대전화 번호
-	</label> 
-<input type="text" name="phoneNum" th:value="${member.phoneNum}"/>
-</div>
+
+
+	<div style="width:600px;margin:0 auto;margin-top:10px;" class="input-group input-group-sm mb-3" >
+				<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">닉네임</span>
+				<input type="text" name="nickName" th:value="${member.nickName}" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+	</div>
+	<div style="width:600px;margin:0 auto;" class="input-group input-group-sm mb-3">
+				<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">전화번호</span>
+				<input placeholder="000-0000-000" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');" type="text" name="phoneNum" th:value="${member.phoneNum}" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+	</div>
+
+
 <br>
-<button class="btn btn-primary">회원 정보 수정</button>&nbsp&nbsp<button th:if="${#strings.equals(member.social, 'LOCAL')}" onclick="location.href='/member/modify/password'" type="button" class="btn btn-primary">비밀번호 변경</button>&nbsp&nbsp
-<button th:if="${#strings.equals(member.social, 'LOCAL')}" onclick="location.href='/member/delete'" type="button" class="btn btn-primary">회원 탈퇴</button>
+<button class="btn btn-primary" style="background-color:#2E75B6; border:1px solid #2E75B6;">회원 정보 수정</button>&nbsp&nbsp
+<button th:if="${#strings.equals(member.social, 'LOCAL')}" onclick="location.href='/member/modify/password'" type="button" class="btn btn-primary" style="background-color:#2E75B6; border:1px solid #2E75B6;">비밀번호 변경</button>&nbsp&nbsp
+<button th:if="${#strings.equals(member.social, 'LOCAL')}" onclick="location.href='/member/delete'" type="button" class="btn btn-primary" style="background-color:#2E75B6; border:1px solid #2E75B6;">회원 탈퇴</button>
 </form>
 <div th:if="${#strings.equals(member.social, 'GOOGLE') or #strings.equals(member.social, 'NAVER')}">
 	Social로그인 한 사용자는 비밀번호 변경이 불가능합니다.
 </div>
-</div>
+</center>
 </html>

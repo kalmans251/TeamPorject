@@ -5,31 +5,64 @@
 <script src="/jquery-3.6.3.min.js"></script>
 <meta name="_csrf" th:content="${_csrf.token}"/>
 <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 </head>
-<div layout:fragment="content">
+<div layout:fragment="content" style="margin:70px 0px 100px 0px;">
 
-<h2> 주문서 작성</h2>
+<h2 style="margin:0 auto;width:fit-content;margin-top:50px;"> 주문서 작성</h2>
+<table style="margin:0 auto;width:600px;">
+<input id="isiId" type="hidden" th:value="${isiId}">
 
-<h3>상품정보</h3>
+	<tr>
+		<td>
+			<div style="margin-top:40px;">
+				<img style="float:left;width:100px;height:100px;" th:src="${orderDto.url}">
+				
+				<ul style="list-style:none; margin-left:80px;">
+					<li id="subject" th:text="${orderDto.subject}"></li>
+					<li><span id="price" th:text="${orderDto.price}"></span>원</li>
+					<li> [옵션:<span th:text="${orderDto.color}"></span>/<span th:text="${orderDto.size}"></span>]</li>
+					<li> 수량: <span id="count" th:text="${orderDto.orderCount}"></span></li>
+				</ul>
+			</div>
+		</td>
+		
+		<td></td>
+		
+		<td></td>
+	</tr>
 	
-	<input id="isiId" type="hidden" th:value="${isiId}">
-	<img style="width:100px;height:100px;" th:src="${orderDto.url}">
-	<div th:text="${orderDto.subject}" id="subject"></div>
-	상품사이즈<div th:text="${orderDto.size}"></div>
-	상품색상<div th:text="${orderDto.color}"></div>
-	상품가격<div id="price" th:text="${orderDto.price}"></div>
-	상품수량<div id="count" th:text="${orderDto.orderCount}"></div>
+</table>
+<div style="width:600px;margin:0 auto;">
+<div align="center"  id="disable">
 	
-	<div th:text="${orderDto.member.nickName}" id="buyerName"></div>
-	<div th:text="${orderDto.member.phoneNum}" id="phone"></div>
-	<div th:text="${orderDto.memberAdress}" id="addr"></div>
-	<div th:text="${orderDto.memberAdress}" id="postcode"></div>	
-
-	<div id="calcPrice"><span></span></div>
-	<button onclick="requestPay()">결제하기</button>
-<!-- 	<button onclick="getToken()">토큰받기</button> -->
+	<div class="input-group input-group-sm mb-3" style="margin-top:10px;">
+				<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">받는 사람</span>
+				<input type="text" name="nickName" th:value="${orderDto.member.nickName}" id="buyerName" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+	</div>
+	<div class="input-group input-group-sm mb-3">
+				<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">전화 번호</span>
+				<input th:value="${orderDto.member.phoneNum}" id="phone" type="text" name="nickName" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+	</div>
 </div>
+		<div class="input-group input-group-sm mb-3">
+					<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">주소</span>
+					<input placeholder="우편번호" id="sample6_postcode" type="text" name="addr1" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+			<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기">
+		</div>
+		<div class="input-group input-group-sm mb-3">
+					<input  placeholder="주소" type="text" id="sample6_address" name="addr2" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+					<input  placeholder="참고항목" type="text" id="sample6_extraAddress" name="reference" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+		</div>
+		<div class="input-group input-group-sm mb-3">
+					<input  placeholder="상세주소" type="text" id="sample6_detailAddress" name="addr3" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+		</div>
+		<div style="margin-bottom:30px;margin:0 auto;width:fit-content;" id="calcPrice"></div>
+	  	<div style="margin-bottom:30px;margin:0 auto;width:fit-content;"><button onclick="requestPay()" class="w-100 btn btn-lg btn-primary" style="background-color:#2E75B6; margin:10px 0px; border:1px solid #2E75B6">결제하기</button></div>
+</div>
+	
+</div> 
 
 	
 
@@ -40,7 +73,7 @@
 	const isiId = document.getElementById('isiId');
 	const calcPrice = document.getElementById('calcPrice');
 	let total = count.innerText*price.innerText;
-	calcPrice.innerText='결제금액:'+total.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+'원';
+	calcPrice.innerText='결제 금액 : '+total.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+'원';
 	
 	var IMP = window.IMP;
 	IMP.init("imp57806750");
@@ -49,9 +82,50 @@
 	const subject = document.getElementById('subject');
 	const buyerName = document.getElementById('buyerName');
 	const phone = document.getElementById('phone');
-	const addr = document.getElementById('addr');
-	const postcode = document.getElementById('postcode');
-	console.log(location.origin);
+	const addr1 = document.getElementById('sample6_address');
+	const addr2 = document.getElementById('sample6_extraAddress');
+	const addr3 = document.getElementById('sample6_detailAddress');
+	const postcode = document.getElementById('sample6_postcode');
+
+	
+	function sample6_execDaumPostcode() {
+	    new daum.Postcode({
+	        oncomplete: function(data) {
+	
+	            var addr = ''; 
+	            var extraAddr = ''; 
+	            if (data.userSelectedType === 'R') {
+	                addr = data.roadAddress;
+	            } else {
+	                addr = data.jibunAddress;
+	            }
+	            if(data.userSelectedType === 'R'){
+	                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+	                    extraAddr += data.bname;
+	                }
+	                // 건물명이 있고, 공동주택일 경우 추가한다.
+	                if(data.buildingName !== '' && data.apartment === 'Y'){
+	                    extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	                }
+	                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+	                if(extraAddr !== ''){
+	                    extraAddr = ' (' + extraAddr + ')';
+	                }
+	                // 조합된 참고항목을 해당 필드에 넣는다.
+	                document.getElementById("sample6_extraAddress").value = extraAddr;
+	            
+	            } else {
+	                document.getElementById("sample6_extraAddress").value = '';
+	            }
+	
+	            document.getElementById('sample6_postcode').value = data.zonecode;
+	            document.getElementById("sample6_address").value = addr;
+	            document.getElementById("sample6_detailAddress").focus();
+	        }
+	    }).open();
+	}
+	
+	
 	function getToken(){
 		var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
@@ -99,9 +173,9 @@
 	    			amount : total,
 	    			buyer_email : 'my03262@naver.com',
 	    			buyer_name : buyerName.innerText,
-	    			buyer_tel : phone.innerText,
-	    			buyer_addr : addr.innerText,
-	    			buyer_postcode : postcode.innerText
+	    			buyer_tel : phone.value,
+	    			buyer_addr : addr1.value+"/"+addr2.value+"/"+addr3.value,
+	    			buyer_postcode : postcode.value
 	    		}, function(rsp) { // callback
 	    			if (rsp.success) {
 	    				// 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우

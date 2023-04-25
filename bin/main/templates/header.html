@@ -3,37 +3,37 @@
     <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
       <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
         <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
-        <span class="fs-4">WeaWea</span>
+        <span class="fs-4"><img style="width:200px;" src="/img/logo.png"></span> 
       </a>
 
       <ul class="nav nav-pills">
-        <li class="nav-item">
+        <li class="nav-item" >
             <button onclick="loginFunction()" sec:authorize="isAnonymous()" class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbarLight" aria-controls="offcanvasNavbarLight">
-	        <a href="javascript:void(0)" class="nav-link">
+	        <a href="javascript:void(0)" class="nav-link" style="color:#2E75B6;">
 	        <span>LOGIN</span>
 	        </a>
 	        </button>
 	        <button sec:authorize="isAuthenticated()" class="navbar-toggler" type="button">
-	        <a th:href="@{/member/logout}" class="nav-link"><span>LOGOUT</span></a>
+	        <a th:href="@{/member/logout}" class="nav-link" style="color:#2E75B6;"><span>LOGOUT</span></a>
 	        </button>
 	    </li>
         <li class="nav-item">
              <button onclick="accountFunction()" class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbarLight" aria-controls="offcanvasNavbarLight">
-        	 <a href="javascript:void(0)" class="nav-link">
+        	 <a href="javascript:void(0)" class="nav-link" style="color:#2E75B6;">
 	         <span>ACCOUNT</span>
 	         </a>
 	         </button>
         </li>
         <li class="nav-item">
         	 <button onclick="cartFunction()" class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbarLight" aria-controls="offcanvasNavbarLight">
-        	 <a href="javascript:void(0)" class="nav-link">
+        	 <a href="javascript:void(0)" class="nav-link" style="color:#2E75B6;">
 	         <span>CART</span>
 	         </a>
 	         </button>
         </li>
         <li class="nav-item">
         	 <button class="navbar-toggler" type="button">
-        	 <a href="javascript:void(0)" class="nav-link">
+        	 <a href="javascript:void(0)" class="nav-link" style="color:#2E75B6;">
 	         <span>INFO</span>
 	         </a>
 	         </button>
@@ -41,7 +41,7 @@
       </ul>
       <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbarLight" aria-labelledby="offcanvasNavbarLightLabel">
         <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasNavbarLightLabel">Offcanvas</h5>
+          <h5 class="offcanvas-title" id="offcanvasNavbarLightLabel"></h5>
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <hr>
@@ -51,7 +51,7 @@
 		  <div th:if="${param.error}">
 			<div>회원정보가 일치 하지 않습니다.</div>
 		  </div>
-		    <img class="mb-4" src="" alt="" width="72" height="57">
+		    <img class="mb-4" src="/img/profilepic.png" alt="" width="85" height="100">
 		    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 		    <div class="form-floating">
 		      <input name="username" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
@@ -61,30 +61,25 @@
 		      <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
 		      <label for="floatingPassword">Password</label>
 		    </div>
-		    <div class="checkbox mb-3">
-		      <label>
-		        <input type="checkbox" value="remember-me"> Remember me
-		      </label>
-		    </div>
-		    <button class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>
+		    <button class="w-100 btn btn-lg btn-primary" type="submit" style="background-color:#2E75B6; margin:10px 0px; border:1px solid #2E75B6">LOGIN</button>
 		    
 		  </form>
-		  <div style="margin-top:10px;"><button onclick="location.href='/login/google'" type="button" class="btn btn-primary">구글로 로그인</button>&nbsp&nbsp<button onclick="location.href='/login/naver'" type="button" class="btn btn-primary">네이버로 로그인</button></div>
-		  <div style="margin-top:10px;"><button onclick="location.href='/member/create'" type="button" class="btn btn-primary">회원가입</button>&nbsp&nbsp<button onclick="location.href='/member/compulsion/password'" type="button" class="btn btn-primary">아이디/비밀번호 찾기</button></div>
-		  	<p class="mt-5 mb-3 text-muted">&copy; 2017–2022</p>
-		  	</center>
+		  <button onclick="location.href='/login/google'" type="button" class="btn btn-outline-primary.btn-outline-*" style="color:#2E75B6; border:solid 1px #2E75B6; width:300px;">LOGIN WITH GOOGLE</button><br>
+  			<button onclick="location.href='/login/naver'" type="button" class="btn btn-outline-primary.btn-outline-*" style="color:#2E75B6; border:solid 1px #2E75B6; width:300px; margin:10px 0px;">LOGIN WITH NAVER</button><br>
+  			<div style="margin-top:15px;width:116%;position:relative;left:-8%;"><button onclick="location.href='/member/create'" type="button" class="btn btn-primary" style="background-color:#2E75B6; border:1px solid #2E75B6; width:125px;">REGISTER</button>&nbsp&nbsp<button type="button" class="btn btn-primary" onclick="location.href='/member/compulsion/password'" style="background-color:#2E75B6; border:1px solid #2E75B6; width:164px;">RESET PASSWORD</button></div>
+  	</center>
 		</main>
         
-        <main style="position:absolute;top:100px;" id="accountdiv">
+        <main style="position:absolute;top:100px; margin-left:70px;" id="accountdiv">
 	        <div th:if="${loggedIn==true}">
-	        	<a th:if="${#strings.equals(member.memberRole, 'ADMIN')}">관리자 계정 입니다</a>
-	        	<a th:if="${#strings.equals(member.memberRole, 'USER')}">일반 회원 계정 입니다</a>
-	        	<a th:if="${#strings.equals(member.memberRole, 'MANAGER')}">매니저 계정 입니다</a>
+	        	<a th:if="${#strings.equals(member.memberRole, 'ADMIN')}">관리자 계정</a>
+	        	<a th:if="${#strings.equals(member.memberRole, 'USER')}">[ 일반 회원 ]</a>
+	        	<a th:if="${#strings.equals(member.memberRole, 'MANAGER')}">매니저 계정</a>
 	        	<br>
-	        	<a th:text="|${member.nickName} 님|"></a><br>
-	        	<a th:text="${member.username}"></a><br>
-	        	<a th:text="${member.phoneNum}"></a><br>
-	        		        	<a>대표주소</a>
+	        	<a th:text="|${member.nickName} 님의 정보|"></a><br>
+	        	<a th:text="|E-mail : ${member.username}|"></a><br>
+	        	<a th:text="|Phone : ${member.phoneNum}|"></a><br>
+	        		        	<a>대표 주소</a>
 	        	<div th:if="${memberMainAddr != null}">
 		        	<a th:text="${memberMainAddr.addrnum}"></a><br>
 		        	<a th:text="${memberMainAddr.addr}"></a><br>
@@ -93,17 +88,16 @@
 	        	<div th:if="${memberMainAddr == null}">
 	        		<a>주소지를 등록해 주세요</a>
 	        	</div>
-	        	<button onclick="location.href='/member/modify'" type="button" class="btn btn-primary">회원정보 수정</button>
-	        	<button onclick="location.href='/member/create/addr'" type="button" class="btn btn-primary">주소지 설정</button>
+	        	<button onclick="location.href='/member/modify'" type="button" class="btn btn-primary" style="background-color:#2E75B6; border:1px solid #2E75B6; margin-top:10px;">회원정보 수정</button>
+	        	<button onclick="location.href='/member/create/addr'" type="button" class="btn btn-primary" style="background-color:#2E75B6; border:1px solid #2E75B6; margin-top:10px;">주소지 설정</button>
 	        </div>
 	        <div th:if="${loggedIn==false}">로그인 먼저 해주세요</div>
         </main>
         
-        <main style="position:absolute;top:100px;" id="cartdiv">
-        		<a href="/favorlist">wishlist 이동</a>
-        		<a href="/cart">장바구니로 이동</a>
-        		<a href="/orderlist">주문내역 조회</a>
-	        	<h1>장바구니/찜목록/구매목록</h1>
+        <main style="position:absolute;top:100px; margin-left:50px" id="cartdiv" >
+        		<button onclick="location.href='/favorlist'" type="button" class="btn btn-primary" style="background-color:#2E75B6; border:1px solid #2E75B6; width:300px;">WISH LIST</button><br>
+        		<button onclick="location.href='/cart'" type="button" class="btn btn-primary" style="background-color:#2E75B6; border:1px solid #2E75B6; width:300px; margin:20px 0px">CART</button><br>
+        		<button onclick="location.href='/orderlist'" type="button" class="btn btn-primary" style="background-color:#2E75B6; border:1px solid #2E75B6; width:300px;">ORDER LIST</button>
         </main>
       </div>
     </header>

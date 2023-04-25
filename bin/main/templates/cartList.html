@@ -7,32 +7,108 @@
 <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 <script src="/jquery-3.6.3.min.js"></script>
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="css/style.css">
 </head>
 
 <main layout:fragment="content">
 	<div th:id="@{|cart_${cartItemDto.cartItemId}|}" th:each="cartItemDto : ${cartItemDtoList}">
 
-		<input type="checkbox" name="cartChkBox" th:value="${cartItemDto.itemId}">
+		<!-- <input type="checkbox" name="cartChkBox" th:value="${cartItemDto.itemId}">
 		<span class="repImg">
 			<img style="width:100px;height:100px;" th:src="${cartItemDto.imgUrl}" th:alt="${cartItemDto.subject}">
-		</span>
+		</span> -->
 
-		<span th:text="${cartItemDto.subject}"></span>
+	<!-- 	<span th:text="${cartItemDto.subject}"></span>
 		<span th:text="${cartItemDto.size}"></span>
 		<span th:text="${cartItemDto.color}"></span>
 		<input type="number" th:id="@{|count_${cartItemDto.itemId}|}" th:value="${cartItemDto.count}">
 		<span th:id="@{|price_${cartItemDto.itemId}|}" th:text="${cartItemDto.price}" th:data-price="${cartItemDto.price}"></span>
-		<button th:onclick="@{|deletecart(${cartItemDto.cartItemId})|}">취소하기</button>
+		<button th:onclick="@{|deletecart(${cartItemDto.cartItemId})|}">취소하기</button> -->
 
 	</div>
-	<div id="orderTotalPrice"></div>
-	<button onclick="requestPay()">구매하기</button>
+
+	
+	
+	
+	
+	<section  class="ftco-section">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-6 text-center mb-4">
+					<h2 class="heading-section">CART</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="table-wrap">
+						<table class="table">
+						  <thead class="thead-primary" style="background-color:lightgray;">
+						    <tr>
+						    	<th>&nbsp;</th>
+						    	<th>&nbsp;</th>
+						    	<th style="font-weight:bold; font-size:16px;">Product</th>
+						      <th style="font-weight:bold; font-size:16px;">Price</th>
+						      <th style="font-weight:bold; font-size:16px;">Quantity</th>
+						      <th>&nbsp;</th>
+						    </tr>
+						  </thead>
+						  <tbody th:each="cartItemDto : ${cartItemDtoList}">
+						    <tr th:id="@{|cart_${cartItemDto.cartItemId}|}" class="alert" role="alert">
+						    	<td>
+						    		<label class="checkbox-wrap checkbox-primary">
+										  <input type="checkbox" name="cartChkBox" th:value="${cartItemDto.itemId}">
+										  <span class="checkmark"></span>
+										</label>
+						    	</td>
+						    	<td class="repImg">
+						    		<img style="width:100px;height:100px;" th:src="${cartItemDto.imgUrl}" th:alt="${cartItemDto.subject}">
+						    	</td>
+						      <td>
+						      	<div class="email">
+						      		<span th:text="${cartItemDto.subject}"></span>
+						      		<span th:text="@{|${'옵션 [ ' + cartItemDto.size} / ${cartItemDto.color + ' ]'}|}" style="color:gray;"></span>
+						      		
+						      	</div>
+						      </td>
+						      <td th:id="@{|price_${cartItemDto.itemId}|}" th:text="${#numbers.formatInteger(cartItemDto.price, 3, 'COMMA') + '원'}" th:data-price="${cartItemDto.price}"></td>
+						      <td>
+				             	<input name="count" style="width:80px;" type="number" th:id="@{|count_${cartItemDto.itemId}|}" th:value="${cartItemDto.count}" class="quantity form-control input-number">
+				          </td>
+						      <td>
+						      	<button style="width:50px;" th:onclick="@{|deletecart(${cartItemDto.cartItemId})|}" type="button" class="close" data-dismiss="alert" aria-label="Close">
+				            	<span aria-hidden="true"><i class="fa fa-close"></i></span>
+				          	</button>
+				        	</td>
+						    </tr>
+
+						  </tbody>
+						</table>
+							<div align="center"><span>총 금액:</span><span id="orderTotalPrice">0원</span><br><button onclick="requestPay()" class="w-30 btn btn-lg btn-primary" style="background-color:#2E75B6; margin:10px 0px; border:1px solid #2E75B6">구매하기</button></div>
+							
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</section>
+	
+	
+	
+	
+	
+	
+	
 </main>
 
 <script layout:fragment="javascriptContent">
 	
 	$(document).ready(function(){
 		$("input[name=cartChkBox]").change(function(){
+			getOrderTotalPrice();
+		});
+		$("input[name=count]").change(function(){
 			getOrderTotalPrice();
 		});
 	});
@@ -45,7 +121,7 @@
 			data:{id : cartItemId},
 			success:function(res){
 				alert(res)
-				document.getElementById('cart_'+cartItemId).style.display='none';
+				location. reload (true);
 			},
 			error:function(){
 				alert(res)

@@ -1,7 +1,9 @@
 <html layout:decorate="~{layout}">
-
-<head>	
 	
+<head>	
+	<meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <script src="/jquery-3.6.3.min.js"></script>
 </head>
 
 <div layout:fragment="content">
@@ -11,10 +13,14 @@
 	<div class="album py-5 bg-light">
 	
     <div class="container">
-	<div style="width:90%;height:40px;margin:0 auto;background-color:black;margin-bottom:40px;border-radius:15px;">
+    
+	<div align="center" style="margin:0 auto;width:fit-content;">
+		<span id="country"></span><br><span id="weather"></span>
+	</div>
+	<div style="width:90%;height:40px;margin:0 auto;background-color:#EBEBEB;margin-bottom:40px;border-radius:15px;">
 		<div style="position:relative;left:30px;width:200px;margin:0 auto;"class="input-group">
-		  <input style="margin-top:7px;height:25px;" type="text" class="form-control" aria-label="Text input with segmented dropdown button">
-		  <button style="margin-top:7px;height:25px;line-height:10px;width:40px;font-size:10px;" type="button" class="btn btn-outline-secondary"><span style="position:absolute;left:3px;top:6px;">Search</span></button>
+		  <input id="geoSearch" style="margin-top:7px;height:25px;" type="text" class="form-control" aria-label="Text input with segmented dropdown button">
+		  <button onclick="get_geoSearch()" style="margin-top:7px;height:25px;line-height:10px;width:40px;font-size:10px;" type="button" class="btn btn-outline-secondary"><span style="position:absolute;left:3px;top:6px;">Search</span></button>
 		  <button style="margin-top:7px;height:25px;line-height:10px;" type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
 		    <span class="visually-hidden">Toggle Dropdown</span>
 		  </button>
@@ -28,192 +34,330 @@
 		</div>
 	</div>
 	
-	<div style="margin-bottom:100px;background-color:black;padding-bottom:15px;padding-left:10px;padding-right:10px;border-radius:10px;" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+	<div style="margin-bottom:30px;background-color:#EBEBEB;padding-bottom:15px;padding-left:10px;padding-right:10px;border-radius:10px;" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 		
-		<div class="col">
+		<div class="col" >
+		 <a href="javascript:void(0)" th:onclick="get_today()">
           <div class="card shadow-sm">
-       		<img id="_0dayImg">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em"><span style="position:relative;top:-130px;height:0px;color:white;"><span id="city"></span><span id="weather"></span><span id="country"></span></span></text></svg>
+       		<img  style="height:100px;width:100px;margin:0 auto;" id="_0dayImg">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="135" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#A4A3A3"/><text x="50%" y="50%" fill="#eceeef" dy=".3em"><span style="position:relative;top:-130px;height:0px;color:white;"><div id="city"></div><br></span></text></svg>
             
           </div>
+         </a>
         </div>
 		
 		<div class="col">
+		 <a href="javascript:void(0)" onclick="get_3day()">
           <div class="card shadow-sm">
            
-           	<img id="_3dayImg">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em" ><div style="position:relative;top:-130px;height:0px;color:white;" id="_3day" ></div></text></svg>
+           	<img style="height:100px;width:100px;margin:0 auto;" id="_3dayImg">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="135" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#A4A3A3"/><text x="50%" y="50%" fill="#eceeef" dy=".3em" ><div style="position:relative;top:-130px;height:0px;color:white;" id="_3day" ></div></text></svg>
             
           </div>
+         </a>
         </div>
         
-        <div class="col">
+        <div style="margin-bottom:-30px;;" class="col">
+         <a href="javascript:void(0)" onclick="get_7day()">
           <div class="card shadow-sm">
-			<img id="_7dayImg">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em"><div style="position:relative;top:-130px;height:0px;color:white;" id="_7day"></div></text></svg>
+			<img style="height:100px;width:100px;margin:0 auto;" id="_7dayImg">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="135" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#A4A3A3"/><text x="50%" y="50%" fill="#eceeef" dy=".3em"><div style="position:relative;top:-130px;height:0px;color:white;" id="_7day"></div></text></svg>
             
           </div>
+         </a>
+         <select style="width:100px;float:right;position:relative;top:50px;left:0;" id="sort" onchange="selectSort()" class="form-select form-select-sm" aria-label=".form-select-sm example">
+  		<option value="1">최신순</option>
+  		<option value="2">높은가격순</option>
+  		<option value="3">낮은가격순</option>
+  		<option value="4">인기순</option>
+		</select>
         </div>
 		
 	</div>
 	
+			<div class="album py-5 bg-light">
+	
+    <div class="container">
+		
+	  
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-muted">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card shadow-sm">
-            <img style="height:225px;" src="http://openweathermap.org/img/w/04d.png" class="card-img-top">
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-muted">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-muted">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-muted">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-muted">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-muted">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-muted">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-muted">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-muted">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="test">
+	  
+	    </div>
+	    <div class="test">
+	  
+	    </div>
+	    <div class="test">
+	  
+	    </div>
+	    <div class="test">
+	  
+	    </div>
+	    <div class="test">
+	  
+	    </div>
+	    <div class="test">
+	  
+	    </div>
+	    <div class="test">
+	  
+	    </div>
+	    <div class="test">
+	  
+	    </div>
+	    <div class="test">
+	  
+	    </div>
       </div>
     </div>
   </div>
+      
+    </div>
+  </div>
+<nav style="width:fit-content;margin:0 auto;" aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" href="javascript:void(0)" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li class="page-item"><a class="page-link" href="javascript:void(0)" >1</a></li>
+    <li class="page-item"><a class="page-link" href="javascript:void(0)" >2</a></li>
+    <li class="page-item"><a class="page-link" href="javascript:void(0)" >3</a></li>
+    <li class="page-item"><a class="page-link" href="javascript:void(0)" >4</a></li>
+    <li class="page-item"><a class="page-link" href="javascript:void(0)" >5</a></li>
+    <li class="page-item">
+      <a class="page-link" href="javascript:void(0)" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
 
 
 
 </div>
 
 <script layout:fragment="javascriptContent">
+const sort = document.getElementById('sort');
+const test = document.getElementsByClassName('test');
+const search = document.getElementById('searchInput');
+var todayTemp=0;
+var _3dayTemp=0;
+var _7dayTemp=0;
+function get_today(){
+	selectSortTemp(todayTemp);
+}
+
+function get_3day(){
+	selectSortTemp(_3dayTemp);
+}
+
+function get_7day(){
+	selectSortTemp(_7dayTemp);
+}
+
+function get_geoSearch(){
+	$.ajax({
+		url      : "/getgeocord/"+document.getElementById('geoSearch').value,
+	    type     : "GET",
+	    dataType : "json",
+	    success  : function(result){
+	    	console.log(result);
+	    	
+	    	    let url1 = `https://api.openweathermap.org/data/2.5/weather?unit=metric&lat=${result.y}&lon=${result.x}&lang=kr&appid=${API_KEY}`;
+	    	    let url2 = `https://api.openweathermap.org/data/3.0/onecall?unit=metric&lat=${result.y}&lon=${result.x}&lang=kr&appid=${API_KEY}`;
+	    	    
+	    	    
+	    	    const weater = document.getElementById('city');
+	    	    const city = document.getElementById('weather');
+	    	    const _0dayImg = document.getElementById('_0dayImg');
+	    	    const _3day = document.getElementById('_3day');
+	    	    const _7day = document.getElementById('_7day');
+	    	    const _3dayImg= document.getElementById('_3dayImg');
+	    	    const _7dayImg= document.getElementById('_7dayImg');
+	    	    
+	    	    fetch(url1).then((response) => response.json())
+	    	        .then((data) =>{
+	    	        	
+	    	        	console.log(data)
+	    	            
+	    	            city.innerText = data.name;
+	    	            
+	    	        	weater.innerHTML =`<div align="center"><span>오늘:${data.weather[0].description}<span><br> <span>최저온도:${(data.main.temp_min-273.15).toFixed(2)}</span><br><span>최고온도:${(data.main.temp_max-273.15).toFixed(2)}</span><br><span>현재온도:${(data.main.temp-273.15).toFixed(2)}도</span></div>`;
+	    	    		_0dayImg.src="http://openweathermap.org/img/w/"+data.weather[0].icon+".png";
+	    	    		todayTemp = (((data.main.temp_min-273.15+data.main.temp_max-273.15).toFixed(2)))/2;
+	    	        });
+	    	    
+	    	    fetch(url2).then((response) => response.json())
+	    	    .then((data) =>{
+	    	    	
+	    	    	console.log(data)
+	    	        const country = document.getElementById('country');
+	    	        
+	    	        country.innerText = data.timezone;
+	    	        _3day.innerHTML='<div align="center" ><span>3일뒤:'+data.daily[2].weather[0].description+"</span><br><span>최저온도:"+((data.daily[2].temp.min-273.15).toFixed(2))+"</span><br><span>최고온도:"+((data.daily[2].temp.max-273.15).toFixed(2))+"</span></div>";
+	    	        _3dayTemp=(((data.daily[2].temp.min-273.15)+(data.daily[2].temp.max-273.15)).toFixed(2)/2);
+	    	        _3dayImg.src="http://openweathermap.org/img/w/"+data.daily[2].weather[0].icon+".png";
+	    	        
+	    	        _7day.innerHTML='<div align="center" ><span>3일뒤:'+data.daily[6].weather[0].description+"</span><br><span>최저온도:"+((data.daily[6].temp.min-273.15).toFixed(2))+"</span><br><span>최고온도:"+((data.daily[6].temp.max-273.15).toFixed(2))+"</span></div>";
+	    	        _7dayImg.src="http://openweathermap.org/img/w/"+data.daily[6].weather[0].icon+".png";
+	    	        _7dayTemp=(((data.daily[6].temp.min-273.15)+(data.daily[6].temp.max-273.15)).toFixed(2)/2);
+	    	    });
+	    	    
+	    	}
+		
+	});
+}
+
+
+
+function selectSort() {
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+   
+    var url = "/test";
+    var paramData = {
+        sort : sort.value,
+        category : "",
+        page : page,
+        search:search.value
+        
+    };
+
+    var param = JSON.stringify(paramData);
+
+    $.ajax({
+        url      : url,
+        type     : "POST",
+        contentType : "application/json",
+        data     : param,
+        beforeSend : function(xhr){
+            xhr.setRequestHeader(header, token);
+        },
+        dataType : "json",
+        cache   : false,
+        success  : function(result){
+        	totalpages=result[0].totalPage;
+        	 for(let i = 1 ; i <= 5 ; i++){
+     			document.getElementsByClassName('page-link')[i].innerText=(i+5*(Math.floor((page-1)/5)));
+     			if(document.getElementsByClassName('page-link')[i].innerText>totalpages){
+     				document.getElementsByClassName('page-link')[i].style.pointerEvents="none";
+     			}else{
+     				document.getElementsByClassName('page-link')[i].style.pointerEvents="auto";
+     			}
+     		}
+        	for(let i = 0 ; i<result.length;i++){
+            	test[i].innerHTML='<div class="col"><div class="card shadow-sm"><a href="/detailorder/'+result[i].itemId +'"><image src="'+ result[i].url +'" style="width=100%;height=100%;object-fit:cover;width:100%;height:225px;"></a><div class="card-body"><p class="card-text">'+result[i].subject+'<br>'+result[i].price+'원 <br>찜한 수:'+result[i].favorListNum+'<br><div if="'+result[i].isFavor+'">'+result[i].isFavor+'</div></p></div></div></div>';
+        	}
+        	for(let i=result.length ; i <9 ; i++ ){
+        		test[i].innerHTML='';
+        	}
+        	
+        	console.log(result);
+        	
+        }
+        
+    });
+}
+function selectSortTemp(temps) {
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+   
+    var url = "/testtemp";
+    var paramData = {
+        sort : sort.value,
+        category : "",
+        page : page,
+        search:search.value,
+        temp:temps
+    };
+
+    var param = JSON.stringify(paramData);
+
+    $.ajax({
+        url      : url,
+        type     : "POST",
+        contentType : "application/json",
+        data     : param,
+        beforeSend : function(xhr){
+            xhr.setRequestHeader(header, token);
+        },
+        dataType : "json",
+        cache   : false,
+        success  : function(result){
+        	totalpages=result[0].totalPage;
+        	 for(let i = 1 ; i <= 5 ; i++){
+     			document.getElementsByClassName('page-link')[i].innerText=(i+5*(Math.floor((page-1)/5)));
+     			if(document.getElementsByClassName('page-link')[i].innerText>totalpages){
+     				document.getElementsByClassName('page-link')[i].style.pointerEvents="none";
+     			}else{
+     				document.getElementsByClassName('page-link')[i].style.pointerEvents="auto";
+     			}
+     		}
+        	for(let i = 0 ; i<result.length;i++){
+            	test[i].innerHTML='<div class="col"><div class="card shadow-sm"><a href="/detailorder/'+result[i].itemId +'"><image src="'+ result[i].url +'" style="width=100%;height=100%;object-fit:cover;width:100%;height:225px;"></a><div class="card-body"><p class="card-text">물품이름:'+result[i].subject+'<br>물품가격:'+result[i].price+'<br>찜한사람:'+result[i].favorListNum+'<br><div if="'+result[i].isFavor+'">'+result[i].isFavor+'</div></p></div></div></div>';
+        	}
+        	for(let i=result.length ; i <9 ; i++ ){
+        		test[i].innerHTML='';
+        	}
+        	
+        	console.log(result);
+        	
+        }
+        
+    });
+}
+var totalpages=0;
+var page ="1";
+for(let i = 1 ; i < document.getElementsByClassName('page-link').length-1 ; i++){
+	
+	document.getElementsByClassName('page-link')[i].addEventListener('click', function(){   // 이벤트 리스너 부분
+		console.log(this.text);
+		page=this.text;
+		selectSort();
+    });
+}
+document.getElementsByClassName('page-link')[0].addEventListener('click', function(){   // 이벤트 리스너 부분
+	console.log(this.text);
+	if(page==1){
+		page=page;
+	}else{
+		page=page-1;
+	}
+	console.log(page);
+	for(let i = 1 ; i <= 5 ; i++){
+		document.getElementsByClassName('page-link')[i].innerText=(i+5*((page-1)/5));
+	}
+	selectSort();
+});
+
+document.getElementsByClassName('page-link')[6].addEventListener('click', function(){   // 이벤트 리스너 부분
+	console.log(totalpages);
+	if(page== totalpages){
+		page=page;
+	}else{
+		page=page-1+2;
+	}
+	console.log(page);
+
+	selectSort();
+	
+})
+
+
 const API_KEY='87c22ad5e4c6c0512158561c2c8ba845';
 
 function onGeoOk(position){
 	
 	
-    const lat = position.coords.latitude;
-    const lon = position.coords.longitude;
+    let lat = position.coords.latitude;
+    let lon = position.coords.longitude;
     console.log(position);
     const url1 = `https://api.openweathermap.org/data/2.5/weather?unit=metric&lat=${lat}&lon=${lon}&lang=kr&appid=${API_KEY}`;
     const url2 = `https://api.openweathermap.org/data/3.0/onecall?unit=metric&lat=${lat}&lon=${lon}&lang=kr&appid=${API_KEY}`;
+    
+    
     const weater = document.getElementById('city');
     const city = document.getElementById('weather');
     const _0dayImg = document.getElementById('_0dayImg');
@@ -229,9 +373,11 @@ function onGeoOk(position){
             
             city.innerText = data.name;
             
-            weater.innerText =`오늘/${data.weather[0].description} /최저온도:${(data.main.temp_min-273.15).toFixed(2)}/최고온도:${(data.main.temp_max-273.15).toFixed(2)}/현재온도 ${(data.main.temp-273.15).toFixed(2)}도`;
+            weater.innerHTML =`<div align="center"><span>오늘:${data.weather[0].description}<span><br> <span>최저온도:${(data.main.temp_min-273.15).toFixed(2)}</span><br><span>최고온도:${(data.main.temp_max-273.15).toFixed(2)}</span><br><span>현재온도:${(data.main.temp-273.15).toFixed(2)}도</span></div>`;
     		_0dayImg.src="http://openweathermap.org/img/w/"+data.weather[0].icon+".png";
+    		todayTemp = (((data.main.temp_min-273.15+data.main.temp_max-273.15).toFixed(2)))/2;
         });
+    
     fetch(url2).then((response) => response.json())
     .then((data) =>{
     	
@@ -239,21 +385,25 @@ function onGeoOk(position){
         const country = document.getElementById('country');
         
         country.innerText = data.timezone;
-        _3day.innerText='3일뒤/'+data.daily[2].weather[0].description+"/최저온도:"+((data.daily[2].temp.min-273.15).toFixed(2))+"/최고온도:"+((data.daily[2].temp.max-273.15).toFixed(2));
+        _3day.innerHTML='<div align="center" ><span>3일뒤:'+data.daily[2].weather[0].description+"</span><br><span>최저온도:"+((data.daily[2].temp.min-273.15).toFixed(2))+"</span><br><span>최고온도:"+((data.daily[2].temp.max-273.15).toFixed(2))+"</span></div>";
+        _3dayTemp=(((data.daily[2].temp.min-273.15)+(data.daily[2].temp.max-273.15)).toFixed(2)/2);
         _3dayImg.src="http://openweathermap.org/img/w/"+data.daily[2].weather[0].icon+".png";
         
-        _7day.innerText='7일뒤/'+data.daily[6].weather[0].description+"/최저온도:"+((data.daily[6].temp.min-273.15).toFixed(2))+"/최고온도:"+((data.daily[6].temp.max-273.15).toFixed(2));
+        _7day.innerHTML='<div align="center" ><span>3일뒤:'+data.daily[6].weather[0].description+"</span><br><span>최저온도:"+((data.daily[6].temp.min-273.15).toFixed(2))+"</span><br><span>최고온도:"+((data.daily[6].temp.max-273.15).toFixed(2))+"</span></div>";
         _7dayImg.src="http://openweathermap.org/img/w/"+data.daily[6].weather[0].icon+".png";
+        _7dayTemp=(((data.daily[6].temp.min-273.15)+(data.daily[6].temp.max-273.15)).toFixed(2)/2);
     });
     
 }
+
+
 
 function onGeoError(){
     alert("Can't find you. No weather for you.")
 }
 
 navigator.geolocation.getCurrentPosition(onGeoOk,onGeoError);
-
+window.onload=selectSort;
 </script>
 
 </html>

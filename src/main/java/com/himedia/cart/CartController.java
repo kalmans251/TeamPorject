@@ -152,7 +152,7 @@ public class CartController {
 	}
 	@GetMapping("/cart1")
 	public String openCartList(Model model) {
-		return "cartList";
+		return "abcd";
 	}
 	
 	@GetMapping("/orderform/{id}")

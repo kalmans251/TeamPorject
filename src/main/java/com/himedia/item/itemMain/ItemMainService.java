@@ -21,6 +21,8 @@ public class ItemMainService {
 	
 	private final ItemMainRepository itemMainRepository;
 	
+
+
 	public ItemMainService(ItemMainRepository itemMainRepository) {
 		this.itemMainRepository = itemMainRepository;
 	}
@@ -36,7 +38,7 @@ public class ItemMainService {
 //	}
 
 
-	public Page<Item> findItemsByCategory(String category,String sort,Integer page) {
+	public Page<Item> findItemsByCategory(String category,String sort,Integer page,String search) {
 		int size = 9;
 		
 		List<Sort.Order> sorts = new ArrayList(); 
@@ -53,13 +55,13 @@ public class ItemMainService {
 		
 		Pageable pageable= PageRequest.of(page-1, size, Sort.by(sorts));
 		
-		Specification<Item> spe = search(category);
+		Specification<Item> spe = search(category,search);
 		
 		return itemMainRepository.findAll(spe, pageable);
 	}
 	
 	
-	private Specification<Item> search(String kw) {
+	private Specification<Item> search(String kw,String search) {
     	
         return new Specification<>() {
         	
@@ -69,11 +71,89 @@ public class ItemMainService {
             public Predicate toPredicate(Root<Item> q, CriteriaQuery<?> query, CriteriaBuilder cb) {
             	
                 query.distinct(true);  // 중복을 제거 
+                if(search.equals("")) {
+                	System.out.println("gdgd");
+                	return cb.or(
+                    		cb.like(q.get("category1"), "%" + kw + "%"), // category1(대분류)
+                            cb.like(q.get("category2"), "%" + kw + "%")      // category2(소분류)
+                    		);   // 답변 작성자 
+                	
+                }else {
+                	return cb.and(
+                			cb.like(q.get("subject"), "%" + search + "%" ),
+                			cb.or(
+                				  cb.like(q.get("category1"), "%" + kw + "%"), // category1(대분류)
+                				  cb.like(q.get("category2"), "%" + kw + "%")      // category2(소분류)
+                            	 )
+                			); 
+                			
+                			
+                			
+                }
                 
-                return cb.or(
-                		cb.like(q.get("category1"), "%" + kw + "%"), // category1(대분류)
-                        cb.like(q.get("category2"), "%" + kw + "%")      // category2(소분류)
-                        );   // 답변 작성자 
+            }
+        };
+    }
+	
+	public Page<Item> findItemsByCategoryTemp(String category,String sort,Integer page,String search,Long temp) {
+		int size = 9;
+		
+		List<Sort.Order> sorts = new ArrayList(); 
+		
+		if(sort.equals("1")) {
+			sorts.add(Sort.Order.desc("regDate")); //최신순
+		}else if(sort.equals("2")) {
+			sorts.add(Sort.Order.desc("price")); //높은가격순
+		}else if(sort.equals("3")) {
+			sorts.add(Sort.Order.asc("price")); //낮은가격순
+		}else if(sort.equals("4")) {
+			sorts.add(Sort.Order.desc("favorListNum")); //인기순
+		}
+		
+		Pageable pageable= PageRequest.of(page-1, size, Sort.by(sorts));
+		
+		Specification<Item> spe = searchTemp(category,search,temp);
+		
+		return itemMainRepository.findAll(spe, pageable);
+	}
+	
+	
+	private Specification<Item> searchTemp(String kw,String search,Long temp) {
+    	
+        return new Specification<>() {
+        	
+            private static final long serialVersionUID = 1L;
+            
+            @Override
+            public Predicate toPredicate(Root<Item> q, CriteriaQuery<?> query, CriteriaBuilder cb) {
+            	
+            	
+            	
+                query.distinct(true);  // 중복을 제거 
+                if(search.equals("")) {
+                	System.out.println("gdgd");
+                	return cb.and(
+                			cb.between(q.get("temperature"), temp-5, temp+5),
+                			cb.or(
+                				   cb.like(q.get("category1"), "%" + kw + "%"), // category1(대분류)
+                				   cb.like(q.get("category2"), "%" + kw + "%") 
+                				  )    // category2(소분류)
+                    		);   // 답변 작성자);
+                			 
+                	
+                }else {
+                	return cb.and(
+                			cb.like(q.get("subject"), "%" + search + "%" ),
+                			cb.or(
+                				  cb.like(q.get("category1"), "%" + kw + "%"), // category1(대분류)
+                				  cb.like(q.get("category2"), "%" + kw + "%")      // category2(소분류)
+                            	 )
+                			); 
+                			
+                			
+                			
+                }
+                
             }
         };
     }

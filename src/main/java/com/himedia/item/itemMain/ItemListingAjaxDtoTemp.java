@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ItemListingAjaxDto {
+public class ItemListingAjaxDtoTemp {
 
 	private String sort;
 	
@@ -14,4 +14,6 @@ public class ItemListingAjaxDto {
 	private Integer page;
 	
 	private String search;
+	
+	private Long temp;
 }

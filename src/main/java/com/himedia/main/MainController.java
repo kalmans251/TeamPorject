@@ -1,6 +1,12 @@
 package com.himedia.main;
 
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +21,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.himedia.item.dto.GeocordXY;
 import com.himedia.item.dto.ItemDetailDto;
 import com.himedia.item.entity.Favor;
 import com.himedia.item.entity.Item;
 import com.himedia.item.entity.ItemImg;
 import com.himedia.item.entity.ItemSellingInform;
 import com.himedia.item.itemMain.ItemListingAjaxDto;
+import com.himedia.item.itemMain.ItemListingAjaxDtoTemp;
 import com.himedia.item.itemMain.ItemMainService;
 import com.himedia.item.itemMain.ItemOutputListAjaxDto;
 import com.himedia.item.repository.FavorRepository;
@@ -34,6 +42,8 @@ import com.himedia.member.service.MemberService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
 
 @Controller
 @RequiredArgsConstructor
@@ -77,15 +87,16 @@ public class MainController {
 	
 	@PostMapping("/test")
 	@ResponseBody
-	public List<ItemOutputListAjaxDto> ajaxTest(@RequestBody ItemListingAjaxDto itemListingAjaxDto,Principal principal) {
+	public List<ItemOutputListAjaxDto> ajaxTest(Model model,@RequestBody ItemListingAjaxDto itemListingAjaxDto,Principal principal) {
 		Page<Item> items = null;
 		try {
-			items = this.itemMainService.findItemsByCategory(itemListingAjaxDto.getCategory(),itemListingAjaxDto.getSort(),itemListingAjaxDto.getPage());
+			items = this.itemMainService.findItemsByCategory(itemListingAjaxDto.getCategory(),itemListingAjaxDto.getSort(),itemListingAjaxDto.getPage(),itemListingAjaxDto.getSearch());
+			
 			
 			List<ItemOutputListAjaxDto> iolaList= new ArrayList<>();
 			for(Item item : items) {
 				
-				ItemOutputListAjaxDto iola= new ItemOutputListAjaxDto(item.getId(),this.itemImgRepository.findByItemAndRepimgYn(item, "Y").getUrl(),item.getSubject(), item.getPrice(), item.getFavorListNum());
+				ItemOutputListAjaxDto iola= new ItemOutputListAjaxDto(item.getId(),this.itemImgRepository.findByItemAndRepimgYn(item, "Y").getUrl(),item.getSubject(), item.getPrice(), item.getFavorListNum(),items.getTotalPages());
 				
 				if(principal==null) {
 					iola.setIsFavor(false);
@@ -100,6 +111,43 @@ public class MainController {
 				iolaList.add(iola);
 			}
 			
+			items.getTotalPages();
+			return iolaList;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	
+	}
+	
+	@PostMapping("/testtemp")
+	@ResponseBody
+	public List<ItemOutputListAjaxDto> ajaxTestTemp(Model model,@RequestBody ItemListingAjaxDtoTemp itemListingAjaxDtoTemp,Principal principal) {
+		Page<Item> items = null;
+		try {
+			items = this.itemMainService.findItemsByCategoryTemp(itemListingAjaxDtoTemp.getCategory(),itemListingAjaxDtoTemp.getSort(),itemListingAjaxDtoTemp.getPage(),itemListingAjaxDtoTemp.getSearch(),itemListingAjaxDtoTemp.getTemp());
+			
+			
+			List<ItemOutputListAjaxDto> iolaList= new ArrayList<>();
+			for(Item item : items) {
+				
+				ItemOutputListAjaxDto iola= new ItemOutputListAjaxDto(item.getId(),this.itemImgRepository.findByItemAndRepimgYn(item, "Y").getUrl(),item.getSubject(), item.getPrice(), item.getFavorListNum(),items.getTotalPages());
+				
+				if(principal==null) {
+					iola.setIsFavor(false);
+				}else {
+					if(this.favorRepository.findByMemberAndItem(this.memberRepository.findByToken(principal.getName()).get(), item).isEmpty()) {
+						iola.setIsFavor(false);
+					}else {
+						iola.setIsFavor(true);
+					}
+				}
+				
+				iolaList.add(iola);
+			}
+			
+			items.getTotalPages();
 			return iolaList;
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -179,5 +227,47 @@ public class MainController {
 		}
 	}
 	
+	@GetMapping("/getgeocord/{search}")
+	@ResponseBody
+	public GeocordXY getGeocord(@PathVariable String search) {
+		String apikey = "93F009E2-9DBD-3F53-8776-89864485C93E";
+		String searchType = "parcel";
+		String searchAddr = search;
+		String epsg = "epsg:4326";
+
+		StringBuilder sb = new StringBuilder("https://api.vworld.kr/req/address");
+		sb.append("?service=address");
+		sb.append("&request=getCoord");
+		sb.append("&format=json");
+		sb.append("&crs=" + epsg);
+		sb.append("&key=" + apikey);
+		sb.append("&type=" + searchType);
+		sb.append("&address=" + URLEncoder.encode(searchAddr, StandardCharsets.UTF_8));
+
+		try{
+		    URL url = new URL(sb.toString());
+		    BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
+		    
+		    JSONParser jspa = new JSONParser();
+		    JSONObject jsob = (JSONObject) jspa.parse(reader);
+		    System.out.println(jsob);
+		    JSONObject jsrs = (JSONObject) jsob.get("response");
+		    JSONObject jsResult = (JSONObject) jsrs.get("result");
+		    
+		    JSONObject jspoitn = (JSONObject) jsResult.get("point");
+
+		    System.out.println(jspoitn.get("x"));
+		    System.out.println(jspoitn.get("y"));
+		    GeocordXY geo = new GeocordXY();
+		    geo.setX(jspoitn.get("x").toString());
+		    geo.setY(jspoitn.get("y").toString());
+		    return geo;
+		} catch (IOException | net.minidev.json.parser.ParseException e) {
+		    throw new RuntimeException(e);
+		}
+		
+		
+		
+	}
 	
 }

@@ -7,18 +7,21 @@
 <script src="/jquery-3.6.3.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
-<div layout:fragment="content">
-	<h1>회원 이메일로 비밀번호 발송</h1>
-	<div>
-		<label for="username">등록된 회원 이메일 작성</label>
-		<input type="email" name="username" id="username"><a id="result"></a><br>
-		<input type="submit" value = "비밀번호 변경" id="submit" onclick="idcheck()">
+<center layout:fragment="content" style="margin:70px 0px 250px 0px;">
+	<h2>비밀번호 재설정</h2>
+	
+	<div style="width:600px;margin:0 quto;margin-top:50px;" class="input-group input-group-sm mb-3">
+		<span style="width:110px; text-align:center;" class="input-group-text" id="inputGroup-sizing-sm">E-mail</span>
+		<input type="email" name="username" id="username" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+		<button class="btn btn-outline-secondary" type="button" id="submit"  onclick="idcheck()">비밀번호 변경</button>
 	</div>
+	
 	<div>
-		<a th:href="@{/member/login}">로그인</a>
-	</div>
-	<div>
-		<a th:href="@{/member/create}">회원가입</a>
+		
+		<button onclick="location.href='/member/login'" type="button" class="btn btn-outline-primary.btn-outline-*"
+		style="color:#2E75B6; border:solid 1px #2E75B6; width:120px;">LOGIN</button>
+		<button onclick="location.href='/member/create'" type="button" class="btn btn-outline-primary.btn-outline-*"
+		style="color:#2E75B6; border:solid 1px #2E75B6; width:200px;">CREATE ACCOUNT</button>
 	</div>
 	<script>
 	const idcheck = () => {
@@ -49,5 +52,5 @@
 	}
 	     
 	</script>
-</div>
+</center>
 </html>

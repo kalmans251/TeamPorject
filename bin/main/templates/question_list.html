@@ -3,27 +3,27 @@
 <script src="/jquery-3.6.3.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
-<div layout:fragment="content">
-<h1>[[${item.subject}]]</h1>
+<center layout:fragment="content" style="margin:40px 0px 350px 0px;">
+<h3>[['상품명 : '+${item.subject}]]</h3>
 	<div class="row my-3">
-		<div class="col-6">
-			<a th:href="@{|/question/create/${item.id}|}" class="btn btn-primary">질문 등록하기</a>
+		<div class="col-6" style="position:relative; right:110px;">
+			<a th:href="@{|/question/create/${item.id}|}" class="btn btn-primary" style="background-color:#2E75B6; border: 1px solid #2E75B6;">질문 등록하기</a>
 		</div>
 		<div class="col-6">
-			<form th:action="@{|/question/list/${item.id}|}" method="get" id="searchForm">
+			<form th:action="@{|/question/list/${item.id}|}" method="get" id="searchForm" style="position:relative; left:60px;">
 				<input type="text" id="kw" name="kw" th:value="${kw}"> <input
 					type="hidden" id="page" name="page" th:value="${paging.number}">
-				<input type="submit" id="page" name="page" value="검색">
+				<input type="submit" id="page" name="page" value="검색" >
 			</form>
 		</div>
 	</div>
-	<table class="table">
+	<table class="table" style="width:1200px;">
 		<thead>
 			<tr>
 				<th>번호</th>
 				<th style="width: 50%">제목</th>
-				<th>글쓴이</th>
-				<th>작성일시</th>
+				<th style="text-align:center">글쓴이</th>
+				<th style="text-align:center">작성일시</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -37,7 +37,7 @@
                 or question.author.token == #authentication.name 
                 or #authorization.expression('hasAuthority(''ROLE_ADMIN'')')}">
 						<a th:href="@{|/question/shop/${question.id}|}"
-						th:text="${question.subject}">제목</a>
+						th:text="${question.subject}" style="text-decoration:none; color:black;">제목</a>
 				</span> <span
 					th:if="${question.secret == 'N' 
                 and question.author != null 
@@ -73,7 +73,7 @@
 				th:if="${page >= paging.number-5 and page <= paging.number+5}"
 				th:classappend="${page == paging.number} ? 'active'"
 				class="page-item"><a th:text="${page}" class="page-link"
-				href="javascript:void(0)" th:data-page="${page}"></a></li>
+				href="javascript:void(0)" th:data-page="${page}" style="background-color:#2E75B6; border: 1px solid #2E75B6;"></a></li>
 			<li class="page-item"
 				th:classappend="${!paging.hasNext} ? 'disabled'"><a
 				class="page-link" href="javascript:void(0)"
@@ -87,6 +87,7 @@
 		</form>
 
 	</div>
+	</center>
 	<script layout:fragment="script" type='text/javascript'>
 		const page_elements = document.getElementsByClassName("page-link");
 		Array.from(page_elements).forEach(function(element) {

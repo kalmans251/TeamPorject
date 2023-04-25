@@ -17,11 +17,10 @@ textarea::placeholder {
 </head>
 
 <div layout:fragment="content">
-<center>
-<h1>회원가입</h1>
+<center style="margin:80px 0px 150px 0px;">
+<h2 style="margin-bottom:50px;">회원가입</h2>
 <form th:action="@{/member/create}" th:object="${memberCreateForm}" method="post">
 <div style="width:500px;margin:0 auto;">
-
 	<div class="input-group input-group-sm mb-3">
 				<span style="width:110px;text-align:center" class="input-group-text" id="inputGroup-sizing-sm">이메일</span>
 				<input type="email" id="username" name="username" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
@@ -30,33 +29,25 @@ textarea::placeholder {
 	<div id="result" role="alert">
 	</div>
   		<div id="dupli" role="alert"></div><div id="checkresult" role="alert"></div>
-	<div>
+	<div class="input-group input-group-sm mb-3">
 		<span style="width:110px;text-align:center" class="input-group-text" id="inputGroup-sizing-sm">인증번호</span>
 		<input type="text" id="check" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
 		<button class="btn btn-outline-secondary" type="button" id="button-addon2"  onclick="check2()">인증번호 체크</button>
 	</div>
 	<div id="checkresult2" role="alert"></div>
 	<div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="alert alert-danger" role="alert">
-  	
 	</div>
-	
 	<div class="input-group input-group-sm mb-3">
 				<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">비밀번호</span>
 				<input type="password" name="password1" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
 	</div>
 	<div th:if="${#fields.hasErrors('password1')}" th:errors="*{password1}" class="alert alert-danger" role="alert">
-  	
 	</div>
-	
-	
-	
 	
 	<div class="input-group input-group-sm mb-3">
 	 		<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">비밀번호 확인</span>
 	 		<input type="password" name="password2" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
 	</div>
-	
-	
 	
 	<div class="input-group input-group-sm mb-3">
 				<span style="width:110px;" class="input-group-text" id="inputGroup-sizing-sm">닉네임</span>
@@ -70,8 +61,8 @@ textarea::placeholder {
 				<input placeholder="우편번호" id="sample6_postcode" type="text" name="addr1" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
 		<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기">
 	</div>
-	
-	
+
+
 	
 	<div class="input-group input-group-sm mb-3">
 				<input placeholder="주소" type="text" id="sample6_address" name="addr2" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
@@ -91,9 +82,7 @@ textarea::placeholder {
 	<div th:if="${#fields.hasErrors('phoneNum')}" th:errors="*{phoneNum}" class="alert alert-danger" role="alert">
   	
 	</div>
-	
-	
-		<td><input type = "hidden" id="submit" value="제출하기"></td>
+		<td><input type = "hidden" id="submit" value="제출하기" class="btn btn-light" style="background-color:#2E75B6; color:white;"></td>
 	
 </div>
 
